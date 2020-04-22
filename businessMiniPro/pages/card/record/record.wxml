@@ -1,0 +1,14 @@
+<view class="container">
+  <navigator url="/pages/card/index/index?userId={{item.touserId}}" class="itembody" wx:for="{{cardList}}" wx:key="*this">
+    <image src='{{cards.touserAvatar?cards.touserAvatar:"/static/images/photobg.jpg"}}' class="avaimg"></image>
+    <view class="info">
+      <view class="name">{{item.touserName}}</view>
+      <view class="comname">{{item.touserComName}}</view>
+      <view class="time">{{item.createTime}}</view>
+    </view>
+  </navigator>
+  <view class="loading" hidden="{{!moredata}}">正在载入更多...</view>
+  <view class="loading complete" hidden="{{!nonedata}}">已加载全部</view>
+  <view class="loading complete" hidden="{{nonedata}}">暂无数据</view>
+</view>
+<view class="bottomtext">销擎，您的销售增长引擎</view>

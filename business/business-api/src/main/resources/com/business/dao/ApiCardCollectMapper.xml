@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiCardCollectMapper">
+
+    <resultMap type="com.business.entity.CardCollectVo" id="BaseResultMap">
+        <result property="collectId" column="collect_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="touserId" column="touser_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryHasUser" resultType="int">
+        select count(*) from card_collect
+        WHERE user_id=#{userId} and touser_id=#{touserId}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.CardCollectVo">
+        select user_id,touser_id,create_time,
+        (select name from customer_company where customer_company.company_id=(select company_id from customer_user where customer_user.user_id=card_collect.touser_id)) as touserComName,
+        (select avatar from customer_user where customer_user.user_id=card_collect.touser_id) as touserAvatar,
+        (select realname from customer_user where customer_user.user_id=card_collect.touser_id) as touserName
+        from card_collect
+        WHERE user_id=#{userId}
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by collect_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from card_collect
+        WHERE user_id=#{userId}
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CardCollectVo" useGeneratedKeys="true" keyProperty="companyId">
+		insert into card_collect(
+        `user_id`,
+        `touser_id`,
+        `create_time`     )
+		values(
+          #{userId},
+          #{touserId},
+          now()         )
+	</insert>
+
+    <delete id="delete">
+		delete from card_collect where collect_id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from card_collect where collect_id in
+        <foreach item="collectId" collection="array" open="(" separator="," close=")">
+            #{collectId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByUserID">
+		delete from card_collect where user_id = #{userId} and touser_id=#{touserId}
+	</delete>
+</mapper>

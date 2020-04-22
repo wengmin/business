@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/card/index/index",
+    "pages/card/collect/collect",
+    "pages/card/record/record",
+    "pages/auth/login/login",
+    "pages/index/index",
+    "pages/ucenter/feedback/feedback",
+    "pages/ucenter/index/index",
+    "pages/pay/pay",
+    "pages/payResult/payResult",
+    "pages/customer/adduser/adduser"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "销擎名片管理",
+    "navigationBarTextStyle": "black",
+    "onReachBottomDistance": 200,
+    "enablePullDownRefresh": true
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.MailDao">
+
+    <resultMap id="SysMailEntityMap" type="com.business.entity.MailEntity">
+        <result column="mail_id" property="mailId"/>
+        <result column="staff_id" property="staffId"/>
+        <result column="mobile" property="mobile"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <association property="follow" javaType="com.business.entity.SysMailFollowEntity" resultMap="SysMailFollowEntityMap"/>
+    </resultMap>
+
+    <resultMap id="SysMailFollowEntityMap" type="com.business.entity.SysMailFollowEntity">
+        <result column="follow_id" property="followId"/>
+        <result column="mail_id" property="mailId"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.business.entity.MailEntity">
+		select * from qy_mail a,qy_mail_follow b where staff_id = #{staffId} and a.mail_id=b.mail_id
+	</select>
+
+    <select id="queryList" resultType="com.business.entity.MailEntity">
+        select *,(select s.staff_name from qy_staff s where s.staff_id = r.staff_id) staffName from qy_mail r
+        <where>
+            <if test="staffId != null and staffId.trim() != ''">
+                and `staff_id` = #{staffId}
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by staff_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from qy_mail
+        <where>
+            <if test="staffId != null and staffId.trim() != ''">
+                and `staff_id` = #{staffId}
+            </if>
+        </where>
+    </select>
+
+    <select id="followList" resultType="com.business.entity.SysMailFollowEntity">
+        select * from qy_mail_follow where `mail_id`=#{mailId} order by create_time desc
+    </select>
+
+    <insert id="saveFollow" parameterType="com.business.entity.SysMailFollowEntity">
+		insert into qy_mail_follow
+		(
+			`mail_id`,
+			`status`,
+			`remark`,
+			`create_time`
+		)
+		values
+		(
+			#{mailId},
+			#{status},
+			#{remark},
+			now()
+		)
+	</insert>
+
+
+    <update id="updateStatus" parameterType="com.business.entity.MailEntity">
+        update qy_mail
+        <set>
+            <if test="status != null">`status` = #{status},</if>
+        </set>
+        where mail_id = #{mailId}
+    </update>
+
+</mapper>

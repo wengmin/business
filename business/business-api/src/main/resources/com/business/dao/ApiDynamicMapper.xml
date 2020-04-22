@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiDynamicMapper">
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.business.entity.DynamicVo" id="DynamicMap">
+        <result property="dynamic_id" column="dynamic_id"/>
+        <result property="type" column="type"/>
+        <result property="tag" column="tag"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="cover" column="cover"/>
+        <result property="imgs" column="imgs"/>
+        <result property="create_user_id" column="create_user_id"/>
+        <result property="create_time" column="create_time"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="DynamicMap">
+		select * from qy_dynamic where dynamic_id = #{value}
+	</select>
+
+    <select id="queryList" resultMap="DynamicMap">
+        select * from qy_dynamic
+        where 1 = 1
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by dynamic_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from qy_dynamic
+	</select>
+
+</mapper>

@@ -1,0 +1,113 @@
+<view class="container">
+  <card-holder title="{{cards.realname}}"></card-holder>
+  <view class="cardsbg">
+    <view class="cards_zyz">
+      <view class="left">
+        <image src='{{!cards.photo ? "/static/images/photobg.jpg" : cards.photo}}' mode="aspectFill"></image>
+      </view>
+      <view class="right">
+        <view class="comname">{{cards.companyName}}</view>
+        <view class="infobg">
+          <view class="name">{{cards.realname}}</view>
+          <view class="position">{{cards.position}}</view>
+        </view>
+        <view class="iconitems mobile" wx:if="{{cards.mobile}}">{{cards.mobile}} </view>
+        <view class="iconitems email" wx:if="{{cards.email}}">{{cards.email}}</view>
+        <view class="iconitems address" wx:if="{{cards.address}}">{{cards.address}}</view>
+      </view>
+    </view>
+    <!-- <view class="cards_zy">
+      <view class="left">
+        <image src='{{cards.avatar?cards.avatar:"/static/images/photobg.jpg"}}' mode="aspectFill"></image>
+      </view>
+      <view class="right">
+        <view class="comname">{{cards.companyName}}</view>
+        <view class="infobg">
+          <view class="name">{{cards.realname}}</view>
+          <view class="position">{{cards.position}}</view>
+        </view>
+        <view class="bg">
+          <view class="items" wx:if="{{cards.mobile}}">{{cards.mobile}}
+            <image src="/static/images/icon/phonecall.png"></image>
+          </view>
+          <view class="items" wx:if="{{cards.email}}">{{cards.email}}
+            <image src="/static/images/icon/email.png"></image>
+          </view>
+          <view class="items" wx:if="{{cards.address}}">{{cards.address}}
+            <image src="/static/images/icon/region.png"></image>
+          </view>
+        </view>
+      </view>
+    </view> -->
+    <view class="navbody">
+      <button class="navleft" open-type="share" data-sharetype="card">
+        转发名片
+      </button>
+      <button class="navright" bindtap="addPhone">
+        存到手机通讯录
+      </button>
+    </view>
+    <view class="colleague">
+      <button class="imgbtn" bindtap='showQrCode'>
+        <image src="/static/images/qrcode.png"></image>
+      </button>
+      <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
+        <view class="title">
+          <image src="/static/images/icon/phonecall.png"></image>拨打电话
+        </view>
+        <text class="info">{{cards.mobile}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.wechat}}" wx:if="{{cards.wechat}}">
+        <view class="title">
+          <image src="/static/images/icon/wechat.png"></image>加我微信
+        </view>
+        <text class="info">{{cards.wechat}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.email}}" wx:if="{{cards.email}}">
+        <view class="title">
+          <image src="/static/images/icon/email.png"></image>邮箱
+        </view>
+        <text class="info">{{cards.email}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.address}}" wx:if="{{cards.address}}">
+        <view class="title">
+          <image src="/static/images/icon/region.png"></image>地址
+        </view>
+        <text class="info">{{cards.address}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.telephone}}" wx:if="{{cards.telephone}}">
+        <view class="title">
+          <image src="/static/images/detail_kefu.png"></image>固定电话
+        </view>
+        <text class="info">{{cards.telephone}}</text>
+      </button>
+    </view>
+  </view>
+  <view class="profile">
+    <image src='{{cards.avatar}}' class="leftimg"></image>
+    <view class="rightinfo">
+      <view class="name">{{cards.realname}}</view>
+      <view class="k">
+        <view class="desc">{{cards.profile?cards.profile:"欢迎来到我的名片"}}</view>
+        <button class="sharebtn" wx:if="{{!showCreate}}" open-type="share" data-sharetype="mycard">请赐回您的名片</button>
+        <navigator class="sharebtn" wx:if="{{showCreate}}" url="/pages/customer/adduser/adduser?type=1">请赐回您的名片</navigator>
+        <button class="collectbtn" wx:if="{{!isZiji}}" bindtap="collect">请惠存我的名片</button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='imagePathBox' hidden="{{maskHidden == false}}">
+  <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
+  <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
+</view>
+<!-- <block wx:if="{{showCreate}}">
+  <navigator class="bottomnav" url="/pages/customer/adduser/adduser">免费创建名片</navigator>
+</block>
+<block wx:else>
+  <navigator class="bottomnav" url="/pages/customer/adduser/adduser">编辑我的名片</navigator>
+</block>
+<button class="backme" wx:if="{{!isZiji}}" bindtap="backMeCard">返回我的名片</button> -->
+<view class="bottomtext">
+  <navigator hover-class="none" url="/pages/customer/adduser/adduser">免费创建名片</navigator>
+  <view>销擎，您的销售增长引擎</view>
+</view>

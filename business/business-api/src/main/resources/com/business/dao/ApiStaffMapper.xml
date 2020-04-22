@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiStaffMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.business.entity.StaffVo" id="staffMap">
+        <result property="staff_id" column="staff_id"/>
+        <result property="staff_name" column="staff_name"/>
+        <result property="position" column="position"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="wechat" column="wechat"/>
+        <result property="profile" column="profile"/>
+        <result property="headimg" column="headimg"/>
+        <result property="address" column="address"/>
+        <result property="weixin_openid" column="weixin_openid"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="staffMap">
+		select * from qy_staff where staff_id = #{value}
+	</select>
+
+    <select id="queryByOpenId" resultMap="staffMap">
+        select * from qy_staff
+        where 1 = 1
+        <if test="openId != null">
+            and `weixin_openid` = #{openId}
+        </if>
+    </select>
+
+    <select id="queryByMobile" resultMap="staffMap">
+        select * from qy_staff
+        where 1 = 1
+        <if test="mobile != null">
+            and `mobile` = #{mobile}
+        </if>
+    </select>
+
+    <select id="queryList" resultMap="staffMap">
+        select * from qy_staff
+        <where>
+            <if test="staff_id != null">
+                and staff_id = #{staff_id}
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by staff_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="colleague" resultMap="staffMap">
+        select * from qy_staff where staff_id != #{value} order by staff_id desc
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from qy_staff 
+	</select>
+
+    <insert id="save" parameterType="com.business.entity.StaffVo" useGeneratedKeys="true" keyProperty="id">
+		insert into qy_staff(
+			`staff_name`,
+			`position`,
+			`mobile`,
+			`email`,
+			`wechat`,
+			`profile`)
+		values(
+			#{staff_name},
+			#{position},
+			#{mobile},
+			#{email},
+			#{wechat},
+			#{profile})
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.StaffVo">
+        update qy_staff
+        <set>
+            <if test="staff_name != null">`staff_name` = #{staff_name}, </if>
+            <if test="position != null">`position` = #{position}, </if>
+            <if test="mobile != null">`mobile` = #{mobile}, </if>
+            <if test="email != null">`email` = #{email}, </if>
+            <if test="wechat != null">`wechat` = #{wechat}, </if>
+            <if test="profile != null">`profile` = #{profile}, </if>
+        </set>
+        where staff_id = #{id}
+    </update>
+
+    <update id="bingOpenIdByMobile">
+        update qy_staff
+        <set>
+            <if test="openId != null">`weixin_openid` = #{openId}, </if>
+        </set>
+        where mobile = #{mobile}
+    </update>
+
+    <delete id="delete">
+		delete from qy_staff where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from qy_staff where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

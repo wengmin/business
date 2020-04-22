@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.SysStaffDao">
+    <select id="queryObject" resultType="com.business.entity.SysStaffEntity">
+		select * from qy_staff where staff_id = #{value}
+	</select>
+
+    <select id="queryList" resultType="com.business.entity.SysStaffEntity">
+        select * from qy_staff
+        <where>
+            <if test="createUserId != null">
+                and `create_user_id` = #{createUserId}
+            </if>
+            <if test="staffName != null and staffName.trim() != ''">
+                and `staff_name` like concat('%',#{staffName},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by staff_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.business.entity.SysStaffEntity">
+        select * from qy_staff
+        WHERE 1=1
+        <if test="staffName != null and staffName.trim() != ''">
+            AND staff_name LIKE concat('%',#{staffName},'%')
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from qy_staff
+        <where>
+            <if test="createUserId != null">
+                and `create_user_id` = #{createUserId}
+            </if>
+            <if test="staffName != null and staffName.trim() != ''">
+                and `staff_name` like concat('%',#{staffName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByStaffName" resultType="com.business.entity.SysStaffEntity">
+		select * from qy_staff where staff_name = #{staffName}
+	</select>
+
+    <insert id="save" parameterType="com.business.entity.SysStaffEntity" useGeneratedKeys="true" keyProperty="staffId">
+		insert into qy_staff
+		(
+			`staff_id`,
+			`staff_name`,
+			`position`,
+			`mobile`,
+			`email`,
+			`wechat`,
+			`profile`,
+			`idcard`,
+			`headimg`,
+			`address`,
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{staffId},
+			#{staffName},
+			#{position},
+			#{mobile},
+			#{email},
+			#{wechat},
+			#{profile},
+			#{idcard},
+			#{headimg},
+			#{address},
+			#{createUserId},
+			#{createTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.SysStaffEntity">
+        update qy_staff
+        <set>
+            <if test="staffName != null">`staff_name` = #{staffName},</if>
+            <if test="position != null">`position` = #{position},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="wechat != null">`wechat` = #{wechat},</if>
+            <if test="profile != null">`profile` = #{profile},</if>
+            <if test="idcard != null">`idcard` = #{idcard},</if>
+            <if test="headimg != null">`headimg` = #{headimg},</if>
+            <if test="address != null">`address` = #{address},</if>
+        </set>
+        where staff_id = #{staffId}
+        <if test="createUserId != null">
+            and `create_user_id` = #{createUserId}
+        </if>
+    </update>
+
+    <delete id="deleteBatch">
+        delete from qy_staff where staff_id in
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </delete>
+
+    <select id="staffCount" resultType="int">
+        SELECT count(*) FROM qy_staff  where mobile=#{value}
+    </select>
+
+</mapper>

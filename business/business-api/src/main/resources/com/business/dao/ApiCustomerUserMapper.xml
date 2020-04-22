@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiCustomerUserMapper">
+
+    <resultMap type="com.business.entity.CustomerUserVo" id="BaseResultMap">
+        <result property="userId" column="user_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="realname" column="realname"/>
+        <result property="photo" column="photo"/>
+        <result property="nickname" column="nickname"/>
+        <result property="position" column="position"/>
+        <result property="mobile" column="mobile"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <result property="wechat" column="wechat"/>
+        <result property="profile" column="profile"/>
+        <result property="idcard" column="idcard"/>
+        <result property="avatar" column="avatar"/>
+        <result property="address" column="address"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="county" column="county"/>
+        <result property="telephone" column="telephone"/>
+        <result property="weixin_openid" column="weixin_openid"/>
+        <result property="qrCode" column="qr_code"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+	    `user_id`,
+	    `company_id`,
+	    (select name from customer_company where  customer_company.company_id=customer_user.company_id) as companyName,
+	    `realname`,
+	    `photo`,
+	    `nickname`,
+	    `position`,
+	    `mobile`,
+	    `gender`,
+	    `email`,
+	    `wechat`,
+	    `profile`,
+	    `idcard`,
+	    `avatar`,province,city,county,
+	    `address`,
+	    `telephone`,
+	    `weixin_openid`,
+	    `qr_code`,
+	    `create_time`
+  	</sql>
+
+    <select id="queryByOpenId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+         from customer_user
+        where 1 = 1
+        <if test="openId != null">
+            and `weixin_openid` = #{openId}
+        </if>
+    </select>
+
+    <select id="queryByMobile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+         from customer_user
+        where 1 = 1
+        <if test="openId != null">
+            and `mobile` = #{mobile}
+        </if>
+    </select>
+
+    <select id="queryObject" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_user
+        where user_id = #{value}
+    </select>
+
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_user
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by user_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from customer_user
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CustomerUserVo" useGeneratedKeys="true" keyProperty="userId">
+		insert into customer_user(
+	    `company_id`,
+	    `realname`,
+	    `photo`,
+	    `nickname`,
+	    `position`,
+	    `mobile`,
+	    `gender`,
+	    `email`,
+	    `wechat`,
+	    `profile`,
+	    `idcard`,
+	    `avatar`,
+	    `address`,
+	    `telephone`,
+	    `province`,
+	    `city`,
+	    `county`,
+	    `weixin_openid`,
+	    `qr_code`,
+        `create_time`)
+		values(
+	    #{companyId},
+	    #{realname},
+	    #{photo},
+	    #{nickname},
+	    #{position},
+	    #{mobile},
+	    #{gender},
+	    #{email},
+	    #{wechat},
+	    #{profile},
+	    #{idcard},
+	    #{avatar},
+	    #{address},
+	    #{telephone},
+	    #{province},
+	    #{city},
+	    #{county},
+	    #{weixin_openid},
+	    #{qrCode},
+        now())
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CustomerUserVo">
+        update customer_user
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="realname != null">
+                `realname` = #{realname},
+            </if>
+            <if test="photo != null">
+                `photo` = #{photo},
+            </if>
+            <if test="nickname != null">
+                `nickname` = #{nickname},
+            </if>
+            <if test="position != null">
+                `position` = #{position},
+            </if>
+            <if test="mobile != null">
+                `mobile` = #{mobile},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="wechat != null">
+                `wechat` = #{wechat},
+            </if>
+            <if test="profile != null">
+                `profile` = #{profile},
+            </if>
+            <if test="idcard != null">
+                `idcard` = #{idcard},
+            </if>
+            <if test="avatar != null">
+                `avatar` = #{avatar},
+            </if>
+            <if test="address != null">
+                `address` = #{address},
+            </if>
+            <if test="telephone != null">
+                `telephone` = #{telephone},
+            </if>
+            <if test="province != null">
+                `province` = #{province},
+            </if>
+            <if test="city != null">
+                `city` = #{city},
+            </if>
+            <if test="county != null">
+                `county` = #{county},
+            </if>
+            <if test="weixin_openid != null">
+                `weixin_openid` = #{weixin_openid},
+            </if>
+            <if test="qrCode != null">
+                `qr_code` = #{qrCode}
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime}
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateByOpenId" parameterType="com.business.entity.CustomerUserVo">
+        update customer_user
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="realname != null">
+                `realname` = #{realname},
+            </if>
+            <if test="photo != null">
+                `photo` = #{photo},
+            </if>
+            <if test="nickname != null">
+                `nickname` = #{nickname},
+            </if>
+            <if test="position != null">
+                `position` = #{position},
+            </if>
+            <if test="mobile != null">
+                `mobile` = #{mobile},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="wechat != null">
+                `wechat` = #{wechat},
+            </if>
+            <if test="profile != null">
+                `profile` = #{profile},
+            </if>
+            <if test="idcard != null">
+                `idcard` = #{idcard},
+            </if>
+            <if test="avatar != null">
+                `avatar` = #{avatar},
+            </if>
+            <if test="telephone != null">
+                `telephone` = #{telephone},
+            </if>
+            <if test="address != null">
+                `address` = #{address},
+            </if>
+            <if test="province != null">
+                `province` = #{province},
+            </if>
+            <if test="city != null">
+                `city` = #{city},
+            </if>
+            <if test="county != null">
+                `county` = #{county},
+            </if>
+            <if test="qrCode != null">
+                `qr_code` = #{qrCode}
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime}
+            </if>
+        </set>
+        where weixin_openid = #{weixin_openid}
+    </update>
+
+    <delete id="delete">
+		delete from customer_user where user_id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from customer_user where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

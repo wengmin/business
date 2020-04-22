@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.DynamicDao">
+    <select id="queryObject" resultType="com.business.entity.DynamicEntity">
+		select * from qy_dynamic where dynamic_id = #{value}
+	</select>
+
+    <select id="queryList" resultType="com.business.entity.DynamicEntity">
+        select * from qy_dynamic
+        <where>
+            <if test="createUserId != null">
+                and `create_user_id` = #{createUserId}
+            </if>
+            <if test="title != null and title.trim() != ''">
+                and `title` like concat('%',#{title},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by dynamic_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from qy_dynamic
+        <where>
+            <if test="createUserId != null">
+                and `create_user_id` = #{createUserId}
+            </if>
+            <if test="title != null and title.trim() != ''">
+                and `title` like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.DynamicEntity" useGeneratedKeys="true" keyProperty="dynamicId">
+		insert into qy_dynamic
+		(
+			`type`,
+			`tag`,
+			`title`,
+			`content`,
+			`cover`,
+			`imgs`,
+			`create_user_id`,
+			`create_time`
+		)
+		values
+		(
+			#{type},
+			#{tag},
+			#{title},
+			#{content},
+			#{cover},
+			#{imgs},
+			#{createUserId},
+			now()
+		)
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.DynamicEntity">
+        update qy_dynamic
+        <set>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="tag != null">`tag` = #{tag},</if>
+            <if test="title != null">`title` = #{title},</if>
+            <if test="content != null">`content` = #{content},</if>
+            <if test="cover != null">`cover` = #{cover},</if>
+            <if test="imgs != null">`imgs` = #{imgs},</if>
+        </set>
+        where dynamic_id = #{dynamicId}
+        <if test="createUserId != null">
+            and `create_user_id` = #{createUserId}
+        </if>
+    </update>
+
+    <delete id="deleteBatch">
+        delete from qy_dynamic where dynamic_id in
+        <foreach item="dynamicId" collection="array" open="(" separator="," close=")">
+            #{dynamicId}
+        </foreach>
+    </delete>
+
+</mapper>

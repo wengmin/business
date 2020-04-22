@@ -1,0 +1,80 @@
+<!--pages/user/user.wxml-->
+<view class="add-user" wx:if="{{fromOne}}">
+  <progress class="progress" percent="33.3" backgroundColor="gray" activeColor="red"></progress>
+  <view class="add-form">
+    <view class="form-item" bindtap="changePhoto">
+      <view style="width:100%;text-align:center;clear:both">
+        <image class="img" src='{{user.photo?user.photo:"/static/images/photobg.jpg"}}' background-size="cover"></image>
+      </view>
+      <view class="imgtext" wx:if="{{!user.photo}}">点击上传照片</view>
+      <view class="imgtext" wx:if="{{user.photo}}">更换头像</view>
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>公司名称</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="companyname" placeholder="公司名称" value="{{user.companyName}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>职位</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="position" placeholder="职位" value="{{user.position}}" />
+    </view>
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="nextOne">下一步</button>
+  </view>
+</view>
+
+<view class="add-user" wx:if="{{fromTwo}}">
+  <progress percent="66.6" backgroundColor="gray" activeColor="red"></progress>
+  <view class="add-form">
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>姓名</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="realname" placeholder="请输入姓名" value="{{user.realname}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>手机号码</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="mobile" value="{{user.mobile}}" maxlength="15" type="number" placeholder="请输入手机号码" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">固定电话</view>
+      <input class="inputright" bindinput="bindinputValue" maxlength="20" data-type="telephone" value="{{user.telephone}}" placeholder="请输入固定电话" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">电子邮箱</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="email" value="{{user.email}}" placeholder="请输入电子邮箱" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">微信号</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="wechat" value="{{user.wechat}}" placeholder="请输入微信号" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">省市区</view>
+      <region bind:queding="onRegionClick" province='{{user.province}}' city='{{user.city}}' county='{{user.county}}'></region>
+    </view>
+    <view class="form-item">
+      <view class="ttext">详细地址</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="address" value="{{user.address}}" placeholder="详细地址, 如街道、楼盘号等" />
+    </view>
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="nextTwo">下一步</button>
+  </view>
+</view>
+
+<view class="add-user" wx:if="{{fromThree}}">
+  <progress class="progress" percent="100" backgroundColor="gray" activeColor="red"></progress>
+  <view class="add-form">
+    <view class="form-item">
+      <textarea class="input_n" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="请输入问候语，不输入默认显示：欢迎来到我的名片" value="{{user.profile}}" />
+    </view>
+  </view>
+  <view class="btns">
+    <button class="save" bindtap="saveUser">保存</button>
+    <!-- <button class="save" bindtap="saveUser" wx:if="{{type==0}}">保存</button>
+    <button class="save" open-type="share" wx:if="{{type==1}}">保存并分享</button> -->
+  </view>
+</view>
+<view class="bottomtext">销擎，您的销售增长引擎</view>

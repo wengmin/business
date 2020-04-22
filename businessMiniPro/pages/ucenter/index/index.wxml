@@ -1,0 +1,45 @@
+<view class="container" wx:if="{{isshow}}">
+  <back-index back="{{true}}" home="{{true}}" bindback="handlerGobackClick" bindhome="handlerGohomeClick"></back-index>
+  <navigator url="/pages/customer/adduser/adduser" class="userinfo">
+    <view>
+      <image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
+    </view>
+    <view class='marleft'>
+      <button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
+        <view class="userinfo-nickname">
+          <text style='font-size:20px;font-weight:bold;'>{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
+        </view>
+      </button>
+    </view>
+    <view class="gobtn">
+      <image src="/static/images/go.png"></image>
+    </view>
+  </navigator>
+
+  <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
+  <view class="user-menu">
+    <view class='menu_tit'>
+      <text class='menu_top'>我的服务</text>
+    </view>
+    <view class="item">
+      <navigator url="/pages/card/collect/collect" class="a">
+        <text class="icon sc"></text>
+        <text class="txt">我的收藏</text>
+      </navigator>
+    </view>
+    <view class="item">
+      <navigator url="/pages/card/record/record" class="a">
+        <text class="icon security"></text>
+        <text class="txt">浏览记录</text>
+      </navigator>
+    </view>
+    <view class="item">
+      <navigator url="/pages/ucenter/feedback/feedback" class="a">
+        <text class="icon feedback"></text>
+        <text class="txt">意见反馈</text>
+      </navigator>
+    </view>
+  </view>
+  <!-- <view class="logout" bindtap="exitLogin">退出登录</view> -->
+</view>
+<view class="bottomtext">销擎，您的销售增长引擎</view>
