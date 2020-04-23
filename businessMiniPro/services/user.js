@@ -35,7 +35,7 @@ function loginByWeixin(userInfo) {
         if (res.errno === 0) { 
           //存储用户信息
           wx.setStorageSync('userInfo', userInfo);
-          wx.setStorageSync('token', res.data.userVo.weixin_openid);
+          wx.setStorageSync('token', res.data.userVo.openid);
           //wx.setStorageSync('isReal', res.data.userVo.isReal); 
           wx.setStorageSync('userId', res.data.userVo.userId); 
           console.log('-----#######---------', res.data.userVo.userId)

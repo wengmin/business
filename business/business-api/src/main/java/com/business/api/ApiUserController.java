@@ -2,31 +2,23 @@ package com.business.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.business.annotation.LoginUser;
-import com.business.entity.MlsUserEntity2;
-import com.business.entity.UserGoods;
-import com.business.entity.UserRecord;
 import com.business.entity.UserVo;
 import com.business.service.ApiUserService;
-import com.business.service.MlsUserSer;
-import com.business.service.UserRecordSer;
 import com.business.util.ApiBaseAction;
 import com.business.util.RedisUtils;
 import com.business.util.SmsUtils;
-import com.business.util.wechat.WechatRefundApiResult;
-import com.business.util.wechat.WechatUtil;
-import com.business.utils.Base64;
 import com.business.utils.CharUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 作者: @author Harmon <br>
@@ -39,10 +31,6 @@ import java.util.*;
 public class ApiUserController extends ApiBaseAction {
     @Autowired
     private ApiUserService userService;
-    @Autowired
-    private MlsUserSer mlsUserSer;
-    @Autowired
-    private UserRecordSer userRecordSer;
     @Autowired
     private SmsUtils smsUtils;
     @Value("${happyMall.sms.regTemplate}")
@@ -93,19 +81,6 @@ public class ApiUserController extends ApiBaseAction {
     }
 
     /**
-     * 获取当前会员等级
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "获取当前会员等级")
-    @GetMapping("getUserLevel")
-    public Object getUserLevel(@LoginUser UserVo loginUser) {
-        String userLevel = userService.getUserLevel(loginUser);
-        return toResponsSuccess(userLevel);
-    }
-
-    /**
      * 绑定手机
      */
     @ApiOperation(value = "绑定手机")
@@ -146,163 +121,5 @@ public class ApiUserController extends ApiBaseAction {
         }
         String code = RedisUtils.get("sms" + mobile);
         return verificationCode.equals(code);
-    }
-
-    /**
-     * 我的推荐人
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "我的推荐人")
-    @RequestMapping("getFUser")
-    public Object getFUser(@LoginUser UserVo loginUser) {
-        MlsUserEntity2 mlsUser = new MlsUserEntity2();
-        mlsUser.setUserId(loginUser.getUserId());
-        List<MlsUserEntity2> mlsUserList = mlsUserSer.getEntityMapper().findByEntity(mlsUser);
-        if (mlsUserList != null && mlsUserList.size() > 0) {
-            mlsUser = mlsUserList.get(0);
-            mlsUser = mlsUserSer.getEntityMapper().getById(mlsUser.getFid());
-            if (mlsUser != null) {
-                mlsUser.setNickname(Base64.decode(mlsUser.getNickname()));
-                mlsUser.setUserName(Base64.decode(mlsUser.getUserName()));
-                return toResponsSuccess(mlsUser);
-            }
-        }
-        return toResponsSuccess("");
-    }
-
-    /**
-     * 我的粉丝
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "我的粉丝")
-    @RequestMapping("getSonUser")
-    public Object getSonUser(@LoginUser UserVo loginUser) {
-        MlsUserEntity2 mlsUser = new MlsUserEntity2();
-        mlsUser.setUserId(loginUser.getUserId());
-        List<MlsUserEntity2> mlsUserList = mlsUserSer.getEntityMapper().findByEntity(mlsUser);
-        if (mlsUserList != null && mlsUserList.size() > 0) {
-            mlsUser = mlsUserList.get(0);
-            MlsUserEntity2 mlsUser1 = new MlsUserEntity2();
-            mlsUser1.setFid(mlsUser.getMlsUserId());
-            mlsUserList = mlsUserSer.getEntityMapper().findByEntity(mlsUser1);
-            if (mlsUserList != null && mlsUserList.size() > 0) {
-                for (MlsUserEntity2 mlsUserEntity2 : mlsUserList) {
-                    mlsUserEntity2.setNickname(Base64.decode(mlsUserEntity2.getNickname()));
-                }
-                return toResponsSuccess(mlsUserList);
-            }
-        }
-        return toResponsSuccess(new ArrayList<String>());
-    }
-
-    /**
-     * 总佣金 可提现金额
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "总佣金 可提现金额")
-    @RequestMapping("getMlsUser")
-    public Object getMlsUser(@LoginUser UserVo loginUser) {
-        MlsUserEntity2 mlsUser = new MlsUserEntity2();
-        mlsUser.setUserId(loginUser.getUserId());
-        List<MlsUserEntity2> mlsUserList = mlsUserSer.getEntityMapper().findByEntity(mlsUser);
-        if (mlsUserList != null && mlsUserList.size() > 0) {
-            mlsUser = mlsUserList.get(0);
-            if (mlsUser != null) {
-                return toResponsSuccess(mlsUser);
-            }
-        }
-        return toResponsMsgSuccess("未找到关联分销用户");
-    }
-
-    /**
-     * 分享历史
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "分享历史")
-    @RequestMapping("insShareGoods")
-    public Object insShareGoods(@LoginUser UserVo loginUser, UserGoods userGoods) {
-        userGoods.setUserId(loginUser.getUserId());
-        UserGoods uoods = mlsUserSer.findUserGoods(userGoods);
-        if (uoods == null) {
-            mlsUserSer.getEntityMapper().insertUserGoods(userGoods);
-        }
-        return toResponsSuccess(userGoods);
-    }
-
-
-    /**
-     * 取当前用户分享历史
-     *
-     * @param loginUser
-     * @return
-     */
-    @ApiOperation(value = "取当前用户分享历史")
-    @RequestMapping("getShareGoods")
-    public Object getShareGoods(@LoginUser UserVo loginUser) {
-        return toResponsSuccess(mlsUserSer.getEntityMapper().getUserGoods(loginUser.getUserId()));
-    }
-
-    @ApiOperation(value = "用户提现分润")
-    @PostMapping("withdrawCashes")
-    public Object withdrawCashes(@LoginUser UserVo loginUser, Double amount, String name) {
-
-        MlsUserEntity2 mlsuser = mlsUserSer.getEntityMapper().findByUserId(loginUser.getUserId());
-        if (StringUtils.isBlank(name)) {
-            return toResponsFail("提现姓名为空");
-        }
-        if (amount == null || amount == 0) {
-            return toResponsFail("提现金额为空");
-        }
-        //系统设置的最小提现金额
-        String txMin = mlsUserSer.getEntityMapper().queryByKey("tx_min");
-        if (StringUtils.isNotBlank(txMin)) {
-            int min = new Integer(txMin);
-            if (min > amount) {
-                return toResponsFail("最小提现金额为" + min);
-            }
-        }
-        if (mlsuser.getGetProfit().intValue() < new Double(amount * 100).intValue()) {
-            return toResponsFail("超出提现金额");
-        }
-        //去公众号用户表获取openId
-        String openId = null;
-        UserVo user = userService.queryObject(loginUser.getUserId());
-        openId = user.getWeixin_openid();
-        //设置提现redis锁，当成功删除key
-        String txKey = RedisUtils.get("tx" + mlsuser.getMlsUserId());
-        if (StringUtils.isNotBlank(txKey)) {
-            return toResponsFail("当前提现没有完成，也可以联系管理员。");
-        }
-        //设置redisKsy
-        RedisUtils.set("tx" + mlsuser.getMlsUserId(), "10");
-        String payCountId = UUID.randomUUID().toString().replaceAll("-", "");
-        //开始调用提现微信接口
-        WechatRefundApiResult ret = WechatUtil.wxPayMoneyToUser(openId, amount, name, payCountId);
-        if ("SUCCESS".equals(ret.getErr_code())) {
-            //插入提现记录表
-            UserRecord newur = new UserRecord();
-            newur.setMlsUserId(mlsuser.getMlsUserId());
-            newur.setTypes(1);
-            newur.setTypesStr("提现");
-            newur.setPrice(new Double(amount * 100).intValue());
-            newur.setRemarks("分润:" + newur.getPrice());
-            userRecordSer.save(newur);
-            //更新可提现金额
-            mlsuser.setGetProfit(new Double(amount * 100).intValue());
-            mlsUserSer.getEntityMapper().tx(mlsuser);
-
-            RedisUtils.del("tx" + mlsuser.getMlsUserId());
-        } else {
-            return toResponsFail(ret.getErr_code_des());
-        }
-        return toResponsSuccess(ret);
     }
 }

@@ -37,7 +37,7 @@ public class ApiFeedbackController extends ApiBaseAction {
         if (null != feedbackJson) {
             FeedbackVo feedbackVo = new FeedbackVo();
             feedbackVo.setUserId(loginUser.getUserId().intValue());
-            feedbackVo.setUserName(loginUser.getUsername());
+            feedbackVo.setUserName(loginUser.getNickname());
             feedbackVo.setMobile(feedbackJson.getString("mobile"));
             feedbackVo.setFeedType(feedbackJson.getInteger("index"));
             feedbackVo.setStatus(1);

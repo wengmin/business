@@ -17,6 +17,13 @@ public class CardCollectVo implements Serializable {
     private Integer userId;
     private String userName;
 
+    private String touserAvatar;
+    private Integer touserId;
+    private String touserName;
+    private String touserComName;
+
+    private Date createTime;
+
     public String getTouserAvatar() {
         return touserAvatar;
     }
@@ -25,10 +32,6 @@ public class CardCollectVo implements Serializable {
         this.touserAvatar = touserAvatar;
     }
 
-    private String touserAvatar;
-    private Integer touserId;
-    private String touserName;
-
     public String getTouserComName() {
         return touserComName;
     }
@@ -36,9 +39,6 @@ public class CardCollectVo implements Serializable {
     public void setTouserComName(String touserComName) {
         this.touserComName = touserComName;
     }
-
-    private String touserComName;
-    private Date createTime;
 
     public String getUserName() {
         return userName;

@@ -14,9 +14,9 @@ App({
       wx.removeStorageSync('token');
     });
 
-    console.log("全局onLaunch options==" + options.query.userId)
-    if (options.query.userId != "undefined" && typeof(options.query.userId) != "undefined") {
-      this.globalData.userId = options.query.userId;
+    console.log("全局onLaunch options==" + options.query.openid)
+    if (options.query.openid != "undefined" && typeof (options.query.openid) != "undefined") {
+      this.globalData.openid = options.query.openid;
     }
   },
   globalData: {
@@ -25,7 +25,7 @@ App({
       userName: '点击登录',
       avatarUrl: 'https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/150547696d798c.png'
     },
-    userId: 0,
+    openid: 0,
     token: '',
   }
 })

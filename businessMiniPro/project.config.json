@@ -25,7 +25,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.10.4",
 	"appid": "wxeede76283930bf20",
-	"projectname": "%E6%89%8D%E6%93%8E%E7%A7%91%E6%8A%80",
+	"projectname": "%E9%94%80%E6%93%8E%E5%90%8D%E7%89%87%E7%AE%A1%E7%90%86",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
@@ -60,7 +60,7 @@
 					"id": 0,
 					"name": "pages/card/index/index",
 					"pathName": "pages/card/index/index",
-					"query": "userId=14",
+					"query": "openid=testopenid",
 					"scene": 1012
 				}
 			]

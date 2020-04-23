@@ -3,13 +3,13 @@
     "pages/card/index/index",
     "pages/card/collect/collect",
     "pages/card/record/record",
+    "pages/card/adduser/adduser",
     "pages/auth/login/login",
     "pages/index/index",
     "pages/ucenter/feedback/feedback",
     "pages/ucenter/index/index",
     "pages/pay/pay",
-    "pages/payResult/payResult",
-    "pages/customer/adduser/adduser"
+    "pages/payResult/payResult"
   ],
   "window": {
     "backgroundTextStyle": "dark",

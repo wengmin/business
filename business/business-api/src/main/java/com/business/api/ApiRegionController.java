@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "评论")
+@Api(tags = "区域")
 @RestController
 @RequestMapping("/api/region")
 public class ApiRegionController extends ApiBaseAction {

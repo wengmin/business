@@ -162,7 +162,7 @@ public class ApiBaseAction {
     	if(user == null) {
     		return 476L;
     	}else {
-    		return user.getUserId();
+    		return user.getUserId().longValue();
     	}
         
     }

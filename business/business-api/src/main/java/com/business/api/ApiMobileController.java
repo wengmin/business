@@ -159,14 +159,14 @@ public class ApiMobileController extends ApiBaseAction {
             if (!StringUtils.isNotBlank(mobile)) {
                 return toResponsFail("用户未绑定手机号");
             }
-            int s = userService.updateByOpenId(openid, mobile);
-            if (s == 0) {
-                return toResponsFail("绑定失败");
-            }
-            int s2 = userService.saveMail(staffId, mobile);
-            if (s2 == 0) {
-                return toResponsFail("绑定失败2");
-            }
+            //int s = userService.updateByOpenId(openid, mobile);
+            //if (s == 0) {
+            //    return toResponsFail("绑定失败");
+            //}
+            //int s2 = userService.saveMail(staffId, mobile);
+            //if (s2 == 0) {
+            //    return toResponsFail("绑定失败2");
+            //}
             return toResponsSuccess("谢谢支持");
         } catch (Exception e) {
             e.printStackTrace();

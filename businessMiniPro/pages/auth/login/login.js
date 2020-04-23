@@ -94,7 +94,7 @@ Page({
       }) 
     } else if (that.data.id == -3) {
       wx.navigateTo({
-        url: '/pages/customer/adduser/adduser'
+        url: '/pages/card/adduser/adduser'
       })
     } else{
       wx.navigateTo({

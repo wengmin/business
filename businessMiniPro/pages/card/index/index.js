@@ -6,7 +6,7 @@ const user = require('../../../services/user.js');
 const app = getApp()
 Page({
   data: {
-    userId: 0,
+    openid: "",
     cards: [],
     mycards: [],
     maskHidden: false,
@@ -21,27 +21,27 @@ Page({
         desc: '销擎名片管理',
         path: '/pages/card/index/index?userId=' + this.data.mycards.userId,
         imageUrl: this.data.mycards.photo,
-        success: function (res) {
+        success: function(res) {
           // 转发成功
           console.log('转发成功')
         },
-        fail: function (res) {
+        fail: function(res) {
           // 转发失败
           console.log('转发失败')
         }
       }
-    } else if (res.target.dataset.sharetype == "card"){
+    } else if (res.target.dataset.sharetype == "card") {
       console.log("share:" + this.data.cards.userId)
       return {
         title: this.data.cards.realname ? this.data.cards.realname + '的名片' : "销擎名片管理",
         desc: '销擎名片管理',
         path: '/pages/card/index/index?userId=' + this.data.cards.userId,
         imageUrl: this.data.cards.photo,
-        success: function (res) {
+        success: function(res) {
           // 转发成功
           console.log('转发成功')
         },
-        fail: function (res) {
+        fail: function(res) {
           // 转发失败
           console.log('转发失败')
         }
@@ -55,88 +55,65 @@ Page({
       }
     }
   },
-  getUserInfoByID: function() {
+  getCardInfoByToken: function() {
     let that = this;
-    util.request(api.CustomerUserInfo, {
-      id: that.data.userId
+    let token = wx.getStorageSync('token');
+    util.request(api.CardInfoByOpenID, {
+      openid: that.data.openid
     }).then(function(res) {
       if (res.errno === 0) {
+        if (!res.data.realname) {
+          that.setData({
+            showCreate: true,
+          });
+        }
         if (res.data.qrCode) {
           res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
         }
-        that.setData({
-          cards: res.data,
-        });
+        if (that.data.openid == token) {
+          that.setData({
+            openid: res.data.openid,
+            mycards: res.data,
+            cards: res.data,
+            isZiji: true
+          });
+        } else {
+          that.isCollect()
+          that.record()
+          that.setData({
+            cards: res.data
+          });
+        }
       }
     });
-  },
-  getUserInfoByToken: function() {
-    let that = this;
-    let token = wx.getStorageSync('token');
-    if (token) {
-      util.request(api.CustomerUserIs, {
-        openid: token
-      }).then(function(res) {
-        if (res.errno === 0) {
-          if (!res.data.realname) {
-            that.setData({
-              showCreate: true,
-            });
-          }
-          if (that.data.userId > 0) {
-            if (res.data.userId != that.data.userId) {
-              that.isCollect()
-              that.record()
-            }
-            that.setData({
-              mycards: res.data
-            });
-            that.getUserInfoByID();
-          } else {
-            if (res.data.qrCode) {
-              res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
-            }
-            that.setData({
-              userId: res.data.userId,
-              mycards: res.data,
-              cards: res.data,
-              isZiji: true
-            });
-          }
-        }
-      });
-    } else {
-      if (that.data.userId == 0) {
-        that.setData({
-          userId: 1,
-        })
-      }
-      that.getUserInfoByID();
-    }
   },
   onLoad: function(options) {
     let that = this;
     if (options.scene) {
       let scene = '?' + decodeURIComponent(options.scene);
       that.setData({
-        userId: util.getQueryString(scene, 'userId'),
+        openid: util.getQueryString(scene, 'openid'),
       })
-      app.globalData.userId = that.data.userId;
-    } else if (options.userId != "undefined" && typeof(options.userId) != "undefined") {
+      app.globalData.openid = that.data.openid;
+    } else if (options.openid != "undefined" && typeof(options.openid) != "undefined") {
       that.setData({
-        userId: options.userId,
+        openid: options.openid,
       })
-      app.globalData.userId = options.userId;
-    } else if (app.globalData.userId != "undefined" && typeof(app.globalData.userId) != "undefined" && app.globalData.userId != 0) {
+      app.globalData.openid = options.openid;
+    } else if (app.globalData.openid != "undefined" && typeof(app.globalData.openid) != "undefined" && app.globalData.openid != 0) {
       that.setData({
-        userId: app.globalData.userId,
+        openid: app.globalData.openid,
+      })
+    } else {
+      that.setData({
+        openid: 'oMn0a4xHKn3wzkU4qFHFz3bRtm2Y',
       })
     }
-    that.getUserInfoByToken();
+    that.getCardInfoByToken();
   },
   onShow: function() {
     // 页面显示
-    this.getUserInfoByToken();
+    this.getCardInfoByToken();
   },
   onReady: function() {
     // 页面渲染完成
@@ -197,7 +174,7 @@ Page({
         title: '生成中',
       })
       util.request(api.CreateCardQrCode, {
-        userId: that.data.cards.userId
+        openid: that.data.openid
       }).then(function(res) {
         if (res.errno === 0) {
           if (res.data) {
@@ -235,7 +212,7 @@ Page({
     } else {
       if (!that.data.isCollectBtn) {
         util.request(api.CardSaveCollect, {
-          touserid: that.data.userId
+          openid: that.data.openid
         }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {
           if (res.errno === 0) {
             if (that.data.isCollectBtn) {
@@ -267,7 +244,7 @@ Page({
   isCollect: function() {
     let that = this;
     util.request(api.CardIsCollect, {
-      touserid: that.data.userId
+      openid: that.data.openid
     }).then(function(res) {
       if (res.errno === 0) {
         if (res.data > 0) {
@@ -283,14 +260,14 @@ Page({
     let token = wx.getStorageSync('token');
     if (token) {
       util.request(api.CardSaveRecord, {
-        touserid: that.data.userId
+        openid: that.data.openid
       }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {});
     }
   },
   backMeCard: function() {
     this.setData({
-      userId: 0
+      openid: ''
     })
-    this.getUserInfoByToken()
+    this.getCardInfoByToken()
   }
 })

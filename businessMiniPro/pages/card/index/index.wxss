@@ -186,45 +186,6 @@
   text-align: right;
 }
 
-.navbody {
-  width: 100%;
-  margin-top: 20rpx;
-  display: inline-block;
-  position: relative;
-}
-
-.navbody button {
-  text-align: center;
-  font-size: 14px;
-  border-radius: 10rpx;
-  padding: 0;
-}
-
-.navbody .navleft {
-  float: left;
-  width: 49%;
-  border: solid 2rpx #52a936;
-  background-color: #fff;
-  color: #52a936;
-}
-
-.navbody .navright {
-  float: right;
-  width: 49%;
-  background-color: #52a936;
-  border: solid 2rpx #52a936;
-  color: #fff;
-}
-
-.navbody .collectbtn {
-  float: right;
-  position: absolute;
-  right: 0;
-  width: 82rpx;
-  height: 76rpx;
-  color: #fff;
-}
-
 .colleague {
   white-space: nowrap;
   overflow-x: auto;
@@ -250,12 +211,19 @@
 }
 
 .colleague .imgbtn {
-  padding: 10rpx;
+  padding: 0 10rpx;
+  text-align: center;
+  line-height: 100rpx;
 }
 
 .colleague .imgbtn image {
   width: 80rpx;
-  height: 80rpx;
+  height: 50rpx;
+}
+
+.colleague .imgbtn text {
+  font-size: 25rpx;
+  display: block;
 }
 
 .colleague .btn:last-child {
@@ -574,8 +542,6 @@ button[class="closeQrCode"]::after {
 
 .profile .rightinfo .desc {
   line-height: 30rpx;
-  padding-bottom: 20rpx;
-  border-bottom: solid 2rpx #c6c6c6;
 }
 
 .profile .rightinfo .sharebtn {
@@ -604,6 +570,16 @@ button[class="closeQrCode"]::after {
   border: solid 2rpx #52a936;
   background-color: #52a936;
   color: #fff;
+}
+
+.profile .rightinfo .alink {
+  display:initial;
+  text-align: center;
+  font-size: 28rpx;
+  color: #52a936;
+  background-color: #fff;
+  padding: 0;
+  line-height: normal;
 }
 
 .backme {

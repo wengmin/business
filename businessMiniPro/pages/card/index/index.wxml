@@ -39,17 +39,18 @@
         </view>
       </view>
     </view> -->
-    <view class="navbody">
-      <button class="navleft" open-type="share" data-sharetype="card">
-        转发名片
-      </button>
-      <button class="navright" bindtap="addPhone">
-        存到手机通讯录
-      </button>
-    </view>
     <view class="colleague">
       <button class="imgbtn" bindtap='showQrCode'>
-        <image src="/static/images/qrcode.png"></image>
+        <text>名片码</text>
+      </button>
+      <button class="imgbtn" open-type="share" data-sharetype="card">
+        <text>转发</text>
+      </button>
+      <button class="imgbtn" bindtap="addPhone">
+        <text>存通讯录</text>
+      </button>
+      <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji}}">
+        <text>收藏</text>
       </button>
       <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
         <view class="title">
@@ -89,9 +90,11 @@
       <view class="name">{{cards.realname}}</view>
       <view class="k">
         <view class="desc">{{cards.profile?cards.profile:"欢迎来到我的名片"}}</view>
-        <button class="sharebtn" wx:if="{{!showCreate}}" open-type="share" data-sharetype="mycard">请赐回您的名片</button>
-        <navigator class="sharebtn" wx:if="{{showCreate}}" url="/pages/customer/adduser/adduser?type=1">请赐回您的名片</navigator>
-        <button class="collectbtn" wx:if="{{!isZiji}}" bindtap="collect">请惠存我的名片</button>
+      </view>
+      <view class="k">
+        <view class="desc">在您方便的时候，也请给我一张您的名片，谢谢！
+          <button class="alink" wx:if="{{!isZiji}}" bindtap="collect">（点击这里可以回递名片）</button>
+        </view>
       </view>
     </view>
   </view>
@@ -101,13 +104,13 @@
   <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
 </view>
 <!-- <block wx:if="{{showCreate}}">
-  <navigator class="bottomnav" url="/pages/customer/adduser/adduser">免费创建名片</navigator>
+  <navigator class="bottomnav" url="/pages/card/adduser/adduser">免费创建名片</navigator>
 </block>
 <block wx:else>
-  <navigator class="bottomnav" url="/pages/customer/adduser/adduser">编辑我的名片</navigator>
+  <navigator class="bottomnav" url="/pages/card/adduser/adduser">编辑我的名片</navigator>
 </block>
 <button class="backme" wx:if="{{!isZiji}}" bindtap="backMeCard">返回我的名片</button> -->
 <view class="bottomtext">
-  <navigator hover-class="none" url="/pages/customer/adduser/adduser">免费创建名片</navigator>
+  <navigator hover-class="none" url="/pages/card/adduser/adduser">免费创建名片</navigator>
   <view>销擎，您的销售增长引擎</view>
 </view>

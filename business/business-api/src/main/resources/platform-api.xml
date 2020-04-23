@@ -10,7 +10,7 @@
     <mvc:annotation-driven>
         <mvc:argument-resolvers>
             <bean class="com.business.resolver.LoginUserHandlerMethodArgumentResolver">
-                <property name="userService" ref="apiCustomerUserService"></property>
+                <property name="userService" ref="apiUserService"></property>
             </bean>
             <bean class="com.business.resolver.AppLoginUserHandlerMethodArgumentResolver">
             </bean>
@@ -25,7 +25,7 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <bean id="apiCustomerUserService" class="com.business.service.ApiCustomerUserService"/>
+    <bean id="apiUserService" class="com.business.service.ApiUserService"/>
 
     <bean id="authorizationInterceptor" class="com.business.interceptor.AuthorizationInterceptor"/>
 </beans>
