@@ -16,9 +16,19 @@ public class CardRecordVo implements Serializable {
     private Integer recordId;
     private Integer userId;
     private String userName;
+
+    private String openid;
     private Integer touserId;
     private String touserAvatar;
     private String touserName;
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
     public String getTouserAvatar() {
         return touserAvatar;

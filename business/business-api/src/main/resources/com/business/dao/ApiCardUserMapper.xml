@@ -9,6 +9,7 @@
         <result property="companyName" column="companyName"/>
         <result property="avatar" column="avatar"/>
         <result property="mobile" column="mobile"/>
+        <result property="openid" column="openid"/>
         <result property="companyId" column="company_id"/>
         <result property="realname" column="realname"/>
         <result property="photo" column="photo"/>
@@ -32,6 +33,7 @@
 	    (select name from customer_company where  customer_company.company_id=card_user.company_id) as companyName,
 	    (select avatar from customer_user where  customer_user.user_id=card_user.user_id) as avatar,
 	    (select mobile from customer_user where  customer_user.user_id=card_user.user_id) as mobile,
+	    (select openid from customer_user where  customer_user.user_id=card_user.user_id) as openid,
 	    `realname`,
 	    `photo`,
 	    `position`,

@@ -8,14 +8,13 @@ import com.business.util.ApiBaseAction;
 import com.business.util.RedisUtils;
 import com.business.util.SmsUtils;
 import com.business.utils.CharUtil;
+import com.business.validator.Assert;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +34,20 @@ public class ApiUserController extends ApiBaseAction {
     private SmsUtils smsUtils;
     @Value("${happyMall.sms.regTemplate}")
     private String regTemplate;
+
+    /**
+     * 根据openid获取用户信息
+     */
+    @ApiOperation(value = "根据openid获取用户信息")
+    @GetMapping("detailByOpenId")
+    public Object detailByOpenId(@RequestParam("openid") String openid) {
+        Assert.isBlank(openid, "参数错误!");
+        UserVo entity = userService.queryByOpenId(openid);
+        if (entity == null) {
+            return toResponsFail("未注册用户");
+        }
+        return toResponsSuccess(entity);
+    }
 
     /**
      * 发送短信

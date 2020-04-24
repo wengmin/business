@@ -20,6 +20,7 @@ public class CardUserVo implements Serializable {
     //
     private Integer companyId;
     private String companyName;
+    private String openid;
     //
     private String avatar;
     //
@@ -50,6 +51,14 @@ public class CardUserVo implements Serializable {
     private String qrCode;
     //
     private Date createTime;
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
     public void setCardId(Integer cardId) {
         this.cardId = cardId;

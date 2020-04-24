@@ -20,7 +20,7 @@ Component({
   methods: {
     // 关闭所有页面回到首页。
     usercenter: function() {
-      wx.navigateTo({
+      wx.redirectTo({
         url: this.data.index
       })
     },

@@ -186,6 +186,37 @@
   text-align: right;
 }
 
+.navbody {
+  width: 100%;
+  margin-top: 20rpx;
+  display: inline-block;
+  position: relative;
+}
+
+.navbody button {
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10rpx;
+  padding: 0;
+}
+
+.navbody .navleft {
+  float: left;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.navbody .navright {
+  float: right;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+
 .colleague {
   white-space: nowrap;
   overflow-x: auto;
@@ -211,14 +242,13 @@
 }
 
 .colleague .imgbtn {
-  padding: 0 10rpx;
+  padding: 10rpx;
   text-align: center;
-  line-height: 100rpx;
 }
 
 .colleague .imgbtn image {
   width: 80rpx;
-  height: 50rpx;
+  height: 80rpx;
 }
 
 .colleague .imgbtn text {
@@ -456,15 +486,42 @@
   z-index: 10;
 }
 
+.qrcodebody{
+  width: 600rpx;
+  height: 1000rpx;
+  position: relative;
+  top: 15%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: #fff;
+}
+
 .qrcodeImg {
   width: 560rpx;
   height: 560rpx;
   position: absolute;
-  top: 20%;
+  top: 5%;
   left: 0;
   right: 0;
   margin: 0 auto;
   z-index: 10;
+}
+
+.savaQrCode {
+  display: block;
+  width: 80%;
+  height: 80rpx;
+  padding: 0;
+  line-height: 80rpx;
+  text-align: center;
+  position: absolute;
+  bottom: 150rpx;
+  left: 10%;
+  background: #52a936;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 44rpx;
 }
 
 .closeQrCode {
@@ -474,11 +531,11 @@
   padding: 0;
   line-height: 80rpx;
   text-align: center;
-  position: fixed;
+  position: absolute;
   bottom: 50rpx;
   left: 10%;
-  background: #ffe200;
-  color: #333;
+  background: #888887;
+  color: #fff;
   font-size: 32rpx;
   border-radius: 44rpx;
 }

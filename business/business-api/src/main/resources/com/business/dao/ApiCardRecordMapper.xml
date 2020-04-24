@@ -17,9 +17,10 @@
 
     <select id="queryList" resultType="com.business.entity.CardRecordVo">
         select user_id,touser_id,create_time,
-        (select name from customer_company where customer_company.company_id=(select company_id from customer_user where customer_user.user_id=card_record.touser_id)) as touserComName,
-        (select avatar from customer_user where customer_user.user_id=card_record.touser_id) as touserAvatar,
-        (select realname from customer_user where customer_user.user_id=card_record.touser_id) as touserName
+        (select name from customer_company where customer_company.company_id=(select company_id from card_user where card_user.user_id=card_record.touser_id)) as touserComName,
+        (select openid from customer_user where customer_user.user_id=card_record.touser_id) as openid,
+        (select photo from card_user where card_user.user_id=card_record.touser_id) as touserAvatar,
+        (select realname from card_user where card_user.user_id=card_record.touser_id) as touserName
         from card_record
         WHERE user_id=#{userId}
         <choose>

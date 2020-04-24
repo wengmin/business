@@ -151,8 +151,8 @@ Page({
               delta: 1
             });
           } else {
-            wx.switchTab({
-              url: '/pages/card/index/index?userId=0'
+            wx.redirectTo({
+              url: '/pages/card/index/index?openid='
             });
           }
         }
@@ -160,8 +160,8 @@ Page({
     });
   },
   handlerGohomeClick() {
-    wx.switchTab({
-      url: '/pages/card/index/index?userId=0'
+    wx.redirectTo({
+      url: '/pages/card/index/index?openid='
     });
   }
 })

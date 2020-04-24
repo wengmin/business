@@ -1,5 +1,5 @@
 <view class="container">
-  <navigator url="/pages/card/index/index?userId={{item.touserId}}" class="itembody" wx:for="{{cardList}}" wx:key="*this">
+  <navigator url="/pages/card/index/index?openid={{item.openid}}" open-type="redirect" class="itembody" wx:for="{{cardList}}" wx:key="*this">
     <image src='{{cards.touserAvatar?cards.touserAvatar:"/static/images/photobg.jpg"}}' class="avaimg"></image>
     <view class="info">
       <view class="name">{{item.touserName}}</view>

@@ -139,63 +139,66 @@ Component({
     },
     // 返回事件
     back: function () {
-      //this.triggerEvent('back', { delta: this.data.delta });
-      var that = this
-      // 获取返回弹窗页面列表
-      var returnWindow = that.data.returnWindow || [];
-      // 判断当前栈的层数
-      let currentPages = getCurrentPages();
-      const length = currentPages.length;
+      wx.redirectTo({
+        url: "/pages/card/index/index?openid="
+      })
+      // //this.triggerEvent('back', { delta: this.data.delta });
+      // var that = this
+      // // 获取返回弹窗页面列表
+      // var returnWindow = that.data.returnWindow || [];
+      // // 判断当前栈的层数
+      // let currentPages = getCurrentPages();
+      // const length = currentPages.length;
 
-      if (returnWindow.length <= 0) {
-        if (length > 1) {
-          wx.navigateBack({
-            delta: 1
-          })
-        } else {
-          wx.navigateTo({
-            url: "/pages/card/index/index?userId=0"
-          })
-        }
-      } else {
-        // 获取当前页面的地址
-        var currentPage = currentPages[currentPages.length - 1].route;
-        let i = returnWindow.indexOf(currentPage);
-        if (i == -1) {
-          if (length > 1) {
-            wx.navigateBack({
-              delta: 1
-            })
-          } else {
-            wx.navigateTo({
-              url: "/pages/card/index/index?userId=0"
-            })
-          }
-        } else {
-          wx.showModal({
-            title: '温馨提示',
-            content: that.data.returnWindowContent,
-            success: function (res) {
-              if (res.confirm) {
-                if (length > 1) {
-                  wx.navigateBack({
-                    delta: 1
-                  })
-                } else {
-                  wx.navigateTo({
-                    url: "/pages/card/index/index?userId=0"
-                  })
-                }
-              }
-            }
-          })
-        }
-      }
+      // if (returnWindow.length <= 0) {
+      //   if (length > 1) {
+      //     wx.navigateBack({
+      //       delta: 1
+      //     })
+      //   } else {
+      //     wx.navigateTo({
+      //       url: "/pages/card/index/index?userId=0"
+      //     })
+      //   }
+      // } else {
+      //   // 获取当前页面的地址
+      //   var currentPage = currentPages[currentPages.length - 1].route;
+      //   let i = returnWindow.indexOf(currentPage);
+      //   if (i == -1) {
+      //     if (length > 1) {
+      //       wx.navigateBack({
+      //         delta: 1
+      //       })
+      //     } else {
+      //       wx.navigateTo({
+      //         url: "/pages/card/index/index?userId=0"
+      //       })
+      //     }
+      //   } else {
+      //     wx.showModal({
+      //       title: '温馨提示',
+      //       content: that.data.returnWindowContent,
+      //       success: function (res) {
+      //         if (res.confirm) {
+      //           if (length > 1) {
+      //             wx.navigateBack({
+      //               delta: 1
+      //             })
+      //           } else {
+      //             wx.navigateTo({
+      //               url: "/pages/card/index/index?userId=0"
+      //             })
+      //           }
+      //         }
+      //       }
+      //     })
+      //   }
+      // }
     },
     home: function () {
       //this.triggerEvent('home', {});
-      wx.navigateTo({
-        url: "/pages/card/index/index?userId=0"
+      wx.redirectTo({
+        url: "/pages/card/index/index?openid="
       })
     },
     search: function () {

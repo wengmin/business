@@ -5,7 +5,7 @@
       <cover-view class="text">我的名片夹</cover-view>
     </cover-view>
   </cover-view>
-  <cover-view class="centerTitle" style="width: calc(100% - {{centerTitle}}px);height:{{leftMenuHeight}}px;line-height:{{leftMenuHeight}}px;top:{{top}}px;">
+  <cover-view class="centerTitle fontover" style="width: calc(100% - 500rpx);height:{{leftMenuHeight}}px;line-height:{{leftMenuHeight}}px;top:{{top}}px;">
     {{title==""?"销擎名片管理":title}}
   </cover-view>
 </cover-view>

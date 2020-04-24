@@ -3,54 +3,33 @@
   <view class="cardsbg">
     <view class="cards_zyz">
       <view class="left">
-        <image src='{{!cards.photo ? "/static/images/photobg.jpg" : cards.photo}}' mode="aspectFill"></image>
+        <image src='{{!cards.photo ? "/static/images/photobg.jpg" : cards.photo}}'></image>
       </view>
       <view class="right">
-        <view class="comname">{{cards.companyName}}</view>
+        <view class="comname fontover">{{cards.companyName}}</view>
         <view class="infobg">
-          <view class="name">{{cards.realname}}</view>
-          <view class="position">{{cards.position}}</view>
+          <view class="name fontover">{{cards.realname}}</view>
+          <view class="position fontover">{{cards.position}}</view>
         </view>
         <view class="iconitems mobile" wx:if="{{cards.mobile}}">{{cards.mobile}} </view>
         <view class="iconitems email" wx:if="{{cards.email}}">{{cards.email}}</view>
-        <view class="iconitems address" wx:if="{{cards.address}}">{{cards.address}}</view>
+        <view class="iconitems address" wx:if="{{cards.address}}">{{cards.province+cards.city+cards.county+cards.address}}</view>
       </view>
     </view>
-    <!-- <view class="cards_zy">
-      <view class="left">
-        <image src='{{cards.avatar?cards.avatar:"/static/images/photobg.jpg"}}' mode="aspectFill"></image>
-      </view>
-      <view class="right">
-        <view class="comname">{{cards.companyName}}</view>
-        <view class="infobg">
-          <view class="name">{{cards.realname}}</view>
-          <view class="position">{{cards.position}}</view>
-        </view>
-        <view class="bg">
-          <view class="items" wx:if="{{cards.mobile}}">{{cards.mobile}}
-            <image src="/static/images/icon/phonecall.png"></image>
-          </view>
-          <view class="items" wx:if="{{cards.email}}">{{cards.email}}
-            <image src="/static/images/icon/email.png"></image>
-          </view>
-          <view class="items" wx:if="{{cards.address}}">{{cards.address}}
-            <image src="/static/images/icon/region.png"></image>
-          </view>
-        </view>
-      </view>
-    </view> -->
+    <view class="navbody">
+      <button class="navleft" open-type="share" data-sharetype="card">
+        转发名片
+      </button>
+      <button class="navright" bindtap="addPhone">
+        存到手机通讯录
+      </button>
+    </view>
     <view class="colleague">
       <button class="imgbtn" bindtap='showQrCode'>
-        <text>名片码</text>
-      </button>
-      <button class="imgbtn" open-type="share" data-sharetype="card">
-        <text>转发</text>
-      </button>
-      <button class="imgbtn" bindtap="addPhone">
-        <text>存通讯录</text>
+        <image src="/static/images/qrcode.png"></image>
       </button>
       <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji}}">
-        <text>收藏</text>
+        <image src='{{isCollectBtn?"/static/images/shou_yes.png":"/static/images/shou_no.png"}}'></image>
       </button>
       <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
         <view class="title">
@@ -89,19 +68,23 @@
     <view class="rightinfo">
       <view class="name">{{cards.realname}}</view>
       <view class="k">
-        <view class="desc">{{cards.profile?cards.profile:"欢迎来到我的名片"}}</view>
+        <rich-text class="desc" nodes='{{cards.profile?cards.profile:" 欢迎来到我的名片 "}}'></rich-text>
       </view>
       <view class="k">
         <view class="desc">在您方便的时候，也请给我一张您的名片，谢谢！
-          <button class="alink" wx:if="{{!isZiji}}" bindtap="collect">（点击这里可以回递名片）</button>
+          <button class="alink" wx:if="{{!showCreate}}" open-type="share" data-sharetype="mycard">（点击这里可以回递名片）</button>
+          <navigator class="alink" wx:if="{{showCreate}}" url="/pages/card/adduser/adduser?name={{cards.realname}}&ava={{cards.avatar}}">（点击这里可以回递名片）</navigator>
         </view>
       </view>
     </view>
   </view>
 </view>
 <view class='imagePathBox' hidden="{{maskHidden == false}}">
-  <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
-  <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
+  <view class="qrcodebody">
+    <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
+    <button class='savaQrCode' bindtap='saveQRCode'>保存到手机</button>
+    <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
+  </view>
 </view>
 <!-- <block wx:if="{{showCreate}}">
   <navigator class="bottomnav" url="/pages/card/adduser/adduser">免费创建名片</navigator>

@@ -85,20 +85,20 @@ Page({
   setFid: function (){
     let that = this
     if (that.data.id == -1) {
-      wx.navigateTo({
-        url: '/pages/card/index/index?userId=0'
+      wx.redirectTo({
+        url: '/pages/card/index/index?openid='
       }) 
     } else if (that.data.id == -2){
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/ucenter/index/index'
       }) 
     } else if (that.data.id == -3) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/card/adduser/adduser'
       })
     } else{
-      wx.navigateTo({
-        url: '../../goods/goods?id=' + that.data.id+'&type='+that.data.type
+      wx.redirectTo({
+        url: '/pages/card/index/index?openid='
       })
     }
     wx.hideLoading()

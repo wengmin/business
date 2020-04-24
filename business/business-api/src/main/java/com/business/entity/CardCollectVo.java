@@ -17,12 +17,22 @@ public class CardCollectVo implements Serializable {
     private Integer userId;
     private String userName;
 
+    private String openid;
+
     private String touserAvatar;
     private Integer touserId;
     private String touserName;
     private String touserComName;
 
     private Date createTime;
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
     public String getTouserAvatar() {
         return touserAvatar;

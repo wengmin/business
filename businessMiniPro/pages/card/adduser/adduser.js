@@ -18,20 +18,22 @@ Page({
       profile: '',
       telephone: ''
     },
-    fromIndex: 0,
-    fromOne: true,
+    tip: true,
+    lastpage: false,
+    fromOne: false,
     fromTwo: false,
     fromThree: false,
-    type: 0
+    rcardname: '',
+    rcardava: ''
   },
-  onShareAppMessage: function (res) {
-  },
+  onShareAppMessage: function(res) {},
   onLoad: function(options) {
     var that = this
-    if (options.type == "1") {
+    if (options.name) {
       that.setData({
-        type: 1
-      })
+        rcardname: options.name,
+        rcardava: options.ava
+      });
     }
     let token = wx.getStorageSync('token');
     if (!token) {
@@ -118,6 +120,12 @@ Page({
       "user.county": e.detail.county_name
     });
   },
+  tipbtn() {
+    this.setData({
+      fromOne: true,
+      tip: false
+    })
+  },
   nextOne() {
     if (this.data.user.companyName == '') {
       util.showErrorToast('请输入公司名称');
@@ -198,16 +206,22 @@ Page({
       telephone: user.telephone,
     }, 'POST').then(function(res) {
       if (res.errno === 0) {
-        wx.showToast({
-          title: '编辑成功'
-        });
-        wx.navigateTo({
-          url: '/pages/card/index/index?openid=',
+        // wx.showToast({
+        //   title: '编辑成功'
+        // });
+        that.setData({
+          lastpage: true,
+          fromThree: false
         })
       } else {
         util.showErrorToast(res.errmsg);
       }
     });
+  },
+  lastpageBtn() {
+    wx.redirectTo({
+      url: '/pages/card/index/index?openid=',
+    })
   },
   //点击图片选择手机相册或者电脑本地图片
   changePhoto: function(e) {
@@ -232,7 +246,6 @@ Page({
           },
           formData: {
             //和服务器约定的token, 一般也可以放在header中
-            //'session_token': wx.getStorageSync('session_token')
             'X-Nideshop-Token': wx.getStorageSync('token')
           },
           success: function(res) {
@@ -244,8 +257,6 @@ Page({
                 icon: 'success',
                 duration: 2500
               })
-              console.log("tempFilePaths[0]:" + tempFilePaths[0])
-              console.log("tempFilePaths[0]:" + datas.data)
               _this.setData({
                 "user.photo": datas.data
               });

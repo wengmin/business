@@ -76,13 +76,21 @@ button::after {
   color: #9c9c9c;
   font-size: 24rpx;
 }
-.bottomtext navigator{
+
+.bottomtext navigator {
   color: rgb(6, 178, 247);
   display: block;
   text-align: center;
   font-size: 24rpx;
 }
-.bottomtext view{
+
+.bottomtext view {
   color: #9c9c9c;
   font-size: 24rpx;
+}
+
+.fontover {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

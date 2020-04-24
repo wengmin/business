@@ -54,6 +54,10 @@ public class ApiCardController extends ApiBaseAction {
         if (entity == null) {
             return toResponsFail("未注册名片");
         }
+        entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
+        entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
+        entity.setWechat(!StringUtils.isNullOrEmpty(entity.getWechat()) ? Base64.decode(entity.getWechat()) : "");
+        entity.setEmail(!StringUtils.isNullOrEmpty(entity.getEmail()) ? Base64.decode(entity.getEmail()) : "");
         return toResponsSuccess(entity);
     }
 
@@ -142,10 +146,11 @@ public class ApiCardController extends ApiBaseAction {
             return toResponsFail("参数错误");
         }
         String accessToken = tokenService.getAccessToken();
-        String imgStr = QRCodeUtils.getCardQrCode(accessToken, openid);
+        UserVo user = userService.queryByOpenId(openid);
+        String imgStr = QRCodeUtils.getCardQrCode(accessToken, user.getUserId().toString());
         if (!StringUtils.isNullOrEmpty(imgStr)) {
             CardUserVo uVo = new CardUserVo();
-            uVo.setUserId(Integer.parseInt(openid));
+            uVo.setCardId(cardUserService.queryByUserId(user.getUserId()).getCardId());
             uVo.setQrCode(imgStr);
             cardUserService.update(uVo);
         }
