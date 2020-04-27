@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/card/index/index",
+    "pages/service/wifi/wifi",
     "pages/card/collect/collect",
     "pages/card/record/record",
     "pages/card/adduser/adduser",
@@ -8,8 +9,8 @@
     "pages/index/index",
     "pages/ucenter/feedback/feedback",
     "pages/ucenter/index/index",
-    "pages/pay/pay",
-    "pages/payResult/payResult"
+    "pages/pay/pay/pay",
+    "pages/pay/result/result"
   ],
   "window": {
     "backgroundTextStyle": "dark",

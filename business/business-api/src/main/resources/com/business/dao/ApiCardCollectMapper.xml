@@ -41,7 +41,7 @@
         WHERE user_id=#{userId}
     </select>
 
-    <insert id="save" parameterType="com.business.entity.CardCollectVo" useGeneratedKeys="true" keyProperty="companyId">
+    <insert id="save" parameterType="com.business.entity.CardCollectVo" useGeneratedKeys="true" keyProperty="collectId">
 		insert into card_collect(
         `user_id`,
         `touser_id`,

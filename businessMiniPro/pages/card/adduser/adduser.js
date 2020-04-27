@@ -18,6 +18,7 @@ Page({
       profile: '',
       telephone: ''
     },
+    isFirst: true,
     tip: true,
     lastpage: false,
     fromOne: false,
@@ -57,6 +58,13 @@ Page({
             that.setData({
               user: res.data
             });
+          }
+          if (res.data.realname) {
+            that.setData({
+              isFirst: false,
+              tip: false,
+              fromOne: true
+            })
           }
           wx.hideLoading();
         }
@@ -181,6 +189,17 @@ Page({
       util.showErrorToast('请输入正确手机号码');
       return false;
     }
+    wx.showLoading({
+      title: '提交中...',
+      mask: true,
+      success: function() {
+
+      }
+    });
+    // wx.showLoading({
+    //   title: '提交中...',
+    //   mask: true,
+    // });
     // if (user.city == 0) {
     //   util.showErrorToast('请输入省市区');
     //   return false;
@@ -206,21 +225,32 @@ Page({
       telephone: user.telephone,
     }, 'POST').then(function(res) {
       if (res.errno === 0) {
+        //wx.hideLoading();
         // wx.showToast({
         //   title: '编辑成功'
         // });
-        that.setData({
-          lastpage: true,
-          fromThree: false
-        })
+        if (that.data.isFirst) {
+          that.setData({
+            lastpage: true,
+            fromThree: false
+          })
+        } else {
+          wx.redirectTo({
+            url: '/pages/card/index/index?param=',
+          })
+        }
       } else {
         util.showErrorToast(res.errmsg);
       }
-    });
+    })
+    // .catch((err) => {
+    //   util.showErrorToast("api地址错误");
+    //   wx.hideLoading();
+    // });
   },
   lastpageBtn() {
     wx.redirectTo({
-      url: '/pages/card/index/index?openid=',
+      url: '/pages/card/index/index?param=',
     })
   },
   //点击图片选择手机相册或者电脑本地图片

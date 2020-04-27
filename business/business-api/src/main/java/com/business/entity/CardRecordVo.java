@@ -13,6 +13,15 @@ import java.util.Date;
 public class CardRecordVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String param;
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
     private Integer recordId;
     private Integer userId;
     private String userName;

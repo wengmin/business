@@ -1,6 +1,6 @@
 var app = getApp();
-var util = require('../../utils/util.js');
-var api = require('../../config/api.js');
+var util = require('../../../utils/util.js');
+var api = require('../../../config/api.js');
 
 Page({
   data: {
@@ -43,12 +43,12 @@ Page({
           'paySign': payParam.paySign,
           'success': function (res) {
             wx.redirectTo({
-              url: '/pages/payResult/payResult?status=true&orderId=' + that.data.orderId,
+              url: '/pages/pay/result/result?status=true&orderId=' + that.data.orderId,
             })
           },
           'fail': function (res) {
             wx.redirectTo({
-              url: '/pages/payResult/payResult?status=false&orderId=' + that.data.orderId,
+              url: '/pages/pay/result/result?status=false&orderId=' + that.data.orderId,
             })
           }
         })

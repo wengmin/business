@@ -291,7 +291,7 @@ a-section .cont {
 }
 
 .a-popular .b .item {
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #F5F5F5;
   margin: 0 20rpx;
   height: 264rpx;
   width: 710rpx;
@@ -662,7 +662,7 @@ a-section .cont {
 .cusinfo {
   height: 100rpx;
   line-height: 100rpx;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #F5F5F5;
 }
 
 .cusinfo .li {

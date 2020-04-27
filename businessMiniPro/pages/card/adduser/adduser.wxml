@@ -4,7 +4,7 @@
     <view class="profile">
       <image src='{{rcardava}}' class="leftimg"></image>
       <view class="rightinfo">
-        <view class="name">李诚兴</view>
+        <view class="name">{{rcardname}}</view>
         <view class="k">
           <view class="desc">您还未创建名片。</view>
           <view class="desc">麻烦您花一分钟时间，快速创建您的名片，然后再转发您的名片给我，谢谢！</view>
@@ -51,7 +51,7 @@
   <view class="add-form">
     <view class="form-item" bindtap="changePhoto">
       <view style="width:100%;text-align:center;clear:both">
-        <image class="img" src='{{user.photo?user.photo:"/static/images/photobg.jpg"}}'></image>
+        <image class="img" src='{{user.photo?user.photo:"/static/images/card/w_card.jpg"}}' mode="aspectFill"></image>
       </view>
       <view class="imgtext" wx:if="{{!user.photo}}">点击上传照片</view>
       <view class="imgtext" wx:if="{{user.photo}}">更换头像</view>
@@ -118,7 +118,7 @@
     </view>
     <view class="form-item">
       <view class="ttext">电子邮箱</view>
-      <input class="inputright" bindinput="bindinputValue" data-type="email" maxlength="12" value="{{user.email}}" placeholder="请输入电子邮箱" />
+      <input class="inputright" bindinput="bindinputValue" data-type="email" maxlength="20" value="{{user.email}}" placeholder="请输入电子邮箱" />
     </view>
     <view class="form-item">
       <view class="ttext">微信号</view>

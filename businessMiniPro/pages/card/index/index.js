@@ -6,121 +6,57 @@ const user = require('../../../services/user.js');
 const app = getApp()
 Page({
   data: {
-    openid: "",
+    param: "",
+    loginOpenid: "",
     cards: [],
     mycards: [],
     maskHidden: false,
-    showCreate: false,
+    isNewUser: false,
     isZiji: false,
-    isCollectBtn: false
-  },
-  onShareAppMessage: function(res) {
-    if (res.target.dataset.sharetype == "mycard") {
-      return {
-        title: this.data.mycards.realname ? this.data.mycards.realname + '的名片' : "销擎名片管理",
-        desc: '销擎名片管理',
-        path: '/pages/card/index/index?userId=' + this.data.mycards.userId,
-        imageUrl: this.data.mycards.photo ? this.data.mycards.photo : '/static/images/photobg.jpg',
-        success: function(res) {
-          // 转发成功
-          console.log('转发成功')
-        },
-        fail: function(res) {
-          // 转发失败
-          console.log('转发失败')
-        }
-      }
-    } else if (res.target.dataset.sharetype == "card") {
-      console.log("share:" + this.data.cards.userId)
-      return {
-        title: this.data.cards.realname ? this.data.cards.realname + '的名片' : "销擎名片管理",
-        desc: '销擎名片管理',
-        path: '/pages/card/index/index?userId=' + this.data.cards.userId,
-      }
-    } else {
-      console.log("share:" + this.data.cards.userId)
-      return {
-        title: this.data.cards.realname ? this.data.cards.realname + '的名片' : "销擎名片管理",
-        desc: '销擎名片管理',
-        path: '/pages/card/index/index?userId=' + this.data.cards.userId,
-      }
-    }
-  },
-  getOwnCardInfo: function() {
-    let that = this;
-    let token = wx.getStorageSync('token');
-    if (token) {
-      util.request(api.CardInfoByOpenID, {
-        openid: token
-      }).then(function(res) {
-        if (res.errno === 0) {
-          if (!res.data.realname) {
-            that.setData({
-              showCreate: true,
-            });
-          }
-          if (res.data.qrCode) {
-            res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
-          }
-          that.setData({
-            mycards: res.data,
-          });
-          if (!that.data.openid || that.data.openid == token) {
-            that.setData({
-              openid: res.data.openid,
-              cards: res.data,
-              isZiji: true
-            });
-          } else {
-            that.getCardInfo()
-          }
-        }
-      });
-    } else {
-      that.getCardInfo()
-    }
-  },
-  getCardInfo: function() {
-    let that = this;
-    if (!that.data.openid) {
-      that.setData({
-        openid: 'oMn0a4xHKn3wzkU4qFHFz3bRtm2Y',
-      })
-    }
-    if (that.data.openid) {
-      util.request(api.CardInfoByOpenID, {
-        openid: that.data.openid
-      }).then(function(res) {
-        if (res.errno === 0) {
-          that.isCollect()
-          that.record()
-          if (res.data.qrCode) {
-            res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
-          }
-          that.setData({
-            cards: res.data
-          });
-        }
-      });
-    }
+    isCollectBtn: false,
+    shareUserId: 0,
   },
   onLoad: function(options) {
+    wx.stopPullDownRefresh();
+    wx.showLoading({
+      title: '获取中0%',
+    });
     let that = this;
-    if (options.scene) {
-      let scene = '?' + decodeURIComponent(options.scene);
-      that.setData({
-        openid: util.getQueryString(scene, 'openid'),
-      })
-      app.globalData.openid = that.data.openid;
-    } else if (options.openid != "undefined" && typeof(options.openid) != "undefined") {
-      that.setData({
-        openid: options.openid,
-      })
-      app.globalData.openid = options.openid;
-    } else if (app.globalData.openid != "undefined" && typeof(app.globalData.openid) != "undefined" && app.globalData.openid != '') {
-      that.setData({
-        openid: app.globalData.openid,
-      })
+    that.setData({
+      loginOpenid: wx.getStorageSync('token')
+    });
+    wx.showLoading({
+      title: '获取中10%',
+    });
+    if (typeof(options) != "undefined") {
+      if (options.scene) {
+        wx.showLoading({
+          title: '获取中15%',
+        });
+        let scene = '?' + decodeURIComponent(options.scene);
+        that.setData({
+          param: util.getQueryString(scene, 'param'),
+        })
+        app.globalData.param = that.data.param;
+        wx.showLoading({
+          title: '获取中20%',
+        });
+      } else if (options.param != "undefined" && typeof(options.param) != "undefined") {
+        wx.showLoading({
+          title: '获取中25%',
+        });
+        that.setData({
+          param: options.param,
+        })
+        app.globalData.param = options.param;
+      } else if (app.globalData.param != "undefined" && typeof(app.globalData.param) != "undefined" && app.globalData.param != '') {
+        wx.showLoading({
+          title: '获取中30%',
+        });
+        that.setData({
+          param: app.globalData.param,
+        })
+      }
     }
     that.getOwnCardInfo();
   },
@@ -136,6 +72,175 @@ Page({
   },
   onUnload: function() {
     // 页面关闭
+  },
+  onPullDownRefresh: function() {
+    // 页面相关事件处理函数--监听用户下拉动作
+    this.onLoad(); //重新加载onLoad()
+  },
+
+  onShareAppMessage: function(res) {
+    if (res.from == 'button') {
+      if (res.target.dataset.sharetype == "mycard") {
+        console.log("share:" + this.data.mycards.param)
+        return {
+          title: "您好，我是" + this.data.mycards.realname + "，请惠存我的名片",
+          desc: '销擎名片管理',
+          path: '/pages/card/index/index?param=' + this.data.mycards.param,
+          imageUrl: '/static/images/card/p_card.jpg',
+          success: function(res) {
+            // 转发成功
+            console.log('转发成功')
+            //this.setInfo(res);
+          },
+          fail: function(res) {
+            // 转发失败
+            console.log('转发失败')
+          }
+        }
+      }
+    }
+    console.log("share:" + this.data.cards.param)
+    return {
+      title: "您好，我是" + this.data.cards.realname + "，请惠存我的名片",
+      desc: '销擎名片管理',
+      path: '/pages/card/index/index?param=' + this.data.cards.param,
+      success: function(res) {
+        // 转发成功
+        console.log('转发成功')
+      },
+      fail: function(res) {
+        // 转发失败
+        console.log('转发失败')
+      }
+    }
+  },
+  getOwnCardInfo: function() {
+    wx.showLoading({
+      title: '获取中50%',
+    });
+    let that = this;
+    if (that.data.loginOpenid) {
+      wx.showLoading({
+        title: '获取中55%',
+      });
+      util.request(api.CardInfoByOpenID, {
+        openid: that.data.loginOpenid
+      }).then(function(res) {
+        console.log("that.data.loginOpenid:" + that.data.loginOpenid)
+        console.log("that.data.loginOpenid=>res:" + res.errno)
+        console.log("that.data.loginOpenid=>res:" + res.errmsg)
+        wx.showLoading({
+          title: '获取中65%',
+        });
+        if (res.errno === 0) {
+          wx.showLoading({
+            title: '获取中66%',
+          });
+          if (!res.data.realname) {
+            that.setData({
+              isNewUser: true,
+            });
+          }
+          if (res.data.qrCode) {
+            res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
+          }
+          that.setData({
+            mycards: res.data,
+          });
+          if (!that.data.param || that.data.param == res.data.param) {
+            wx.showLoading({
+              title: '获取中70%',
+            });
+            that.setData({
+              param: res.data.param,
+              cards: res.data,
+              isZiji: true
+            });
+            wx.showLoading({
+              title: '获取中100%',
+            });
+            wx.hideLoading();
+          } else {
+            wx.showLoading({
+              title: '获取中75%',
+            });
+            that.getCardInfo()
+          }
+        } else {
+          wx.showLoading({
+            title: '获取中67%',
+          });
+          if (res.errmsg == "未注册名片") {
+            wx.redirectTo({
+              url: '/pages/card/adduser/adduser',
+            })
+          }
+          wx.showLoading({
+            title: '获取中69%',
+          });
+          if (that.data.param) {
+            that.getCardInfo()
+          } else {
+            util.showErrorToast(res.errmsg);
+          }
+        }
+      }).catch((err) => {
+        wx.showLoading({
+          title: '获取中98%',
+        });
+        console.log(err)
+      });
+    } else {
+      wx.showLoading({
+        title: '获取中60%',
+      });
+      that.getCardInfo()
+    }
+  },
+  getCardInfo: function() {
+    let that = this;
+    if (!that.data.param) {
+      that.setData({
+        param: '4~6CkgY',
+      })
+    }
+    util.request(api.CardInfoByParam, {
+      param: that.data.param
+    }).then(function(res) {
+      wx.showLoading({
+        title: '获取中90%',
+      });
+      if (res.errno === 0) {
+        wx.showLoading({
+          title: '获取中91%',
+        });
+        wx.showLoading({
+          title: '获取中92%',
+        });
+        if (res.data.qrCode) {
+          res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
+        }
+        that.setData({
+          cards: res.data
+        });
+        wx.showLoading({
+          title: '获取中100%',
+        });
+        wx.hideLoading();
+        that.isCollect()
+        that.record()
+      } else {
+        wx.showLoading({
+          title: '获取中99%',
+        });
+        util.showErrorToast(res.errmsg);
+      }
+    }).catch((err) => {
+      wx.showLoading({
+        title: '获取中97%',
+      });
+      console.log(err)
+    });;
   },
   copyText: function(e) {
     wx.setClipboardData({
@@ -187,7 +292,7 @@ Page({
         title: '生成中',
       })
       util.request(api.CreateCardQrCode, {
-        openid: that.data.openid
+        param: that.data.param
       }).then(function(res) {
         if (res.errno === 0) {
           if (res.data) {
@@ -238,8 +343,7 @@ Page({
   },
   collect: function() {
     let that = this;
-    let token = wx.getStorageSync('token');
-    if (!token) {
+    if (!that.data.loginOpenid) {
       wx.showToast({
         title: "请先登录",
         icon: 'loading',
@@ -252,63 +356,65 @@ Page({
         wx.removeStorageSync('userInfo');
       }, 2000)
     } else {
-      if (!that.data.isCollectBtn) {
-        util.request(api.CardSaveCollect, {
-          openid: that.data.openid
-        }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {
-          if (res.errno === 0) {
-            if (that.data.isCollectBtn) {
-              that.setData({
-                isCollectBtn: false
-              })
-              wx.showToast({
-                title: '取消收藏成功'
-              });
-            } else {
-              that.setData({
-                isCollectBtn: true
-              })
-              wx.showToast({
-                title: '收藏成功'
-              });
-            }
+      //if (!that.data.isCollectBtn) {
+      util.request(api.CardSaveCollect, {
+        param: that.data.param
+      }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {
+        if (res.errno === 0) {
+          if (that.data.isCollectBtn) {
+            that.setData({
+              isCollectBtn: false
+            })
+            wx.showToast({
+              title: '取消收藏成功'
+            });
           } else {
-            util.showErrorToast(res.errmsg);
+            that.setData({
+              isCollectBtn: true
+            })
+            wx.showToast({
+              title: '成功收藏到名片夹'
+            });
           }
-        });
-      } else {
-        wx.showToast({
-          title: '已收藏'
-        });
-      }
+        } else {
+          util.showErrorToast(res.errmsg);
+        }
+      });
+      // }
+      //  else {
+      //   wx.showToast({
+      //     title: '已收藏'
+      //   });
+      // }
     }
   },
   isCollect: function() {
     let that = this;
-    util.request(api.CardIsCollect, {
-      openid: that.data.openid
-    }).then(function(res) {
-      if (res.errno === 0) {
-        if (res.data > 0) {
-          that.setData({
-            isCollectBtn: true
-          })
+    if (that.data.loginOpenid) {
+      util.request(api.CardIsCollect, {
+        param: that.data.param
+      }).then(function(res) {
+        if (res.errno === 0) {
+          if (res.data > 0) {
+            that.setData({
+              isCollectBtn: true
+            })
+          }
         }
-      }
-    });
+      });
+    }
   },
   record: function() {
     let that = this;
-    let token = wx.getStorageSync('token');
-    if (token) {
+    if (that.data.loginOpenid) {
       util.request(api.CardSaveRecord, {
-        openid: that.data.openid
+        param: that.data.param
       }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {});
     }
   },
   backMeCard: function() {
     this.setData({
-      openid: ''
+      param: ''
     })
     this.getOwnCardInfo()
   }

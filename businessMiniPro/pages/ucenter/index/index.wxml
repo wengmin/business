@@ -24,13 +24,13 @@
     <view class="item">
       <navigator url="/pages/card/collect/collect" class="a">
         <text class="icon sc"></text>
-        <text class="txt">我的收藏</text>
+        <text class="txt">我收藏的名片</text>
       </navigator>
     </view>
     <view class="item">
       <navigator url="/pages/card/record/record" class="a">
         <text class="icon security"></text>
-        <text class="txt">浏览记录</text>
+        <text class="txt">我浏览的名片</text>
       </navigator>
     </view>
     <view class="item">

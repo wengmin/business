@@ -16,12 +16,8 @@ import com.qiniu.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +36,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class ApiAuthController extends ApiBaseAction {
-    private Logger logger = Logger.getLogger(getClass());
     @Autowired
     private ApiUserService userService;
     @Autowired
@@ -86,6 +81,7 @@ public class ApiAuthController extends ApiBaseAction {
         String session_key = sessionData.getString("session_key");//不知道啥用。
 
         if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
+            logger.info("loginByWeixin.登录失败=》" + sessionData);
             return toResponsFail("登录失败");
         }
         //验证用户信息完整性 防止攻击
@@ -107,7 +103,19 @@ public class ApiAuthController extends ApiBaseAction {
             //userVo.setLast_login_time(userVo.getRegister_time());
             userVo.setAvatar(loginInfo.getAvatarUrl());
             userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
+            userVo.setProvince(loginInfo.getProvince());
+            userVo.setCity(loginInfo.getCity());
+            userVo.setCountry(loginInfo.getCountry());
             userService.save(userVo);
+        } else {
+            userVo.setNickname(Base64.encode(loginInfo.getNickName()));
+            userVo.setOpenid(openid);
+            userVo.setAvatar(loginInfo.getAvatarUrl());
+            userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
+            userVo.setProvince(loginInfo.getProvince());
+            userVo.setCity(loginInfo.getCity());
+            userVo.setCountry(loginInfo.getCountry());
+            userService.updateByOpenId(userVo);
         }
         ////生成推广二维码
         //if (StringUtils.isNullOrEmpty(userVo.getQrCode())) {
@@ -129,4 +137,43 @@ public class ApiAuthController extends ApiBaseAction {
         resultObj.put("userVo", userVo);
         return toResponsSuccess(resultObj);
     }
+
+    /**
+     * 无感知登录
+     */
+    @ApiOperation(value = "无感知登录")
+    @IgnoreAuth
+    @PostMapping("loginBySilence")
+    public Object loginBySilence(@RequestParam("code") String code) {
+        //获取openid
+        String requestUrl = ApiUserUtils.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
+        String res = restTemplate.getForObject(requestUrl, String.class);
+        JSONObject sessionData = JSON.parseObject(res);
+        String openid = sessionData.getString("openid");
+
+        if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
+            logger.info("loginBySilence.登录失败=》" + sessionData);
+            return toResponsFail("登录失败");
+        }
+
+        UserVo userVo = userService.queryByOpenId(openid);
+        if (null == userVo) {
+            userVo = new UserVo();
+            userVo.setOpenid(openid);
+            userVo.setCreateTime(new Date());
+            userService.save(userVo);
+        }
+
+        Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
+        String token = MapUtils.getString(tokenMap, "token");
+
+        if (StringUtils.isNullOrEmpty(token)) {
+            return toResponsFail("登录失败");
+        }
+        Map<String, Object> resultObj = new HashMap<String, Object>();
+        //resultObj.put("openid", openid);
+        resultObj.put("userVo", userVo);
+        return toResponsSuccess(resultObj);
+    }
+
 }

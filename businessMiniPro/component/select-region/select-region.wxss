@@ -19,7 +19,7 @@
 .region-select .hd {
   height: 108rpx;
   width: 100%;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #F5F5F5;
   padding: 46rpx 30rpx 0 30rpx;
 }
 

@@ -1,6 +1,6 @@
 page {
   height: 100%;
-  background: #f4f4f4;
+  background: #F5F5F5;
 }
 
 .add-user {
@@ -136,7 +136,7 @@ page {
   height: 130rpx;
   width: 100%;
   padding-top: 30rpx;
-  background: #f4f4f4;
+  background: #F5F5F5;
 }
 
 .next, .save {

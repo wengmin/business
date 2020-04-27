@@ -58,13 +58,6 @@ Page({
       util.showErrorToast('请输入正确手机号码');
       return false;
     }
-    wx.showLoading({
-      title: '提交中...',
-      mask: true,
-      success: function() {
-
-      }
-    });
 
     util.request(api.FeedbackAdd, {
       mobile: that.data.mobile,
@@ -73,9 +66,6 @@ Page({
     }, 'POST').then(function(res) {
       if (res.errno === 0) {
         console.log(res.data);
-
-        wx.hideLoading();
-
         wx.showToast({
           title: res.data,
           icon: 'success',

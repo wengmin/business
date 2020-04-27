@@ -3,7 +3,7 @@
   <view class="cardsbg">
     <view class="cards_zyz">
       <view class="left">
-        <image src='{{!cards.photo ? "/static/images/photobg.jpg" : cards.photo}}'></image>
+        <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill"></image>
       </view>
       <view class="right">
         <view class="comname fontover">{{cards.companyName}}</view>
@@ -68,12 +68,17 @@
     <view class="rightinfo">
       <view class="name">{{cards.realname}}</view>
       <view class="k">
-        <rich-text class="desc" nodes='{{cards.profile?cards.profile:" 欢迎来到我的名片 "}}'></rich-text>
+        <text class="desc">{{cards.profile?cards.profile:" 欢迎来到我的名片 "}}</text>
       </view>
       <view class="k">
         <view class="desc">在您方便的时候，也请给我一张您的名片，谢谢！
-          <button class="alink" wx:if="{{!showCreate}}" open-type="share" data-sharetype="mycard">（点击这里可以回递名片）</button>
-          <navigator class="alink" wx:if="{{showCreate}}" url="/pages/card/adduser/adduser?name={{cards.realname}}&ava={{cards.avatar}}">（点击这里可以回递名片）</navigator>
+          <block wx:if="{{loginOpenid}}">
+            <button class="alink" wx:if="{{!isNewUser}}" open-type="share" data-sharetype="mycard">（点击回递名片）</button>
+            <navigator class="alink" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser?name={{cards.realname}}&ava={{cards.avatar}}">（点击回递名片）</navigator>
+          </block>
+          <block wx:else>
+            <navigator class="alink" url="/pages/auth/login/login?id=-4&param={{param}}">（点击回递名片）</navigator>
+          </block>
         </view>
       </view>
     </view>
@@ -86,7 +91,7 @@
     <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
   </view>
 </view>
-<!-- <block wx:if="{{showCreate}}">
+<!-- <block wx:if="{{isNewUser}}">
   <navigator class="bottomnav" url="/pages/card/adduser/adduser">免费创建名片</navigator>
 </block>
 <block wx:else>
@@ -97,3 +102,4 @@
   <navigator hover-class="none" url="/pages/card/adduser/adduser">免费创建名片</navigator>
   <view>销擎，您的销售增长引擎</view>
 </view>
+<view style="height:200rpx;"></view>

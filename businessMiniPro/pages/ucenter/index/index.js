@@ -152,7 +152,7 @@ Page({
             });
           } else {
             wx.redirectTo({
-              url: '/pages/card/index/index?openid='
+              url: '/pages/card/index/index?param='
             });
           }
         }
@@ -161,7 +161,7 @@ Page({
   },
   handlerGohomeClick() {
     wx.redirectTo({
-      url: '/pages/card/index/index?openid='
+      url: '/pages/card/index/index?param='
     });
   }
 })

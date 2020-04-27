@@ -60,8 +60,8 @@
 					"id": 0,
 					"name": "pages/card/index/index",
 					"pathName": "pages/card/index/index",
-					"query": "openid=testopenid",
-					"scene": 1012
+					"query": "param=4~6CkgY",
+					"scene": 1001
 				}
 			]
 		}

@@ -16,30 +16,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiUserService {
     @Autowired
-    private ApiUserMapper UserDao;
+    private ApiUserMapper userDao;
 
     public UserVo queryByOpenId(String openId) {
-        return UserDao.queryByOpenId(openId);
+        return userDao.queryByOpenId(openId);
     }
 
     public UserVo queryByMobile(String mobile) {
-        return UserDao.queryByMobile(mobile);
+        return userDao.queryByMobile(mobile);
+    }
+
+    public String queryOpenidByUserId(Integer id) {
+        return userDao.queryOpenidByUserId(id);
     }
 
     public UserVo queryObject(Integer id) {
-        return UserDao.queryObject(id);
+        return userDao.queryObject(id);
     }
 
     public void save(UserVo userVo) {
-        UserDao.save(userVo);
+        userDao.save(userVo);
     }
 
     public void update(UserVo user) {
-        UserDao.update(user);
+        userDao.update(user);
     }
 
     public void updateByOpenId(UserVo user) {
-        UserDao.updateByOpenId(user);
+        userDao.updateByOpenId(user);
     }
 
 }

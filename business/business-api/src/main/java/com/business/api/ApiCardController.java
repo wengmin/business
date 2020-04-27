@@ -9,7 +9,6 @@ import com.business.util.ApiBaseAction;
 import com.business.util.QRCodeUtils;
 import com.business.utils.Base64;
 import com.business.utils.PageUtils;
-import com.business.validator.Assert;
 import com.qiniu.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +41,78 @@ public class ApiCardController extends ApiBaseAction {
     @Autowired
     private ApiCardCollectService collectService;
 
+    //生成参数
+    private String getShareParam(Integer userid, String openid) {
+        try {
+            if (StringUtils.isNullOrEmpty(openid) || userid == null || userid == 0) {
+                return "";
+            }
+            openid = openid.substring(openid.length() - 5, openid.length());
+            return userid + "~" + openid;
+        } catch (Exception e) {
+            logger.error("checkShareParam.", e);
+        }
+        return "";
+    }
+
+    //参数验证
+    private Integer checkShareParam(String param) {
+        try {
+            if (StringUtils.isNullOrEmpty(param)) {
+                return 0;
+            }
+            if (param.indexOf("param=") >= 0) {
+                param = param.replace("param=", "");
+            }
+            String[] ps = param.split("\\~");
+            if (ps.length != 2) {
+                return 0;
+            }
+            if (StringUtils.isNullOrEmpty(ps[0]) || StringUtils.isNullOrEmpty(ps[1])) {
+                return 0;
+            }
+            Integer userId = Integer.parseInt(ps[0]);
+            String openid = userService.queryOpenidByUserId(userId);
+            openid = StringUtils.isNullOrEmpty(openid) ? "" : openid.substring(openid.length() - 5, openid.length());
+            if (openid.equals(ps[1])) {
+                return userId;
+            }
+        } catch (Exception e) {
+            logger.error("checkShareParam.", e);
+        }
+        return 0;
+    }
+
+    /**
+     * 根据参数验证获取名片信息
+     */
+    @ApiOperation(value = "根据参数验证获取名片信息")
+    @IgnoreAuth
+    @GetMapping("cardUserByParam")
+    public Object cardUserByParam(@RequestParam("param") String param) {
+        try {
+            Integer refUserId = checkShareParam(param);
+            if (refUserId == 0) {
+                logger.info("cardUserByParam." + param);
+                return toResponsFail("参数错误");
+            }
+            CardUserVo entity = cardUserService.queryByUserId(refUserId);
+            if (entity == null) {
+                return toResponsFail("未注册名片");
+            }
+            entity.setParam(param);
+            entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
+            entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
+            entity.setWechat(!StringUtils.isNullOrEmpty(entity.getWechat()) ? Base64.decode(entity.getWechat()) : "");
+            entity.setEmail(!StringUtils.isNullOrEmpty(entity.getEmail()) ? Base64.decode(entity.getEmail()) : "");
+            return toResponsSuccess(entity);
+
+        } catch (Exception e) {
+            logger.error("cardUserByParam.param=>" + param, e);
+        }
+        return toResponsFail("错误");
+    }
+
     /**
      * 根据openid获取名片信息
      */
@@ -49,16 +120,24 @@ public class ApiCardController extends ApiBaseAction {
     @IgnoreAuth
     @GetMapping("cardUserByOpenId")
     public Object cardUserByOpenId(@RequestParam("openid") String openid) {
-        Assert.isBlank(openid, "参数错误!");
-        CardUserVo entity = cardUserService.queryByOpenId(openid);
-        if (entity == null) {
-            return toResponsFail("未注册名片");
+        try {
+            if (StringUtils.isNullOrEmpty(openid)) {
+                return toResponsFail("参数错误!");
+            }
+            CardUserVo entity = cardUserService.queryByOpenId(openid);
+            if (entity == null) {
+                return toResponsFail("未注册名片");
+            }
+            entity.setParam(getShareParam(entity.getUserId(), entity.getOpenid()));
+            entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
+            entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
+            entity.setWechat(!StringUtils.isNullOrEmpty(entity.getWechat()) ? Base64.decode(entity.getWechat()) : "");
+            entity.setEmail(!StringUtils.isNullOrEmpty(entity.getEmail()) ? Base64.decode(entity.getEmail()) : "");
+            return toResponsSuccess(entity);
+        } catch (Exception e) {
+            logger.error("cardUserByOpenId.openid=>" + openid, e);
         }
-        entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
-        entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
-        entity.setWechat(!StringUtils.isNullOrEmpty(entity.getWechat()) ? Base64.decode(entity.getWechat()) : "");
-        entity.setEmail(!StringUtils.isNullOrEmpty(entity.getEmail()) ? Base64.decode(entity.getEmail()) : "");
-        return toResponsSuccess(entity);
+        return toResponsFail("错误");
     }
 
     /**
@@ -141,16 +220,16 @@ public class ApiCardController extends ApiBaseAction {
     @ApiOperation(value = "生成二维码")
     @IgnoreAuth
     @GetMapping("createQrCode")
-    public Object createQrCode(String openid) {
-        if (StringUtils.isNullOrEmpty(openid)) {
+    public Object createQrCode(String param) {
+        Integer refUserId = checkShareParam(param);
+        if (refUserId == 0) {
             return toResponsFail("参数错误");
         }
         String accessToken = tokenService.getAccessToken();
-        UserVo user = userService.queryByOpenId(openid);
-        String imgStr = QRCodeUtils.getCardQrCode(accessToken, user.getUserId().toString());
+        String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, param, "pages/card/index/index", refUserId.toString());
         if (!StringUtils.isNullOrEmpty(imgStr)) {
             CardUserVo uVo = new CardUserVo();
-            uVo.setCardId(cardUserService.queryByUserId(user.getUserId()).getCardId());
+            uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());
             uVo.setQrCode(imgStr);
             cardUserService.update(uVo);
         }
@@ -168,6 +247,10 @@ public class ApiCardController extends ApiBaseAction {
         params.put("limit", size);
         params.put("userId", loginUser.getUserId());
         List<CardRecordVo> list = recordService.queryList(params);
+        for (CardRecordVo c : list) {
+            c.setTouserName(!StringUtils.isNullOrEmpty(c.getTouserName()) ? Base64.decode(c.getTouserName()) : "");
+            c.setParam(getShareParam(c.getTouserId(), c.getOpenid()));
+        }
         int total = recordService.queryTotal(params);
         PageUtils pageUtil = new PageUtils(list, total, size, page);
         return toResponsSuccess(pageUtil);
@@ -175,19 +258,18 @@ public class ApiCardController extends ApiBaseAction {
 
     @ApiOperation(value = "浏览名片")
     @PostMapping("saveRecord")
-    public Object saveRecord(@LoginUser UserVo loginUser, String openid) {
-        if (StringUtils.isNullOrEmpty(openid)) {
+    public Object saveRecord(@LoginUser UserVo loginUser, String param) {
+        Integer refToUserId = checkShareParam(param);
+        if (refToUserId == 0) {
             return toResponsFail("参数错误");
         }
-        UserVo user = userService.queryByOpenId(openid);
-        Integer touserid = user.getUserId();
-        if (touserid == loginUser.getUserId()) {
+        if (refToUserId == loginUser.getUserId()) {
             return toResponsFail("自己的不记录");
         }
-        CardRecordVo record = recordService.queryByToUserId(loginUser.getUserId(), touserid);
+        CardRecordVo record = recordService.queryByToUserId(loginUser.getUserId(), refToUserId);
         if (record == null) {
             record = new CardRecordVo();
-            record.setTouserId(touserid);
+            record.setTouserId(refToUserId);
             record.setUserId(loginUser.getUserId());
             recordService.save(record);
         } else {
@@ -219,6 +301,10 @@ public class ApiCardController extends ApiBaseAction {
         params.put("userId", loginUser.getUserId());
         System.out.println(loginUser.getUserId());
         List<CardCollectVo> list = collectService.queryList(params);
+        for (CardCollectVo c : list) {
+            c.setTouserName(!StringUtils.isNullOrEmpty(c.getTouserName()) ? Base64.decode(c.getTouserName()) : "");
+            c.setParam(getShareParam(c.getTouserId(), c.getOpenid()));
+        }
         int total = collectService.queryTotal(params);
         PageUtils pageUtil = new PageUtils(list, total, size, page);
         return toResponsSuccess(pageUtil);
@@ -229,30 +315,32 @@ public class ApiCardController extends ApiBaseAction {
      */
     @ApiOperation(value = "是否已收藏")
     @GetMapping("isCollect")
-    public Object isCollect(@LoginUser UserVo loginUser, String openid) {
-        UserVo user = userService.queryByOpenId(openid);
-        int hasuser = collectService.queryHasUser(loginUser.getUserId(), user.getUserId());
+    public Object isCollect(@LoginUser UserVo loginUser, String param) {
+        Integer refToUserId = checkShareParam(param);
+        if (refToUserId == 0) {
+            return toResponsFail("参数错误");
+        }
+        int hasuser = collectService.queryHasUser(loginUser.getUserId(), refToUserId);
         return toResponsSuccess(hasuser);
     }
 
     @ApiOperation(value = "收藏名片")
     @PostMapping("saveCollect")
-    public Object saveCollect(@LoginUser UserVo loginUser, String openid) {
-        if (StringUtils.isNullOrEmpty(openid)) {
+    public Object saveCollect(@LoginUser UserVo loginUser, String param) {
+        Integer refToUserId = checkShareParam(param);
+        if (refToUserId == 0) {
             return toResponsFail("参数错误");
         }
-        UserVo user = userService.queryByOpenId(openid);
-        Integer touserid = user.getUserId();
-        CardCollectVo record = new CardCollectVo();
-        if (touserid == loginUser.getUserId()) {
+        if (refToUserId == loginUser.getUserId()) {
             return toResponsFail("不能收藏自己的名片");
         }
-        int hasuser = collectService.queryHasUser(loginUser.getUserId(), touserid);
+        int hasuser = collectService.queryHasUser(loginUser.getUserId(), refToUserId);
         if (hasuser > 0) {
             //return toResponsFail("已经收藏过该名片");
-            collectService.deleteByUserID(loginUser.getUserId(), touserid);
+            collectService.deleteByUserID(loginUser.getUserId(), refToUserId);
         } else {
-            record.setTouserId(touserid);
+            CardCollectVo record = new CardCollectVo();
+            record.setTouserId(refToUserId);
             record.setUserId(loginUser.getUserId());
             collectService.save(record);
         }

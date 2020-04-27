@@ -1,10 +1,10 @@
 page {
-  background: #f4f4f4;
+  background: #F5F5F5;
   min-height: 100%;
 }
 
 .container {
-  background: #f4f4f4;
+  background: #F5F5F5;
   min-height: 100%;
   padding-top: 30rpx;
 }

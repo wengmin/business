@@ -13,7 +13,7 @@ function formatTime(date) {
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
- function validatePhone(phone) { 
+function validatePhone(phone) {
   const re = /^((13|14|15|16|17|18|19)[0-9]{1}\d{8})$/
   return re.test(phone)
 }
@@ -22,7 +22,7 @@ function formatTime(date) {
  * 时间戳转化为年 月 日 时 分 秒
  * number: 传入时间戳
  * format：返回格式，支持自定义，但参数必须与formateArr里保持一致
-*/
+ */
 function nformatTime(number, format) {
 
   var formateArr = ['Y', 'M', 'D', 'h', 'm', 's'];
@@ -51,8 +51,18 @@ function formatNumber(n) {
 /**
  * 封封微信的的request
  */
-function request(url, data = {}, method = "GET", contentType ="application/json") {
-  return new Promise(function (resolve, reject) {
+function request(url, data = {}, method = "GET", contentType = "application/json") {
+  return new Promise(function(resolve, reject) {
+    if (method == "POST") {
+      wx.showLoading({
+        title: '提交中...',
+        mask: true,
+      });
+    } else {
+      wx.showLoading({
+        title: '获取中...',
+      });
+    }
     wx.request({
       url: url,
       data: data,
@@ -61,23 +71,23 @@ function request(url, data = {}, method = "GET", contentType ="application/json"
         'Content-Type': contentType,
         'X-Nideshop-Token': wx.getStorageSync('token')
       },
-      success: function (res) {
+      success: function(res) {
         if (res.statusCode == 200) {
 
           if (res.data.errno == 401) {
             //需要登录后才可以操作
             wx.showModal({
-                title: '',
-                content: '请先登录',
-                success: function (res){
-                    if (res.confirm) {
-                        wx.removeStorageSync("userInfo");
-                        wx.removeStorageSync("token");
-                        wx.switchTab({
-                            url: '/pages/ucenter/index/index'
-                        });
-                    }
+              title: '',
+              content: '请先登录',
+              success: function(res) {
+                if (res.confirm) {
+                  wx.removeStorageSync("userInfo");
+                  wx.removeStorageSync("token");
+                  wx.redirectTo({
+                    url: '/pages/ucenter/index/index'
+                  });
                 }
+              }
             });
           } else {
             resolve(res.data);
@@ -85,10 +95,11 @@ function request(url, data = {}, method = "GET", contentType ="application/json"
         } else {
           reject(res.errMsg);
         }
-
+        wx.hideLoading();
       },
-      fail: function (err) {
+      fail: function(err) {
         reject(err)
+        wx.hideLoading();
       }
     })
   });
@@ -107,12 +118,12 @@ function getQueryString(url, name) {
  * 检查微信会话是否过期
  */
 function checkSession() {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     wx.checkSession({
-      success: function () {
+      success: function() {
         resolve(true);
       },
-      fail: function () {
+      fail: function() {
         reject(false);
       }
     })
@@ -123,9 +134,9 @@ function checkSession() {
  * 调用微信登录
  */
 function login() {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function(resolve, reject) {
     wx.login({
-      success: function (res) {
+      success: function(res) {
         if (res.code) {
           //登录远程服务器
           resolve(res);
@@ -133,7 +144,7 @@ function login() {
           reject(res);
         }
       },
-      fail: function (err) {
+      fail: function(err) {
         reject(err);
       }
     });
@@ -198,5 +209,3 @@ module.exports = {
   getQueryString,
   accSub
 }
-
-

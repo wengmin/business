@@ -1,11 +1,11 @@
 <cover-view class="top" style="height:{{ucheight}}px;">
   <cover-view class="leftMenu" style="width: {{leftMenuWidth}}px;height:{{leftMenuHeight}}px;top:{{top}}px;">
-    <cover-view class="menu" style="width:{{menuButtonWidth+15}}px;height:{{leftMenuHeight}}px;margin-left:{{left}}px" bindtap="usercenter">
+    <cover-view class="menu" style="width:{{menuButtonWidth}}px;height:{{leftMenuHeight}}px;margin-left:{{left}}px" bindtap="usercenter">
       <cover-image class="image" src="/static/images/cardlist.png" style="width:{{leftMenuHeight-2}}px;height:{{leftMenuHeight-2}}px;"></cover-image>
-      <cover-view class="text">我的名片夹</cover-view>
+      <cover-view class="text">名片夹</cover-view>
     </cover-view>
   </cover-view>
-  <cover-view class="centerTitle fontover" style="width: calc(100% - 500rpx);height:{{leftMenuHeight}}px;line-height:{{leftMenuHeight}}px;top:{{top}}px;">
+  <cover-view class="centerTitle fontover" style="width: calc(100% - {{centerTitle}}px);height:{{leftMenuHeight}}px;line-height:{{leftMenuHeight}}px;top:{{top}}px;">
     {{title==""?"销擎名片管理":title}}
   </cover-view>
 </cover-view>

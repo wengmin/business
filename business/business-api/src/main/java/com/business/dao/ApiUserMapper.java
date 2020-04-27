@@ -15,5 +15,7 @@ public interface ApiUserMapper extends BaseDao<UserVo> {
 
     UserVo queryByMobile(@Param("mobile") String mobile);
 
+    String queryOpenidByUserId(Integer id);
+
     int updateByOpenId(UserVo user);
 }

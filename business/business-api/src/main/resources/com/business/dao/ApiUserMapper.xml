@@ -85,6 +85,10 @@
 		</if>
 	</select>
 
+	<select id="queryOpenidByUserId" resultType="string">
+		select openid from customer_user where user_id = #{value}
+	</select>
+
 	<insert id="save" parameterType="com.business.entity.UserVo" useGeneratedKeys="true" keyProperty="userId">
 		insert into customer_user(
 	    `openid`,
@@ -145,9 +149,6 @@
 	<update id="updateByOpenId" parameterType="com.business.entity.UserVo">
 		update customer_user
 		<set>
-			<if test="openid != null">
-				`openid` = #{openid},
-			</if>
 			<if test="mobile != null">
 				`mobile` = #{mobile},
 			</if>
