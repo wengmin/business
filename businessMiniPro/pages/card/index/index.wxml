@@ -28,8 +28,8 @@
       <button class="imgbtn" bindtap='showQrCode'>
         <image src="/static/images/qrcode.png"></image>
       </button>
-      <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji}}">
-        <image src='{{isCollectBtn?"/static/images/shou_yes.png":"/static/images/shou_no.png"}}'></image>
+      <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji&&!isCollectBtn}}">
+        <image src="/static/images/shou_no.png"></image>
       </button>
       <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
         <view class="title">
@@ -55,7 +55,7 @@
         </view>
         <text class="info">{{cards.address}}</text>
       </button>
-      <button class="btn" bindtap='copyText' data-text="{{cards.telephone}}" wx:if="{{cards.telephone}}">
+      <button class="btn" bindtap='callPhone' data-text="{{cards.telephone}}" wx:if="{{cards.telephone}}">
         <view class="title">
           <image src="/static/images/detail_kefu.png"></image>固定电话
         </view>
@@ -91,15 +91,14 @@
     <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
   </view>
 </view>
-<!-- <block wx:if="{{isNewUser}}">
-  <navigator class="bottomnav" url="/pages/card/adduser/adduser">免费创建名片</navigator>
-</block>
-<block wx:else>
-  <navigator class="bottomnav" url="/pages/card/adduser/adduser">编辑我的名片</navigator>
-</block>
-<button class="backme" wx:if="{{!isZiji}}" bindtap="backMeCard">返回我的名片</button> -->
 <view class="bottomtext">
-  <navigator hover-class="none" url="/pages/card/adduser/adduser">免费创建名片</navigator>
+  <block wx:if="{{isZiji}}">
+    <navigator hover-class="none" url="/pages/card/adduser/adduser">{{isNewUser?"免费创建名片":"修改我的名片"}}</navigator>
+  </block>
+  <block wx:else>
+    <navigator hover-class="none" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser">免费创建名片</navigator>
+    <!-- <navigator hover-class="none" wx:if="{{!isNewUser}}" url="/pages/card/index/index?param=">返回我的名片</navigator> -->
+  </block>
   <view>销擎，您的销售增长引擎</view>
 </view>
-<view style="height:200rpx;"></view>
+<view style="height:100rpx;"></view>

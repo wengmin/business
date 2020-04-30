@@ -183,8 +183,11 @@
   <view class="tis">
     <image class="successIcon" src="/static/images/icon_xz_g.png"></image>
     <view class="desc">您已完成名片创建，请点击预览您的名片。</view>
-    <view class="desc">您可以点击左上角“我的名片夹”进入名片夹，管理您自己的和别人的名片。</view>
+    <view class="desc">您可以点击左上角“名片夹”进入名片夹，管理您自己的和别人的名片。</view>
   </view>
-  <button class="next" bindtap="lastpageBtn">预览我的名片</button>
+  <view class="btnarea">
+    <button class="left" bindtap="lastpageBtn">预览我的名片</button>
+    <navigator class="right" url="/pages/ucenter/index/index">进入名片夹</navigator>
+  </view>
 </view>
 <view class="bottomtext">销擎，您的销售增长引擎</view>

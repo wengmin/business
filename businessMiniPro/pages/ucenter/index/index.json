@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "用户中心",
+  "navigationBarTitleText": "名片夹",
   "enablePullDownRefresh": false,
   "navigationStyle": "custom",
   "usingComponents": {

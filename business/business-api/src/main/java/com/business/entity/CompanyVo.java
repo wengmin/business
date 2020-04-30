@@ -17,7 +17,7 @@ public class CompanyVo implements Serializable {
     private String name;
     private String address;
     private String phone;
-    private String icon;
+    private String logo;
     private Integer scale;
     private Integer trade;
     private String introduction;
@@ -55,12 +55,12 @@ public class CompanyVo implements Serializable {
         this.phone = phone;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public Integer getScale() {

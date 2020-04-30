@@ -1,116 +1,139 @@
 // pages/wifi/wifi.js
+const util = require('../../../utils/util.js');
 Page({
   data: {
-    startError: '',//初始化错误提示
-    wifiListError: false, //wifi列表错误显示开关
-    wifiListErrorInfo: '',//wifi列表错误详细
-    system: '', //版本号
+    error: '', //错误提示
     platform: '', //系统 android
-    ssid: 'wifi帐号',//wifi帐号(必填)
-    pass: 'wifi密码',//无线网密码(必填)
-    bssid: '',//设备号 自动获取
-    endError: ''//连接最后的提示
+    ssid: 'CMCC-CQ', //wifi帐号(必填)
+    pass: 'cq778899', //无线网密码(必填)
+    bssid: '', //设备号 自动获取
+    success: ''
   },
-  onLoad: function () {
-    var _this = this;
+  onShow: function() {
+    // 页面显示
+    //this.getOwnCardInfo();
+  },
+  onReady: function() {
+    // 页面渲染完成
+  },
+  onHide: function() {
+    // 页面隐藏
+  },
+  onUnload: function() {
+    // 页面关闭
+  },
+  onLoad: function(options) {
+    wx.showLoading({
+      title: '连接中',
+    });
+    
+    var that = this;
+    if (options.scene) {
+      let scene = '?' + decodeURIComponent(options.scene);
+      that.setData({
+        ssid: util.getQueryString(scene, 'id'),
+        pass: util.getQueryString(scene, 'pass'),
+      })
+      that.checkSystem()
+    } else {
+      wx.hideLoading()
+      that.setData({
+        error: that.data.error + "未获取到账号密码。"
+      })
+    }
+  },
+  checkSystem: function() {
+    var that = this;
     //检测手机型号
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         var system = '';
         if (res.platform == 'android') system = parseInt(res.system.substr(8));
         if (res.platform == 'ios') system = parseInt(res.system.substr(4));
         if (res.platform == 'android' && system < 6) {
-          _this.setData({ startError: '手机版本暂时不支持' }); return
-        }
-        if (res.platform == 'ios' && system < 11) {
-          _this.setData({ startError: '手机版本暂时不支持' }); return
-        }
-        _this.setData({ platform: res.platform });
-        //初始化 Wi-Fi 模块
-        _this.startWifi(_this);
-      }
-    })
-  },
-  //初始化 Wi-Fi 模块。
-  startWifi: function (_this) {
-    wx.startWifi({
-      success: function () {
-        _this.getList(_this);
-      },
-      fail: function (res) {
-        _this.setData({ startError: res.errMsg });
-      }
-    })
-  },
-  getList: function (_this) {
-    //安卓执行方法
-    if (_this.data.platform == 'android') {
-      //请求获取 Wi-Fi 列表
-      wx.getWifiList({
-        success: function (res) {
-          //安卓执行方法
-          _this.AndroidList(_this);
-        },
-        fail: function (res) {
-          _this.setData({ wifiListError: true });
-          _this.setData({ wifiListErrorInfo: res.errMsg });
-        }
-      })
-    }
-    //IOS执行方法
-    if (_this.data.platform == 'ios') {
-      _this.IosList(_this);
-    }
-
-  },
-  AndroidList: function (_this) {
-    //监听获取到 Wi-Fi 列表数据
-    wx.onGetWifiList(function (res) { //获取列表
-      if (res.wifiList.length) {
-        // _this.setData({
-        //   wifiList: res.wifiList
-        // });
-        //循环找出信号最好的那一个
-        var ssid = _this.data.ssid;
-        var signalStrength = 0;
-        var bssid = '';
-        for (var i = 0; i < res.wifiList.length; i++) {
-          if (res.wifiList[i]['SSID'] == ssid && res.wifiList[i]['signalStrength'] > signalStrength) {
-            bssid = res.wifiList[i]['BSSID'];
-            signalStrength = res.wifiList[i]['signalStrength'];
-          }
-        }
-        if (!signalStrength) {
-          _this.setData({ wifiListError: true });
-          _this.setData({ wifiListErrorInfo: '未查询到设置的wifi' });
+          that.setData({
+            error: '手机版本不支持',
+          })
           return
         }
-        _this.setData({ bssid: bssid });
-        //执行连接方法
-        //连接wifi
-        _this.Connected(_this);
-      } else {
-        _this.setData({ wifiListError: true });
-        _this.setData({ wifiListErrorInfo: '未查询到设置的wifi' });
+        if (res.platform == 'ios' && system < 11.2) {
+          that.setData({
+            error: '手机版本不支持',
+          })
+          return
+        }
+        that.setData({
+          platform: res.platform
+        })
+        that.startWifi();
+      },
+      fail: function (res) {
+        console.log("getSystemInfo=>fail." + res.errMsg);
+        wx.hideLoading()
+        that.setData({
+          error: that.data.error + "系统错误：" + res.errMsg + "。"
+        })
       }
     })
   },
-  IosList: function (_this) {
-    _this.setData({ wifiListError: true });
-    _this.setData({ wifiListErrorInfo: 'IOS暂不支持' });
-  },//连接wifi
-  Connected: function (_this) {
-    wx.connectWifi({
-      SSID: _this.data.ssid,
-      BSSID: _this.data.bssid,
-      password: _this.data.pass,
-      success: function (res) {
-        _this.setData({ endError: 'wifi连接成功' });
+  //初始化 Wi-Fi 模块
+  startWifi: function() {
+    let that = this;
+    wx.startWifi({
+      success: function() {
+        //请求成功连接Wifi
+        that.connectWifi();
       },
       fail: function (res) {
-        _this.setData({ endError: res.errMsg });
+        console.log("startWifi=>fail." + res.errMsg);
+        wx.hideLoading()
+        that.setData({
+          error: that.data.error + "初始化Wi-Fi失败：" + res.errMsg + "。"
+        })
+      }
+    })
+  },
+  connectWifi: function() {
+    let that = this;
+    wx.connectWifi({
+      SSID: that.data.ssid,
+      BSSID: that.data.bssid,
+      password: that.data.pass,
+      success: function(res) {
+        console.log("connectWifi=>success." + res.errMsg);
+        if (that.data.platform == "ios") { // 是否是IOS可通过提前调用getSystemInfo知道
+          console.log("connectWifi=>success.ios");
+          wx.hideLoading()
+          that.setData({
+            error: that.data.error + "连接Wi-Fi失败。"
+          })
+          wx.onWifiConnected(result => {
+            console.log("onWifiConnected=>success." + result.wifi);
+            if (result.wifi.SSID === that.data.ssid) {
+              that.setData({
+                success: "连接成功",
+                error:""
+              })
+            } else {
+              that.setData({
+                error: that.data.error + "连接Wi-Fi失败。"
+              })
+            }
+          })
+        } else {
+          wx.hideLoading()
+          that.setData({
+            success: "连接成功"
+          })
+        }
+      },
+      fail: function (res) {
+        console.log("connectWifi=>fail." + res.errMsg);
+        wx.hideLoading()
+        that.setData({
+          error: that.data.error + "连接Wi-Fi失败：" + res.errMsg + "。"
+        })
       }
     })
   }
-
 })

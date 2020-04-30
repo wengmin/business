@@ -6,16 +6,48 @@ var app = getApp();
 Page({
   data: {
     userInfo: {},
-    hasMobile: '',
-    commission: {
-      allProfit: 0,
-      getProfit: 0
-    },
     isshow: false,
+    isNewUser: false,
+    param: "",
+    realname: ""
+  },
+  checkCard: function() {
+    let that = this;
+    if (wx.getStorageSync('token')) {
+      util.request(api.CardInfoByOpenID, {
+        openid: wx.getStorageSync('token')
+      }).then(function(res) {
+        if (res.errno === 0) {
+          if (!res.data.realname) {
+            that.setData({
+              isNewUser: true,
+            });
+          } else {
+            that.setData({
+              param: res.data.param,
+              realname: res.data.realname
+            })
+          }
+        } else {
+          that.setData({
+            isNewUser: true,
+          });
+        }
+      }).catch((err) => {
+        that.setData({
+          isNewUser: true,
+        });
+      });
+    } else {
+      that.setData({
+        isNewUser: true,
+      });
+    }
   },
   onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log('----dd----', app.globalData)
+    this.checkCard()
   },
   onReady: function() {
 
@@ -62,7 +94,15 @@ Page({
   onUnload: function() {
     // 页面关闭 
   },
-  onShareAppMessage: function() {
+  onShareAppMessage: function(res) {
+    if (res.from == 'button') {
+      return {
+        title: "您好，我是" + this.data.realname + "，请惠存我的名片",
+        desc: '销擎名片管理',
+        path: '/pages/card/index/index?param=' + this.data.param,
+        imageUrl: '/static/images/card/p_card.jpg',
+      }
+    }
     this.noLogin();
     return {
       title: '邀请好友',

@@ -1,7 +1,7 @@
-<view wx:if="{{startError}}">
+<view wx:if="{{error}}">
   <view class='error'>
     <icon type="warn" size="40" />
-    <text>{{startError}}</text>
+    <text>{{error}}</text>
   </view>
   <view class='info'>请尝试手动连接。</view>
   <view class='info'>
@@ -13,26 +13,10 @@
     <text selectable class='pass'>{{pass}}</text>
   </view>
 </view>
-
-<view wx:if="{{wifiListError}}">
-  <view class='error'>
-    <icon type="warn" size="40" />
-    <text>{{wifiListErrorInfo}}</text>
-  </view>
-  <view class='info'>请尝试手动连接。</view>
-  <view class='info'>
-    <text>wifi帐号:</text>
-    <text>{{ssid}}</text>
-  </view>
-  <view class='info'>
-    <text>wifi密码:</text>
-    <text selectable class='pass'>{{pass}}</text>
-  </view>
-</view>
-
-<view wx:if="{{endError}}">
+<view wx:if="{{success}}">
   <view class='success'>
     <icon type="success" size="40" />
-    <text>{{endError}}</text>
+    <text>连接成功</text>
   </view>
 </view>
+<view class="bottomtext">销擎，您的销售增长引擎</view>

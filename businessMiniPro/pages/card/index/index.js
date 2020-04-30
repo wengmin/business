@@ -11,7 +11,7 @@ Page({
     cards: [],
     mycards: [],
     maskHidden: false,
-    isNewUser: false,
+    isNewUser: true,
     isZiji: false,
     isCollectBtn: false,
     shareUserId: 0,
@@ -126,19 +126,13 @@ Page({
       util.request(api.CardInfoByOpenID, {
         openid: that.data.loginOpenid
       }).then(function(res) {
-        console.log("that.data.loginOpenid:" + that.data.loginOpenid)
-        console.log("that.data.loginOpenid=>res:" + res.errno)
-        console.log("that.data.loginOpenid=>res:" + res.errmsg)
-        wx.showLoading({
-          title: '获取中65%',
-        });
         if (res.errno === 0) {
           wx.showLoading({
             title: '获取中66%',
           });
-          if (!res.data.realname) {
+          if (res.data.realname) {
             that.setData({
-              isNewUser: true,
+              isNewUser: false,
             });
           }
           if (res.data.qrCode) {
@@ -167,27 +161,25 @@ Page({
             that.getCardInfo()
           }
         } else {
-          wx.showLoading({
-            title: '获取中67%',
-          });
-          if (res.errmsg == "未注册名片") {
-            wx.redirectTo({
-              url: '/pages/card/adduser/adduser',
-            })
-          }
+          console.log("that.data.loginOpenid:" + that.data.loginOpenid + "=>errno:" + res.errno + "=>errmsg:" + res.errmsg)
+          // wx.showLoading({
+          //   title: '获取中67%',
+          // });
+          // if (res.errmsg == "未注册名片") {
+          //   wx.redirectTo({
+          //     url: '/pages/card/adduser/adduser',
+          //   })
+          // }
           wx.showLoading({
             title: '获取中69%',
           });
-          if (that.data.param) {
-            that.getCardInfo()
-          } else {
-            util.showErrorToast(res.errmsg);
-          }
+          that.getCardInfo()
         }
       }).catch((err) => {
         wx.showLoading({
           title: '获取中98%',
         });
+        that.getCardInfo()
         console.log(err)
       });
     } else {
@@ -200,6 +192,9 @@ Page({
   getCardInfo: function() {
     let that = this;
     if (!that.data.param) {
+      wx.showLoading({
+        title: '获取中78%',
+      });
       that.setData({
         param: '4~6CkgY',
       })
@@ -239,7 +234,11 @@ Page({
       wx.showLoading({
         title: '获取中97%',
       });
-      console.log(err)
+      wx.hideLoading();
+      wx.showModal({
+        title: "服务连接出错",
+        content: "请卸载小程序，稍后再访问"
+      });
     });;
   },
   copyText: function(e) {
@@ -373,7 +372,7 @@ Page({
               isCollectBtn: true
             })
             wx.showToast({
-              title: '成功收藏到名片夹'
+              title: '收藏到名片夹'
             });
           }
         } else {

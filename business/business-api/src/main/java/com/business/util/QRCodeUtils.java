@@ -90,7 +90,7 @@ public class QRCodeUtils {
      * 获取小程序商品分享二维码
      *
      */
-    public static String createQrCodeToUrl(String accessToken, String param, String path, String imageName) {
+    public static String createQrCodeToUrl(String accessToken, String param, String path, String imageName) throws Exception {
         try {
             URL url = new URL("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -101,7 +101,7 @@ public class QRCodeUtils {
             PrintWriter printWriter = new PrintWriter(httpURLConnection.getOutputStream());
             // 发送请求参数
             JSONObject paramJson = new JSONObject();
-            paramJson.put("scene", "param=" + param);
+            paramJson.put("scene", param);
             paramJson.put("page", path);
             paramJson.put("width", 430);//最小280
             paramJson.put("is_hyaline", false);

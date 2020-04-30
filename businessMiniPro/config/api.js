@@ -1,5 +1,5 @@
-var NewApiRootUrl = 'https://emiaoweb.com/business/api/';
-//var NewApiRootUrl = 'http://127.0.0.1:8090/api/';
+//var NewApiRootUrl = 'https://emiaoweb.com/business/api/';
+var NewApiRootUrl = 'http://127.0.0.1:8090/api/';
 module.exports = {
   FeedbackAdd: NewApiRootUrl + 'feedback/save',  //意见反馈
   RegionList: NewApiRootUrl + 'region/list',  //获取区域列表
@@ -21,4 +21,7 @@ module.exports = {
   CardSaveCollect: NewApiRootUrl + 'card/saveCollect',
   CardDeleteCollect: NewApiRootUrl + 'card/deleteCollect',
   CardIsCollect: NewApiRootUrl + 'card/isCollect',
+
+
+  CreateQrCodeByWifi: NewApiRootUrl + 'card/createQrCodeByWifi',
 };

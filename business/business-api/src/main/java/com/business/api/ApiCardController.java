@@ -221,19 +221,24 @@ public class ApiCardController extends ApiBaseAction {
     @IgnoreAuth
     @GetMapping("createQrCode")
     public Object createQrCode(String param) {
-        Integer refUserId = checkShareParam(param);
-        if (refUserId == 0) {
-            return toResponsFail("参数错误");
+        try {
+            Integer refUserId = checkShareParam(param);
+            if (refUserId == 0) {
+                return toResponsFail("参数错误");
+            }
+            String accessToken = tokenService.getAccessToken();
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param="+param, "pages/card/index/index", refUserId.toString());
+            if (!StringUtils.isNullOrEmpty(imgStr)) {
+                CardUserVo uVo = new CardUserVo();
+                uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());
+                uVo.setQrCode(imgStr);
+                cardUserService.update(uVo);
+            }
+            return toResponsSuccess(imgStr);
+        } catch (Exception e) {
+            logger.error("createQrCode.param=>" + param, e);
         }
-        String accessToken = tokenService.getAccessToken();
-        String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, param, "pages/card/index/index", refUserId.toString());
-        if (!StringUtils.isNullOrEmpty(imgStr)) {
-            CardUserVo uVo = new CardUserVo();
-            uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());
-            uVo.setQrCode(imgStr);
-            cardUserService.update(uVo);
-        }
-        return toResponsSuccess(imgStr);
+        return toResponsFail("生成二维码错误");
     }
 
     /**
@@ -355,5 +360,22 @@ public class ApiCardController extends ApiBaseAction {
         }
         collectService.delete(id);
         return toResponsSuccess("删除成功");
+    }
+
+    /**
+     * 生成二维码
+     */
+    @ApiOperation(value = "生成二维码")
+    @IgnoreAuth
+    @GetMapping("createQrCodeByWifi")
+    public Object createQrCodeByWifi() {
+        try {
+            String accessToken = tokenService.getAccessToken();
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "id=CMCC-CQ&pass=cq778899", "pages/service/wifi/wifi", "wifiname");
+            return toResponsSuccess(imgStr);
+        } catch (Exception e) {
+            logger.error("createQrCodeByWifi.", e);
+        }
+        return toResponsFail("生成二维码错误");
     }
 }

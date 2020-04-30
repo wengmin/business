@@ -1,20 +1,26 @@
 <view class="container" wx:if="{{isshow}}">
-  <back-index back="{{true}}" home="{{true}}" bindback="handlerGobackClick" bindhome="handlerGohomeClick"></back-index>
-  <navigator url="/pages/card/adduser/adduser" class="userinfo">
+  <back-index back="{{true}}" home="{{true}}" title="名片夹" bindback="handlerGobackClick" bindhome="handlerGohomeClick"></back-index>
+  <view url="/pages/card/adduser/adduser" class="userinfo">
     <view>
       <image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
     </view>
     <view class='marleft'>
-      <button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
+      <navigator wx:if="{{isNewUser}}" hover-class="none" class="gonav" url="/pages/card/adduser/adduser">
+        <view>一分钟创建我的名片</view>
+        <image src="/static/images/go.png"></image>
+      </navigator>
+      <button wx:if="{{!isNewUser}}" class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
         <view class="userinfo-nickname">
           <text style='font-size:20px;font-weight:bold;'>{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
         </view>
       </button>
     </view>
-    <view class="gobtn">
-      <image src="/static/images/go.png"></image>
-    </view>
-  </navigator>
+  </view>
+  <view class="rightbtn" wx:if="{{!isNewUser}}">
+    <button open-type="share">转发我的名片</button>
+    <navigator hover-class="none" url="/pages/card/index/index?param=">打开我的名片</navigator>
+    <navigator hover-class="none" url="/pages/card/adduser/adduser">修改我的名片</navigator>
+  </view>
 
   <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
   <view class="user-menu">
@@ -37,6 +43,12 @@
       <navigator url="/pages/ucenter/feedback/feedback" class="a">
         <text class="icon feedback"></text>
         <text class="txt">意见反馈</text>
+      </navigator>
+    </view>
+    <view class="item">
+      <navigator url="/pages/company/add/add" class="a">
+        <text class="icon feedback"></text>
+        <text class="txt">开通企业</text>
       </navigator>
     </view>
   </view>

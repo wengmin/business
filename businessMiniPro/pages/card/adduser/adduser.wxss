@@ -1,6 +1,6 @@
 page {
   height: 100%;
-  background: #F5F5F5;
+  background: #f5f5f5;
 }
 
 .add-user {
@@ -127,7 +127,7 @@ page {
 }
 
 .profile .rightinfo .desc {
-  line-height: 30rpx;
+  line-height: 50rpx;
 }
 
 .btns {
@@ -136,28 +136,54 @@ page {
   height: 130rpx;
   width: 100%;
   padding-top: 30rpx;
-  background: #F5F5F5;
+  background: #f5f5f5;
 }
 
 .next, .save {
   width: 710rpx;
   margin: 0 auto;
   display: block;
-  height: 100rpx;
+  height: 90rpx;
   text-align: center;
-  line-height: 100rpx;
+  line-height: 90rpx;
   font-size: 28rpx;
-  color: #fff;
+  color: #52a936;
   border: none;
   border-radius: 10rpx;
 }
 
 .next {
-  background: #52a936;
+  background: #fff;
+  border: solid 2rpx #52a936;
 }
 
 .save {
-  background: #b4282d;
+  background: #fff;
+  border: solid 2rpx #52a936;
+}
+
+.btnarea {
+  width: 100%;
+  padding: 20rpx;
+}
+
+.btnarea button, .btnarea navigator {
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+  font-size: 28rpx;
+  line-height: 90rpx;
+  text-align: center;
+  border-radius: 10rpx;
+}
+
+.btnarea .left {
+  float: left;
+}
+
+.btnarea .right {
+  float: right;
 }
 
 .tis {
@@ -166,6 +192,7 @@ page {
 
 .tis .desc {
   padding: 20rpx;
+  line-height: 50rpx;
   background: #fff;
 }
 
@@ -205,7 +232,7 @@ page {
   background: #959695;
   color: #fff;
   border-radius: 55rpx;
-  border: 5rpx solid #d9d9d9
+  border: 5rpx solid #d9d9d9;
 }
 
 .process_line {
@@ -222,7 +249,7 @@ page {
   background: #52a936;
   color: #fff;
   border-radius: 55rpx;
-  border: 5rpx solid #d9d9d9
+  border: 5rpx solid #d9d9d9;
 }
 
 .process_line {

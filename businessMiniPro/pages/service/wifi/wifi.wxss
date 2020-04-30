@@ -1,28 +1,34 @@
 /* pages/wifi/wifi.wxss */
-.error,.success{
-  margin-top: 300rpx;
+
+.error, .success {
+  padding-top: 300rpx;
   width: 100%;
   display: flex;
   justify-content: center;
 }
-.info{
+
+.info {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 50rpx;
-  color: green
+  text-align: center;
+  margin: 50rpx 0;
+  color: green;
 }
-.error text{
+
+.error text {
   margin-left: 15rpx;
   font-size: 60rpx;
   color: red;
 }
-.success text{
+
+.success text {
   margin-left: 15rpx;
   font-size: 60rpx;
   color: green;
 }
-.button_fh{
+
+.button_fh {
   width: 50%;
   margin-top: 60rpx;
 }
