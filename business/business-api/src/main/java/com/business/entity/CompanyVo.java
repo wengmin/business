@@ -2,6 +2,7 @@ package com.business.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 创建人：Vsoft
@@ -22,6 +23,16 @@ public class CompanyVo implements Serializable {
     private Integer trade;
     private String introduction;
     private Date createTime;
+
+
+    private List<CompanyFileVo> fileList;
+    public List<CompanyFileVo> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<CompanyFileVo> fileList) {
+        this.fileList = fileList;
+    }
 
     public Integer getCompanyId() {
         return companyId;

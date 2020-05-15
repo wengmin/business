@@ -1,17 +1,20 @@
 {
   "pages": [
-    "pages/company/add/add",
+    "pages/service/index/index",
     "pages/card/index/index",
     "pages/card/collect/collect",
     "pages/card/record/record",
     "pages/card/adduser/adduser",
+    "pages/company/add/add",
     "pages/auth/login/login",
     "pages/index/index",
     "pages/ucenter/index/index",
     "pages/ucenter/feedback/feedback",
     "pages/service/wifi/wifi",
     "pages/pay/pay/pay",
-    "pages/pay/result/result"
+    "pages/pay/result/result",
+    "pages/company/index/index",
+    "pages/service/invoice/invoice"
   ],
   "window": {
     "backgroundTextStyle": "dark",

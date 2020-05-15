@@ -14,26 +14,26 @@ public class J2CacheUtils {
     /**
      * 商城业务缓存
      */
-    public static String SHOP_CACHE_NAME = "shopCache";
+    public static String SHOP_CACHE_NAME = "businessShopCache";
     
     /**
      * 商城业务缓存
      */
-    public static String SYSTEM = "SYSTEM";
+    public static String SYSTEM = "BUSINESSSYSTEM";
     
     /**
      * 系统AccessToken
      */
-    public static String SYSTEM_ACCESS_TOKEN = "SYSTEM_ACCESS_TOKEN";
+    public static String SYSTEM_ACCESS_TOKEN = "BUSINESS_SYSTEM_ACCESS_TOKEN";
     /**
      * 系统缓存
      */
-    private static String SYS_CACHE_NAME = "sysCache";
+    private static String SYS_CACHE_NAME = "businessSysCache";
     
     /**
      * 身份验证
      */
-    public static String SYS_ID_CARD_CHECL = "idcardCheck";
+    public static String SYS_ID_CARD_CHECL = "businessIdcardCheck";
 
     private static CacheChannel cache = J2Cache.getChannel();
 

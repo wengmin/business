@@ -46,7 +46,8 @@ Page({
     var that = this;
     //检测手机型号
     wx.getSystemInfo({
-      success: function(res) {
+      success: function (res) {
+        console.log("getSystemInfo=>success." + res);
         var system = '';
         if (res.platform == 'android') system = parseInt(res.system.substr(8));
         if (res.platform == 'ios') system = parseInt(res.system.substr(4));
@@ -101,31 +102,35 @@ Page({
       password: that.data.pass,
       success: function(res) {
         console.log("connectWifi=>success." + res.errMsg);
-        if (that.data.platform == "ios") { // 是否是IOS可通过提前调用getSystemInfo知道
-          console.log("connectWifi=>success.ios");
-          wx.hideLoading()
-          that.setData({
-            error: that.data.error + "连接Wi-Fi失败。"
-          })
-          wx.onWifiConnected(result => {
-            console.log("onWifiConnected=>success." + result.wifi);
-            if (result.wifi.SSID === that.data.ssid) {
-              that.setData({
-                success: "连接成功",
-                error:""
-              })
-            } else {
-              that.setData({
-                error: that.data.error + "连接Wi-Fi失败。"
-              })
-            }
-          })
-        } else {
-          wx.hideLoading()
-          that.setData({
-            success: "连接成功"
-          })
-        }
+        wx.hideLoading()
+        that.setData({
+          success: "连接成功"
+        })
+        // if (that.data.platform == "ios") { // 是否是IOS可通过提前调用getSystemInfo知道
+        //   console.log("connectWifi=>success.ios");
+        //   wx.hideLoading()
+        //   that.setData({
+        //     error: that.data.error + "连接Wi-Fi失败。"
+        //   })
+        //   wx.onWifiConnected(result => {
+        //     console.log("onWifiConnected=>success." + result.wifi);
+        //     if (result.wifi.SSID === that.data.ssid) {
+        //       that.setData({
+        //         success: "连接成功",
+        //         error:""
+        //       })
+        //     } else {
+        //       that.setData({
+        //         error: that.data.error + "连接Wi-Fi失败。"
+        //       })
+        //     }
+        //   })
+        // } else {
+        //   wx.hideLoading()
+        //   that.setData({
+        //     success: "连接成功"
+        //   })
+        // }
       },
       fail: function (res) {
         console.log("connectWifi=>fail." + res.errMsg);

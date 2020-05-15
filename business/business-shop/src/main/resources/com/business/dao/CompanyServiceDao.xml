@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.CompanyServiceDao">
+
+    <resultMap type="com.business.entity.CompanyServiceEntity" id="BaseResultMap">
+        <result property="serviceId" column="service_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="class" column="class"/>
+        <result property="tag" column="tag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+	    `service_id`,
+	    `company_id`,
+	    (select name from company_info where company_info.company_id=company_id) as companyName,
+	    `class`,
+	    `tag`,
+	    `create_time`,
+	    `update_time`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from company_service
+        where service_id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.CompanyServiceEntity">
+        select
+        <include refid="Base_Column_List" />
+        from company_service
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by service_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from company_service
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CompanyServiceEntity">
+		insert into company_service(
+          `service_id`,
+          `company_id`,
+          `class`,
+          `tag`,
+          `create_time`,
+          `update_time`        )
+		values(
+          #{serviceId},
+          #{companyId},
+          #{class},
+          #{tag},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CompanyServiceEntity">
+        update company_service
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="class != null">
+                `class` = #{class},
+            </if>
+            <if test="tag != null">
+                `tag` = #{tag},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where service_id = #{serviceId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from company_service
+        where service_id = #{value}
+    </delete>
+    <delete id="deleteBatch">
+        delete from company_service where service_id in
+        <foreach item="serviceId" collection="array" open="(" separator="," close=")">
+            #{serviceId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,6 +1,10 @@
 package com.business.dao;
 
+import com.business.entity.CompanyFileVo;
 import com.business.entity.CompanyVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author 创建人：Vsoft
@@ -11,4 +15,12 @@ import com.business.entity.CompanyVo;
  */
 public interface ApiCompanyMapper extends BaseDao<CompanyVo> {
     CompanyVo queryByName(String name);
+
+    List<CompanyFileVo> queryFileList(@Param(value="companyId")Integer companyId);
+
+    Integer saveFile(@Param(value="fileList")List<CompanyFileVo> fileList);
+
+    Integer deleteFile(Integer id);
+
+    Integer deleteFileByCompany(Integer id);
 }

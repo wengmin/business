@@ -2,34 +2,33 @@
   <view class="add-form">
     <view class="form-item" bindtap="changeLogo">
       <view class="ttext" style="line-height:100rpx">公司logo</view>
-      <image class="img" src='{{company.logo?company.logo:"/static/images/icon_add.png"}}' mode="aspectFill"></image>
+      <image class="img" src='{{company.logo?company.logo:"/static/images/add.png"}}' mode="aspectFill"></image>
     </view>
     <view class="form-item">
       <view class="ttext"><text class="m">*</text>公司名称</view>
-      <input class="inputright" bindinput="bindinputValue" data-type="companyname" maxlength="50" placeholder="公司名称" value="{{company.name}}" />
+      <input class="inputright" bindinput="bindinputValue" data-type="name" maxlength="50" placeholder="公司名称" value="{{company.name}}" />
     </view>
     <view class="form-item">
-      <view class="ttext">公司描述</view>
-      <textarea class="input_n" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="请输入描述文字" value="{{company.introduction}}" />
+      <view class="ttext"><text class="m">*</text>公司描述</view>
+      <textarea class="input_n" maxlength="1000" bindinput="bindinputValue" data-type="introduction" placeholder="请输入描述文字" value="{{company.introduction}}" />
     </view>
     <view class="form-item">
-      <view class="ttext">
-        <text class="m">*</text>上传附件
-      </view>
-      <button class="btnright" bindtap="changePhoto">选择</button>
-      <view class="filelist" wx:for="{{company.file}}" wx:key="key">
-        <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
-          <video src="{{item.fileurl}}"></video>
-        </block>
-        <block wx:else>
-          <image src="{{item.fileurl}}" mode="aspectFit"></image>
-        </block>
-        <button class="delete">删除</button>
-      </view>
+      <view class="ttext">上传附件</view>
+      <button class="btnright" bindtap="changeImage"style="margin-left:10rpx;">选择图片</button>
+      <button class="btnright" bindtap="changeVideo"style="margin-left:10rpx;">选择视频</button>
+    </view>
+    <view class="filelist" wx:for="{{company.fileList}}" wx:key="key">
+      <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+        <video src="{{item.fileurl}}"></video>
+      </block>
+      <block wx:else>
+        <image src="{{item.fileurl}}" mode="aspectFit" bindtap="topicPreview" data-url='{{item.fileurl}}'></image>
+      </block>
+      <button class="delete" data-index="{{index}}" bindtap="deleteFile">删除</button>
     </view>
   </view>
   <view class="btns">
-    <button class="save" bindtap="nextOne">保存</button>
+    <button class="save" bindtap="saveCompany">保存</button>
   </view>
 </view>
 <wxs module="fileType">

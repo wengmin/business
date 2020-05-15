@@ -61,6 +61,15 @@ public class CardUserVo implements Serializable {
     private String qrCode;
     //
     private Date createTime;
+    private CompanyVo company;
+
+    public CompanyVo getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyVo company) {
+        this.company = company;
+    }
 
     public String getOpenid() {
         return openid;

@@ -37,49 +37,13 @@ public class UserController {
         List<UserEntity> userList = userService.queryList(query);
         int total = userService.queryTotal(query);
         for(UserEntity user : userList) {
-        	user.setUsername(Base64.decode(user.getUsername()));
         	user.setNickname(Base64.decode(user.getNickname()));
-        	user.setPromoterName(Base64.decode(user.getPromoterName()));
+        	user.setMobile(Base64.decode(user.getMobile()));
         }
         PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
     }
-    /**
-     * 查看推广列表
-     */
-    @RequestMapping("/promoterList")
-    public R promoterList(@RequestParam Map<String, Object> params) {
-        //查询列表数据
-        Query query = new Query(params);
-
-        List<UserEntity> userList = userService.queryList(query);
-        int total = userService.queryTotal(query);
-        PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
-        return R.ok().put("page", pageUtil);
-    }
-
-    /**
-     * 推广关系变更
-     * @param user
-     * @return
-     */
-    @RequestMapping("/updatePromoter")
-    public R updatePromoter(@RequestBody UserEntity user) {
-        Map map=new HashMap();
-        map.put("mobile",user.getMobile());
-        List<UserEntity> userList=userService.queryList(map);
-        if(userList.size()>0){
-            user.setPromoterId(userList.get(0).getId());
-            user.setPromoterName(userList.get(0).getUsername());
-        }
-        else{
-         return   R.error().put("error","该用户不存在");
-        }
-         userService.updatePromoter(user);
-        return R.ok().put("user", user);
-    }
-
     /**
      * 查看信息
      */
@@ -87,7 +51,8 @@ public class UserController {
     @RequiresPermissions("user:info")
     public R info(@PathVariable("id") Integer id) {
         UserEntity user = userService.queryObject(id);
-        user.setUsername(Base64.decode(user.getUsername()));
+        user.setNickname(Base64.decode(user.getNickname()));
+        user.setMobile(Base64.decode(user.getMobile()));
         return R.ok().put("user", user);
     }
 
@@ -108,7 +73,8 @@ public class UserController {
     @RequestMapping("/update")
     @RequiresPermissions("user:update")
     public R update(@RequestBody UserEntity user) {
-    	user.setUsername(Base64.encode(user.getUsername()));
+        user.setNickname(Base64.decode(user.getNickname()));
+        user.setMobile(Base64.decode(user.getMobile()));
         userService.update(user);
 
         return R.ok();
@@ -133,7 +99,8 @@ public class UserController {
 
         List<UserEntity> userList = userService.queryList(params);
         for(UserEntity user : userList) {
-        	user.setUsername(Base64.decode(user.getUsername()));
+            user.setNickname(Base64.decode(user.getNickname()));
+            user.setMobile(Base64.decode(user.getMobile()));
         }
         return R.ok().put("list", userList);
     }
@@ -165,13 +132,13 @@ public class UserController {
         if (userList != null && userList.size() != 0) {
             for (UserEntity userEntity : userList) {
                 LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-                map.put("USERNAME", Base64.decode(userEntity.getUsername()));
-                map.put("Nickname", Base64.decode(userEntity.getNickname()));
-                map.put("GENDER", userEntity.getGender() == 1 ? "男" : (userEntity.getGender() == 2 ? "女" : "未知"));
-                map.put("isReal", (userEntity.getIsReal().equals("1")? "未实名" :"实名"));
-                map.put("MOBILE", userEntity.getMobile());
-                map.put("realName", userEntity.getRealName());
-                map.put("idCard", userEntity.getIdCard());
+                //map.put("USERNAME", Base64.decode(userEntity.getUsername()));
+                //map.put("Nickname", Base64.decode(userEntity.getNickname()));
+                //map.put("GENDER", userEntity.getGender() == 1 ? "男" : (userEntity.getGender() == 2 ? "女" : "未知"));
+                //map.put("isReal", (userEntity.getIsReal().equals("1")? "未实名" :"实名"));
+                //map.put("MOBILE", userEntity.getMobile());
+                //map.put("realName", userEntity.getRealName());
+                //map.put("idCard", userEntity.getIdCard());
                 list.add(map);
             }
         }

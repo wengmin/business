@@ -47,8 +47,8 @@
     </view>
     <view class="item">
       <navigator url="/pages/company/add/add" class="a">
-        <text class="icon feedback"></text>
-        <text class="txt">开通企业</text>
+        <image src="/static/images/company.png" class="icon"></image>
+        <text class="txt">我的企业</text>
       </navigator>
     </view>
   </view>

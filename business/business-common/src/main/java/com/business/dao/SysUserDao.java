@@ -1,6 +1,5 @@
 package com.business.dao;
 
-import com.business.entity.MlsUserEntity2;
 import com.business.entity.SysUserEntity;
 import com.business.entity.UserWindowDto;
 
@@ -43,13 +42,5 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
      * @return
      */
     List<UserWindowDto> queryListByBean(UserWindowDto userWindowDto);
-    /**
-       *更新商户ID
-     */
-    int updateMerchantId(SysUserEntity t);
-    
-    int  mlsUseCount(String tel);
-    void insertMlsUse(MlsUserEntity2 t);
-    void updateMlsUse(MlsUserEntity2 t);
 }
 

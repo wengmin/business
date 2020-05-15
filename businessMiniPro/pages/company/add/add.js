@@ -11,13 +11,7 @@ Page({
       name: '',
       logo: '',
       introduction: '',
-      file: [{
-          "fileurl": "http://pic.emiaoweb.com/caiqing/20200430/163912713b9a0.png"
-        },
-        {
-          "fileurl": "http://pic.emiaoweb.com/caiqing/20200409/1132077727fb53.mp4"
-        }
-      ]
+      fileList: []
     },
 
   },
@@ -26,7 +20,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    let that = this
+    util.request(api.CompanyDetails).then(function(res) {
+      if (res.errno === 0) {
+        that.setData({
+          company: res.data
+        });
+      }
+    }).catch((err) => {
+      wx.showModal({
+        title: "服务连接出错",
+        content: "请稍后再访问"
+      });
+    });
   },
 
   /**
@@ -79,13 +85,13 @@ Page({
   },
 
 
-  changeLogo: function (e) {
+  changeLogo: function(e) {
     var that = this
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
+      success: function(res) {
         var tempFilePaths = res.tempFilePaths;
         wx.showLoading({
           title: '上传中',
@@ -102,7 +108,7 @@ Page({
             //和服务器约定的token, 一般也可以放在header中
             'X-Nideshop-Token': wx.getStorageSync('token')
           },
-          success: function (res) {
+          success: function(res) {
             let datas = JSON.parse(res.data)
             //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
             if (datas.errno === 0) {
@@ -123,14 +129,14 @@ Page({
             }
             wx.hideLoading()
           },
-          fail: function () {
+          fail: function() {
             wx.hideLoading()
           }
         })
       }
     })
   },
-  changePhoto: function(e) {
+  changeImage: function(e) {
     var that = this
     wx.chooseImage({
       count: 9, // 默认9
@@ -142,6 +148,56 @@ Page({
         var length = res.tempFilePaths.length; //总数
         var count = 0; //第几张
         that.uploadOneByOne(res.tempFilePaths, successUp, failUp, count, length);
+      }
+    })
+  },
+  changeVideo: function(e) {
+    var that = this
+    wx.chooseVideo({
+      sourceType: ['album', 'camera'],
+      maxDuration: 60,
+      camera: 'back',
+      success: function(res) {
+        var tempFilePath = res.tempFilePath;
+        wx.showLoading({
+          title: '上传中',
+        })
+        //这里是上传操作
+        wx.uploadFile({
+          url: api.Upload, //里面填写你的上传图片服务器API接口的路径 
+          filePath: tempFilePath, //要上传文件资源的路径 String类型 
+          name: 'file', //按个人情况修改，文件对应的 key,开发者在服务器端通过这个 key 可以获取到文件二进制内容，(后台接口规定的关于图片的请求参数)
+          header: {
+            "Content-Type": "multipart/form-data" //记得设置
+          },
+          formData: {
+            //和服务器约定的token, 一般也可以放在header中
+            'X-Nideshop-Token': wx.getStorageSync('token')
+          },
+          success: function(res) {
+            let resjson = JSON.parse(res.data)
+            //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
+            if (resjson.errno === 0) {
+              var obj = that.data.company.fileList;
+              obj.push({
+                "fileurl": resjson.data
+              })
+              that.setData({
+                "company.fileList": obj
+              });
+            } else {
+              wx.showToast({
+                title: '视频上传失败',
+                icon: 'success',
+                duration: 3000
+              })
+            }
+            wx.hideLoading()
+          },
+          fail: function() {
+            wx.hideLoading()
+          }
+        })
       }
     })
   },
@@ -159,12 +215,12 @@ Page({
         successUp++; //成功+1
         let resjson = JSON.parse(res.data)
         if (resjson.errno === 0) {
-          var obj = that.data.company.file;
+          var obj = that.data.company.fileList;
           obj.push({
             "fileurl": resjson.data
           })
           that.setData({
-            "company.file": obj
+            "company.fileList": obj
           });
         } else {
           failUp++; //失败+1
@@ -190,5 +246,99 @@ Page({
         }
       }
     })
-  }
+  },
+  deleteFile: function(e) {
+    let that = this
+    wx.showModal({
+      title: '删除附件',
+      content: '是否删除该附件',
+      success: function(res) {
+        if (res.confirm) {
+          var obj = that.data.company.fileList;
+          obj.splice(e.target.dataset.index, 1)
+          that.setData({
+            "company.fileList": obj
+          });
+        }
+      }
+    })
+  },
+  //预览图片
+  topicPreview: function(e) {
+    var that = this;
+    var url = e.currentTarget.dataset.url;
+    var images = new Array();
+    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+    for (var i = 0; i < that.data.company.fileList.length; i++) {
+      var str = that.data.company.fileList[i].fileurl
+      var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+      if (imagearr.indexOf(type) > -1) {
+        images.push(str)
+      }
+    }
+    wx.previewImage({
+      current: url, // 当前显示图片的http链接
+      urls: images // 需要预览的图片http链接列表
+    })
+  },
+  bindinputValue(event) {
+    switch (event.currentTarget.dataset.type) {
+      case "name":
+        this.setData({
+          "company.name": event.detail.value
+        });
+        break;
+      case "introduction":
+        this.setData({
+          "company.introduction": event.detail.value
+        });
+        break;
+    }
+  },
+  saveCompany() {
+    console.log(this.data.company)
+    let company = this.data.company;
+    if (company.name == '') {
+      util.showErrorToast('请输入公司名称');
+      return false;
+    }
+    if (company.introduction == '') {
+      util.showErrorToast('请输入公司描述');
+      return false;
+    }
+    wx.showLoading({
+      title: '提交中...',
+      mask: true
+    });
+    let that = this;
+    util.request(api.CompanySave, {
+      logo: company.logo,
+      name: company.name,
+      introduction: company.introduction,
+      fileList: company.fileList,
+    }, 'POST').then(function(res) {
+      if (res.errno === 0) {
+        //wx.hideLoading();
+        // wx.showToast({
+        //   title: '编辑成功'
+        // });
+        if (that.data.isFirst) {
+          that.setData({
+            lastpage: true,
+            fromThree: false
+          })
+        } else {
+          wx.redirectTo({
+            url: '/pages/card/index/index?param=',
+          })
+        }
+      } else {
+        util.showErrorToast(res.errmsg);
+      }
+    })
+    // .catch((err) => {
+    //   util.showErrorToast("api地址错误");
+    //   wx.hideLoading();
+    // });
+  },
 })

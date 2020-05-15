@@ -15,44 +15,27 @@ Page({
     isZiji: false,
     isCollectBtn: false,
     shareUserId: 0,
+    isComfileshowhide: false
   },
   onLoad: function(options) {
     wx.stopPullDownRefresh();
-    wx.showLoading({
-      title: '获取中0%',
-    });
     let that = this;
     that.setData({
       loginOpenid: wx.getStorageSync('token')
     });
-    wx.showLoading({
-      title: '获取中10%',
-    });
     if (typeof(options) != "undefined") {
       if (options.scene) {
-        wx.showLoading({
-          title: '获取中15%',
-        });
         let scene = '?' + decodeURIComponent(options.scene);
         that.setData({
           param: util.getQueryString(scene, 'param'),
         })
         app.globalData.param = that.data.param;
-        wx.showLoading({
-          title: '获取中20%',
-        });
       } else if (options.param != "undefined" && typeof(options.param) != "undefined") {
-        wx.showLoading({
-          title: '获取中25%',
-        });
         that.setData({
           param: options.param,
         })
         app.globalData.param = options.param;
       } else if (app.globalData.param != "undefined" && typeof(app.globalData.param) != "undefined" && app.globalData.param != '') {
-        wx.showLoading({
-          title: '获取中30%',
-        });
         that.setData({
           param: app.globalData.param,
         })
@@ -115,21 +98,12 @@ Page({
     }
   },
   getOwnCardInfo: function() {
-    wx.showLoading({
-      title: '获取中50%',
-    });
     let that = this;
     if (that.data.loginOpenid) {
-      wx.showLoading({
-        title: '获取中55%',
-      });
       util.request(api.CardInfoByOpenID, {
         openid: that.data.loginOpenid
       }).then(function(res) {
         if (res.errno === 0) {
-          wx.showLoading({
-            title: '获取中66%',
-          });
           if (res.data.realname) {
             that.setData({
               isNewUser: false,
@@ -142,59 +116,35 @@ Page({
             mycards: res.data,
           });
           if (!that.data.param || that.data.param == res.data.param) {
-            wx.showLoading({
-              title: '获取中70%',
-            });
             that.setData({
               param: res.data.param,
               cards: res.data,
               isZiji: true
             });
-            wx.showLoading({
-              title: '获取中100%',
-            });
             wx.hideLoading();
           } else {
-            wx.showLoading({
-              title: '获取中75%',
-            });
             that.getCardInfo()
           }
         } else {
           console.log("that.data.loginOpenid:" + that.data.loginOpenid + "=>errno:" + res.errno + "=>errmsg:" + res.errmsg)
-          // wx.showLoading({
-          //   title: '获取中67%',
-          // });
           // if (res.errmsg == "未注册名片") {
           //   wx.redirectTo({
           //     url: '/pages/card/adduser/adduser',
           //   })
           // }
-          wx.showLoading({
-            title: '获取中69%',
-          });
           that.getCardInfo()
         }
       }).catch((err) => {
-        wx.showLoading({
-          title: '获取中98%',
-        });
         that.getCardInfo()
-        console.log(err)
+        console.log("catch" + err)
       });
     } else {
-      wx.showLoading({
-        title: '获取中60%',
-      });
       that.getCardInfo()
     }
   },
   getCardInfo: function() {
     let that = this;
     if (!that.data.param) {
-      wx.showLoading({
-        title: '获取中78%',
-      });
       that.setData({
         param: '4~6CkgY',
       })
@@ -202,44 +152,26 @@ Page({
     util.request(api.CardInfoByParam, {
       param: that.data.param
     }).then(function(res) {
-      wx.showLoading({
-        title: '获取中90%',
-      });
       if (res.errno === 0) {
-        wx.showLoading({
-          title: '获取中91%',
-        });
-        wx.showLoading({
-          title: '获取中92%',
-        });
         if (res.data.qrCode) {
           res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
         }
         that.setData({
           cards: res.data
         });
-        wx.showLoading({
-          title: '获取中100%',
-        });
         wx.hideLoading();
         that.isCollect()
         that.record()
       } else {
-        wx.showLoading({
-          title: '获取中99%',
-        });
         util.showErrorToast(res.errmsg);
       }
     }).catch((err) => {
-      wx.showLoading({
-        title: '获取中97%',
-      });
       wx.hideLoading();
       wx.showModal({
         title: "服务连接出错",
         content: "请卸载小程序，稍后再访问"
       });
-    });;
+    });
   },
   copyText: function(e) {
     wx.setClipboardData({
@@ -416,5 +348,38 @@ Page({
       param: ''
     })
     this.getOwnCardInfo()
+  },
+  comfileshowhide: function() {
+    if (this.data.isComfileshowhide) {
+      this.setData({
+        isComfileshowhide: false
+      })
+    } else {
+      this.setData({
+        isComfileshowhide: true
+      })
+    }
+  },
+  //预览图片
+  topicPreview: function(e) {
+    var that = this;
+    var url = e.currentTarget.dataset.url;
+    var images = new Array();
+    if (typeof(e.currentTarget.dataset.type) != "undefined") {
+      var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+      for (var i = 0; i < that.data.cards.company.fileList.length; i++) {
+        var str = that.data.cards.company.fileList[i].fileurl
+        var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+        if (imagearr.indexOf(type) > -1) {
+          images.push(str)
+        }
+      }
+    } else {
+      images.push(url)
+    }
+    wx.previewImage({
+      current: url, // 当前显示图片的http链接
+      urls: images // 需要预览的图片http链接列表
+    })
   }
 })

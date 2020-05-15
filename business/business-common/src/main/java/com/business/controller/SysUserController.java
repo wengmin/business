@@ -2,7 +2,6 @@ package com.business.controller;
 
 import com.business.annotation.SysLog;
 import com.business.dao.SysUserDao;
-import com.business.entity.MlsUserEntity2;
 import com.business.entity.SysUserEntity;
 import com.business.service.SysUserRoleService;
 import com.business.service.SysUserService;
@@ -118,25 +117,13 @@ public class SysUserController extends AbstractController {
     @RequiresPermissions("sys:user:save")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
-        int count=sysUserDao.mlsUseCount(user.getMobile());
-        if(count>0) {
-        	return R.error("手机号已被注册");
-        }
+        //int count=sysUserDao.mlsUseCount(user.getMobile());
+        //if(count>0) {
+        //	return R.error("手机号已被注册");
+        //}
         user.setCreateUserId(getUserId());
         sysUserService.save(user);
-        sysUserDao.updateMerchantId(user);
-        
-        MlsUserEntity2 mlsUserVo=new MlsUserEntity2();
-        mlsUserVo.setUserTel(user.getMobile());
-        mlsUserVo.setFx(user.getFx());
-        mlsUserVo.setFx1(user.getFx1());
-        mlsUserVo.setFx2(user.getFx2());
-        mlsUserVo.setPfx(user.getPfx());
-        mlsUserVo.setFid(-1L);
-        mlsUserVo.setRootId(user.getUserId());
-        mlsUserVo.setMerchantId(user.getUserId());
-        mlsUserVo.setAllShow(user.getAllShow());
-        sysUserDao.insertMlsUse(mlsUserVo);
+
         return R.ok();
     }
 
@@ -151,14 +138,6 @@ public class SysUserController extends AbstractController {
 
         user.setCreateUserId(getUserId());
         sysUserService.update(user);
-        MlsUserEntity2 mlsUserVo=new MlsUserEntity2();
-        mlsUserVo.setFx(user.getFx());
-        mlsUserVo.setFx1(user.getFx1());
-        mlsUserVo.setFx2(user.getFx2());
-        mlsUserVo.setPfx(user.getPfx());
-        mlsUserVo.setRootId(user.getUserId());
-        mlsUserVo.setAllShow(user.getAllShow());
-        sysUserDao.updateMlsUse(mlsUserVo);
         
         return R.ok();
     }

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.CompanyStaffDao">
+
+    <resultMap type="com.business.entity.CompanyStaffEntity" id="BaseResultMap">
+        <result property="staffId" column="staff_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="sysUserId" column="sys_user_id"/>
+        <result property="cardId" column="card_id"/>
+        <result property="isAdmin" column="is_admin"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="company" javaType="com.business.entity.CompanyEntity">
+            <id property="companyId" column="company_id"/>
+            <result property="name" column="name"/>
+            <result property="province" column="province"/>
+            <result property="city" column="city"/>
+            <result property="county" column="county"/>
+            <result property="address" column="address"/>
+        </association>
+        <association property="card" javaType="com.business.entity.CardEntity">
+            <id property="cardId" column="card_id"/>
+            <result property="realname" column="realname"/>
+            <result property="photo" column="photo"/>
+            <result property="position" column="position"/>
+            <result property="wechat" column="wechat"/>
+            <result property="email" column="email"/>
+            <result property="profile" column="profile"/>
+            <result property="province" column="province"/>
+            <result property="city" column="city"/>
+            <result property="county" column="county"/>
+            <result property="address" column="address"/>
+            <result property="telephone" column="telephone"/>
+        </association>
+        <association property="sysUser" javaType="com.business.entity.SysUserEntity">
+            <id property="userId" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="email" column="email"/>
+            <result property="mobile" column="mobile"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+	    `staff_id`,
+	    `company_id`,
+	    `sys_user_id`,
+	    `company_staff.card_id`,
+	    `is_admin`,
+	    `company_staff.create_time`,
+	    `company_staff.update_time`,
+	    `company_info.name as name`,`realname`,
+	    `card_user.photo`,
+	    `card_user.position`,
+	    `card_user.wechat`,
+	    `card_user.email`,
+	    `card_user.profile`,
+	    `card_user.province`,
+	    `card_user.city`,
+	    `card_user.county`,
+	    `card_user.address`,
+	    `card_user.telephone`,
+	    `sys_user.username`,
+	    `sys_user.password`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from company_staff
+        left join card_user on company_staff.card_id=card_user.card_id
+        left join company_info on company_staff.company_id=company_info.company_id
+        left join sys_user on company_staff.sys_user_id=sys_user.user_id
+        where staff_id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from company_staff
+        left join card_user on company_staff.card_id=card_user.card_id
+        left join company_info on company_staff.company_id=company_info.company_id
+        left join sys_user on company_staff.sys_user_id=sys_user.user_id
+        WHERE 1=1
+        <if test="companyName != null and companyName.trim() != ''">
+            AND company_info.name LIKE concat('%',#{companyName},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by staff_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from company_staff
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CompanyStaffEntity">
+		insert into company_staff(
+          `staff_id`,
+          `company_id`,
+          `sys_user_id`,
+          `card_id`,
+          `is_admin`,
+          `create_time`,
+          `update_time`        )
+		values(
+          #{staffId},
+          #{companyId},
+          #{sysUserId},
+          #{cardId},
+          #{isAdmin},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.business.entity.CompanyStaffEntity">
+        update company_staff
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="sysUserId != null">
+                `sys_user_id` = #{sysUserId},
+            </if>
+            <if test="cardId != null">
+                `card_id` = #{cardId},
+            </if>
+            <if test="isAdmin != null">
+                `is_admin` = #{isAdmin},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where id = #{staffId}
+    </update>
+
+    <delete id="delete">
+        delete from company_staff
+        where staff_id = #{value}
+    </delete>
+    <delete id="deleteBatch">
+        delete from company_staff where staff_id in
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </delete>
+</mapper>

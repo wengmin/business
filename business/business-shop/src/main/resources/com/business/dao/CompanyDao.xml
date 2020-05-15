@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.CompanyDao">
+
+    <resultMap type="com.business.entity.CompanyEntity" id="BaseResultMap">
+        <result property="companyId" column="company_id"/>
+        <result property="name" column="name"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="county" column="county"/>
+        <result property="address" column="address"/>
+        <result property="phone" column="phone"/>
+        <result property="logo" column="logo"/>
+        <result property="scale" column="scale"/>
+        <result property="trade" column="trade"/>
+        <result property="introduction" column="introduction"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+	    `company_id`,
+	    `name`,
+	    `province`,
+	    `city`,
+	    `county`,
+	    `address`,
+	    `phone`,
+	    `logo`,
+	    `scale`,
+	    `trade`,
+	    `introduction`,
+	    `create_time`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from company_info
+        where company_id = #{id}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.CompanyEntity">
+        select
+        <include refid="Base_Column_List" />
+        from company_info
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by company_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from company_info
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CompanyEntity">
+		insert into company_info(
+          `company_id`,
+          `name`,
+          `province`,
+          `city`,
+          `county`,
+          `address`,
+          `phone`,
+          `logo`,
+          `scale`,
+          `trade`,
+          `introduction`,
+          `create_time`,
+          `update_time`          )
+		values(
+          #{companyId},
+          #{name},
+          #{province},
+          #{city},
+          #{county},
+          #{address},
+          #{phone},
+          #{logo},
+          #{scale},
+          #{trade},
+          #{introduction},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CompanyEntity">
+        update company_info
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="province != null">
+                `province` = #{province},
+            </if>
+            <if test="city != null">
+                `city` = #{city},
+            </if>
+            <if test="county != null">
+                `county` = #{county},
+            </if>
+            <if test="address != null">
+                `address` = #{address},
+            </if>
+            <if test="phone != null">
+                `phone` = #{phone},
+            </if>
+            <if test="logo != null">
+                `logo` = #{logo},
+            </if>
+            <if test="scale != null">
+                `scale` = #{scale},
+            </if>
+            <if test="trade != null">
+                `trade` = #{trade},
+            </if>
+            <if test="introduction != null">
+                `introduction` = #{introduction},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where company_id = #{companyId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from company_info
+        where company_id = #{value}
+    </delete>
+    <delete id="deleteBatch">
+        delete from company_info where company_id in
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </delete>
+</mapper>

@@ -16,11 +16,11 @@
     </resultMap>
 
 	<select id="queryObject" resultMap="feedbackMap">
-		select * from customer_feedback where msg_id = #{value}
+		select * from member_feedback where msg_id = #{value}
 	</select>
 
 	<select id="queryList" resultMap="feedbackMap">
-		select * from customer_feedback
+		select * from member_feedback
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -35,11 +35,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from customer_feedback 
+		select count(*) from member_feedback 
 	</select>
 	 
 	<insert id="save" parameterType="com.business.entity.FeedbackVo" useGeneratedKeys="true" keyProperty="msgId">
-		insert into customer_feedback(
+		insert into member_feedback(
 			`user_id`,
 			`user_name`,
 			`mobile`,
@@ -59,7 +59,7 @@
 	</insert>
 	 
 	<update id="update" parameterType="com.business.entity.FeedbackVo">
-		update customer_feedback
+		update member_feedback
 		<set>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="userName != null">`user_name` = #{userName}, </if>
@@ -73,11 +73,11 @@
 	</update>
 	
 	<delete id="delete">
-		delete from customer_feedback where msg_id = #{value}
+		delete from member_feedback where msg_id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from customer_feedback where msg_id in 
+		delete from member_feedback where msg_id in 
 		<foreach item="msgId" collection="array" open="(" separator="," close=")">
 			#{msgId}
 		</foreach>

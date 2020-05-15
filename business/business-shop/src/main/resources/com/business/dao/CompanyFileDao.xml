@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.CompanyFileDao">
+
+    <resultMap type="com.business.entity.CompanyFileEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="fileurl" column="fileurl"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+	    `id`,
+	    `company_id`,
+	    (select name from company_info where company_info.company_id=company_file.company_id) as companyName,
+	    `fileurl`,
+	    `create_time`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from company_file
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.CompanyFileEntity">
+        select
+        <include refid="Base_Column_List" />
+        from company_file
+        WHERE 1=1
+        <if test="companyName != null and companyName.trim() != ''">
+            AND companyId in (select company_id from company_info where companyName LIKE concat('%',#{companyName},'%'))
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from company_file
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CompanyFileEntity">
+		insert into company_file(
+          `id`,
+          `company_id`,
+          `fileurl`,
+          `create_time`        )
+		values(
+          #{id},
+          #{companyId},
+          #{fileurl},
+          #{createTime}         )
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CompanyFileEntity">
+        update company_file
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="fileurl != null">
+                `fileurl` = #{fileurl},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from company_file
+        where id = #{value}
+    </delete>
+    <delete id="deleteBatch">
+        delete from company_file where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

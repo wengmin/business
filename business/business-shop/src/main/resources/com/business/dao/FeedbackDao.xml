@@ -24,7 +24,7 @@
 			`content`,
 			`add_time`,
 			`status`
-		from nideshop_feedback
+		from member_feedback
 		where msg_id = #{id}
 	</select>
 
@@ -38,7 +38,7 @@
 		`content`,
 		`add_time`,
 		`status`
-		from nideshop_feedback
+		from member_feedback
 		WHERE 1=1 
 		<if test="name != null and name.trim() != ''">
 			AND user_name LIKE concat('%',#{name},'%')
@@ -57,7 +57,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from nideshop_feedback
+		select count(*) from member_feedback
 		WHERE 1=1 
         <if test="name != null and name.trim() != ''">
             AND user_name LIKE concat('%',#{name},'%')
@@ -65,7 +65,7 @@
 	</select>
 	 
 	<insert id="save" parameterType="com.business.entity.FeedbackEntity" useGeneratedKeys="true" keyProperty="msgId">
-		insert into nideshop_feedback(
+		insert into member_feedback(
 			`user_id`,
 			`user_name`,
 			`mobile`,
@@ -86,7 +86,7 @@
 	</insert>
 	 
 	<update id="update" parameterType="com.business.entity.FeedbackEntity">
-		update nideshop_feedback 
+		update member_feedback 
 		<set>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="userName != null">`user_name` = #{userName}, </if>
@@ -100,11 +100,11 @@
 	</update>
 	
 	<delete id="delete">
-		delete from nideshop_feedback where msg_id = #{value}
+		delete from member_feedback where msg_id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from nideshop_feedback where msg_id in 
+		delete from member_feedback where msg_id in 
 		<foreach item="msgId" collection="array" open="(" separator="," close=")">
 			#{msgId}
 		</foreach>

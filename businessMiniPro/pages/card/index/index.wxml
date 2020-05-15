@@ -3,10 +3,10 @@
   <view class="cardsbg">
     <view class="cards_zyz">
       <view class="left">
-        <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill"></image>
+        <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill" bindtap="topicPreview" data-url='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'></image>
       </view>
       <view class="right">
-        <view class="comname fontover">{{cards.companyName}}</view>
+        <view class="comname fontover">{{cards.company.name}}</view>
         <view class="infobg">
           <view class="name fontover">{{cards.realname}}</view>
           <view class="position fontover">{{cards.position}}</view>
@@ -84,6 +84,29 @@
     </view>
   </view>
 </view>
+<view style="padding:20rpx;"  wx:if="{{cards.company.introduction}}">
+  <view class="itemtitle">
+    <image src="/static/images/icon/business.png" class="icon"></image>
+    <text>我的企业</text>
+  </view>
+  <view class="itembody">
+    <view class="comtop">
+      <image src="{{cards.company.logo}}" data-url='{{cards.company.logo}}' bindtap="topicPreview"></image>
+      <text>{{cards.company.name}}</text>
+      <button bindtap="comfileshowhide">{{isComfileshowhide?"关闭介绍":"打开介绍"}}</button>
+      <!-- <navigator hover-class="none" url="/pages/company/index/index" open-type="reLaunch">进入官网</navigator> -->
+    </view>
+    <view wx:if="{{isComfileshowhide}}" class="comdesc">{{cards.company.introduction}}</view>
+  </view>
+  <view wx:if="{{isComfileshowhide}}" wx:for="{{cards.company.fileList}}" wx:key="key">
+    <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+      <video src="{{item.fileurl}}" class="comfile"></video>
+    </block>
+    <block wx:else>
+      <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
+    </block>
+  </view>
+</view>
 <view class='imagePathBox' hidden="{{maskHidden == false}}">
   <view class="qrcodebody">
     <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
@@ -102,3 +125,17 @@
   <view>销擎，您的销售增长引擎</view>
 </view>
 <view style="height:100rpx;"></view>
+<wxs module="fileType">
+  function getType(str) {
+    var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+    var videoarr = ["mp4"];
+    if (imagearr.indexOf(type) > -1)
+      return "image";
+    else if (videoarr.indexOf(type) > -1)
+      return "video";
+    else
+      return "image"
+  }
+  module.exports.getType = getType;
+</wxs>

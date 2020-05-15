@@ -6,6 +6,7 @@ module.exports = {
   AuthLoginByWeixin: NewApiRootUrl + 'auth/login_by_weixin', //微信登录
   AuthLoginBySilence: NewApiRootUrl + 'auth/loginBySilence', //微信登录(无感知)
   Upload: NewApiRootUrl + 'upload/image',
+  MacrosByType: NewApiRootUrl + 'macro/queryMacrosByValue',
 
   CardInfoByParam: NewApiRootUrl + 'card/cardUserByParam',
   CardInfoByOpenID: NewApiRootUrl + 'card/cardUserByOpenId', 
@@ -22,6 +23,8 @@ module.exports = {
   CardDeleteCollect: NewApiRootUrl + 'card/deleteCollect',
   CardIsCollect: NewApiRootUrl + 'card/isCollect',
 
+  CompanyDetails: NewApiRootUrl + 'company/detail',
+  CompanySave: NewApiRootUrl + 'company/save',
 
   CreateQrCodeByWifi: NewApiRootUrl + 'card/createQrCodeByWifi',
 };

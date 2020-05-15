@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.CompanyRoomDao">
+
+    <resultMap type="com.business.entity.CompanyRoomEntity" id="BaseResultMap">
+        <result property="roomId" column="room_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="name" column="name"/>
+        <result property="tung" column="tung"/>
+        <result property="floor" column="floor"/>
+        <result property="wifiname" column="wifiname"/>
+        <result property="wifipass" column="wifipass"/>
+        <result property="wifimac" column="wifimac"/>
+        <result property="qrcode" column="qrcode"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+	    `room_id`,
+	    `company_id`,
+	    (select name from company_info where company_info.company_id=company_room.company_id) as companyName,
+	    `name`,
+	    `tung`,
+	    `floor`,
+	    `wifiname`,
+	    `wifipass`,
+	    `wifimac`,
+	    `qrcode`,
+	    `create_time`,
+	    `update_time`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from company_room
+        where room_id = #{id}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.CompanyRoomEntity">
+        select
+        <include refid="Base_Column_List" />
+        from company_room
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="companyName != null and companyName.trim() != ''">
+            AND company_id in (select company_id from company_info where name LIKE concat('%',#{companyName},'%'))
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by room_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from company_room
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CompanyRoomEntity">
+		insert into company_room(
+          `room_id`,
+          `company_id`,
+          `name`,
+          `tung`,
+          `floor`,
+          `wifiname`,
+          `wifipass`,
+          `wifimac`,
+          `qrcode`,
+          `create_time`,
+          `update_time`        )
+		values(
+          #{roomId},
+          #{companyId},
+          #{name},
+          #{tung},
+          #{floor},
+          #{wifiname},
+          #{wifipass},
+          #{wifimac},
+          #{qrcode},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CompanyRoomEntity">
+        update company_room
+        <set>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="tung != null">
+                `tung` = #{tung},
+            </if>
+            <if test="floor != null">
+                `floor` = #{floor},
+            </if>
+            <if test="wifiname != null">
+                `wifiname` = #{wifiname},
+            </if>
+            <if test="wifipass != null">
+                `wifipass` = #{wifipass},
+            </if>
+            <if test="wifimac != null">
+                `wifimac` = #{wifimac},
+            </if>
+            <if test="qrcode != null">
+                `qrcode` = #{qrcode},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where room_id = #{roomId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from company_room
+        where room_id = #{value}
+    </delete>
+    <delete id="deleteBatch">
+        delete from company_room where room_id in
+        <foreach item="roomId" collection="array" open="(" separator="," close=")">
+            #{roomId}
+        </foreach>
+    </delete>
+</mapper>

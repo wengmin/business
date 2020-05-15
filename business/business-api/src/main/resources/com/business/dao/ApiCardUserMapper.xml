@@ -30,10 +30,10 @@
 	    `card_id`,
 	    `user_id`,
 	    `company_id`,
-	    (select name from customer_company where  customer_company.company_id=card_user.company_id) as companyName,
-	    (select avatar from customer_user where  customer_user.user_id=card_user.user_id) as avatar,
-	    (select mobile from customer_user where  customer_user.user_id=card_user.user_id) as mobile,
-	    (select openid from customer_user where  customer_user.user_id=card_user.user_id) as openid,
+	    (select name from company_info where  company_info.company_id=card_user.company_id) as companyName,
+	    (select avatar from member_user where  member_user.user_id=card_user.user_id) as avatar,
+	    (select mobile from member_user where  member_user.user_id=card_user.user_id) as mobile,
+	    (select openid from member_user where  member_user.user_id=card_user.user_id) as openid,
 	    `realname`,
 	    `photo`,
 	    `position`,
@@ -53,7 +53,7 @@
         select
         <include refid="Base_Column_List"/>
         from card_user
-        where user_id=(select user_id from customer_user where openid=#{openId})
+        where user_id=(select user_id from member_user where openid=#{openId})
     </select>
 
     <select id="queryByUserId" resultMap="BaseResultMap">

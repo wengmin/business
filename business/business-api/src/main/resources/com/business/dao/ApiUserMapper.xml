@@ -32,7 +32,7 @@
 	<select id="queryByOpenId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from customer_user
+		from member_user
 		where 1 = 1
 		<if test="openId != null">
 			and `openid` = #{openId}
@@ -42,7 +42,7 @@
 	<select id="queryByMobile" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from customer_user
+		from member_user
 		where 1 = 1
 		<if test="mobile != null">
 			and `mobile` = #{mobile}
@@ -52,14 +52,14 @@
 	<select id="queryObject" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from customer_user
+		from member_user
 		where user_id = #{value}
 	</select>
 
 	<select id="queryList" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from customer_user
+		from member_user
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
@@ -78,7 +78,7 @@
 	</select>
 
 	<select id="queryTotal" resultType="int">
-		select count(*) from customer_user
+		select count(*) from member_user
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
@@ -86,11 +86,11 @@
 	</select>
 
 	<select id="queryOpenidByUserId" resultType="string">
-		select openid from customer_user where user_id = #{value}
+		select openid from member_user where user_id = #{value}
 	</select>
 
 	<insert id="save" parameterType="com.business.entity.UserVo" useGeneratedKeys="true" keyProperty="userId">
-		insert into customer_user(
+		insert into member_user(
 	    `openid`,
 	    `mobile`,
 	    `nickname`,
@@ -113,7 +113,7 @@
 	</insert>
 
 	<update id="update" parameterType="com.business.entity.UserVo">
-		update customer_user
+		update member_user
 		<set>
 			<if test="openid != null">
 				`openid` = #{openid},
@@ -147,7 +147,7 @@
 	</update>
 
 	<update id="updateByOpenId" parameterType="com.business.entity.UserVo">
-		update customer_user
+		update member_user
 		<set>
 			<if test="mobile != null">
 				`mobile` = #{mobile},
@@ -178,11 +178,11 @@
 	</update>
 
 	<delete id="delete">
-		delete from customer_user where user_id = #{value}
+		delete from member_user where user_id = #{value}
 	</delete>
 
 	<delete id="deleteBatch">
-		delete from customer_user where user_id in
+		delete from member_user where user_id in
 		<foreach item="userId" collection="array" open="(" separator="," close=")">
 			#{userId}
 		</foreach>

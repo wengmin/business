@@ -16,11 +16,11 @@
     </resultMap>
 
     <select id="queryObject" resultMap="BaseResultMap">
-		select * from customer_company where company_id = #{value}
+		select * from company_info where company_id = #{value}
 	</select>
 
     <select id="queryByName" resultMap="BaseResultMap">
-		select * from customer_company where name = #{value}
+		select * from company_info where name = #{value}
 	</select>
 
     <select id="queryList" resultType="com.business.entity.CompanyVo">
@@ -34,7 +34,7 @@
         `trade`,
         `introduction`,
         `create_time`
-        from customer_company
+        from company_info
         WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -53,7 +53,7 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-        select count(*) from customer_company
+        select count(*) from company_info
         WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -61,7 +61,7 @@
     </select>
 
     <insert id="save" parameterType="com.business.entity.CompanyVo" useGeneratedKeys="true" keyProperty="companyId">
-		insert into customer_company(
+		insert into company_info(
         `name`,
         `address`,
         `phone`,
@@ -82,7 +82,7 @@
 	</insert>
 
     <update id="update" parameterType="com.business.entity.CompanyVo">
-        update customer_company
+        update company_info
         <set>
             <if test="name != null">
                 `name` = #{name},
@@ -113,13 +113,51 @@
     </update>
 
     <delete id="delete">
-		delete from customer_company where company_id = #{value}
+		delete from company_info where company_id = #{value}
 	</delete>
 
     <delete id="deleteBatch">
-        delete from customer_company where user_id in
+        delete from company_info where user_id in
         <foreach item="companyId" collection="array" open="(" separator="," close=")">
             #{companyId}
         </foreach>
     </delete>
+
+
+    <select id="queryFileList" resultType="com.business.entity.CompanyFileVo">
+        select
+        `id`,
+        `company_id`,
+        `fileurl`,
+        `create_time`
+        from company_file
+        WHERE 1=1
+        <if test="companyId != null">
+            AND company_id = #{companyId}
+        </if>
+        order by create_time desc
+    </select>
+
+    <insert id="saveFile" parameterType="java.util.List">
+        insert into company_file(
+        `company_id`,
+        `fileurl`,
+        `create_time` )
+        values
+        <foreach collection="fileList" item="item" index="index" separator=",">
+            (
+            #{item.companyId},
+            #{item.fileurl},
+            now()
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteFile">
+		delete from company_file where id = #{value}
+	</delete>
+
+    <delete id="deleteFileByCompany">
+		delete from company_file where company_id = #{value}
+	</delete>
 </mapper>

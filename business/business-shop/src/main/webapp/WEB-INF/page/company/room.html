@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.companyName" @on-enter="query" placeholder="企业名称"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.name" @on-enter="query" placeholder="房间号"/>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                #if($shiro.hasPermission("companyroom:save"))
+                <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+                #end
+                #if($shiro.hasPermission("companyroom:update"))
+                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                #end
+                #if($shiro.hasPermission("companyroom:delete"))
+                <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                #end
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="companyRoom" :rules="ruleValidate" :label-width="80">
+            <Form-item label="选择企业" prop="companyId" style="width: 268px;">
+                <i-select v-model="companyRoom.companyId" filterable label-in-value>
+                    <i-option v-for="item in companyList" :value="item.companyId"
+                              :key="item.companyId">{{item.name}}
+                    </i-option>
+                </i-select>
+            </Form-item>
+            <Form-item label="房间号" prop="name">
+                <i-input v-model="companyRoom.name" placeholder=""/>
+            </Form-item>
+            <Form-item label="栋" prop="tung">
+                <i-input v-model="companyRoom.tung" placeholder=""/>
+            </Form-item>
+            <Form-item label="楼层" prop="floor">
+                <i-input v-model="companyRoom.floor" placeholder=""/>
+            </Form-item>
+            <Form-item label="wifi名称" prop="wifiname">
+                <i-input v-model="companyRoom.wifiname" placeholder=""/>
+            </Form-item>
+            <Form-item label="wifi密码" prop="wifipass">
+                <i-input v-model="companyRoom.wifipass" placeholder=""/>
+            </Form-item>
+            <Form-item label="mac地址" prop="wifimac">
+                <i-input v-model="companyRoom.wifimac" placeholder=""/>
+            </Form-item>
+            <Form-item label="二维码" prop="qrcode">
+                <i-input v-model="companyRoom.qrcode" placeholder=""/>
+            </Form-item>
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/company/room.js?_${date.systemTime}"></script>
+</body>
+</html>

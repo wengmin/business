@@ -1,15 +1,14 @@
 package com.business.resolver;
 
+import com.business.annotation.APPLoginUser;
+import com.business.entity.UserVo;
+import com.business.interceptor.AuthorizationInterceptor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import com.business.annotation.APPLoginUser;
-import com.business.entity.MlsUserEntity2;
-import com.business.interceptor.AuthorizationInterceptor;
 
 /**
  * 有@LoginUser注解的方法参数，注入当前登录用户
@@ -21,14 +20,14 @@ import com.business.interceptor.AuthorizationInterceptor;
 public class AppLoginUserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().isAssignableFrom(MlsUserEntity2.class) && parameter.hasParameterAnnotation(APPLoginUser.class);
+        return parameter.getParameterType().isAssignableFrom(UserVo.class) && parameter.hasParameterAnnotation(APPLoginUser.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer container,
                                   NativeWebRequest request, WebDataBinderFactory factory) throws Exception {
         //获取用户ID
-    	MlsUserEntity2 user =(MlsUserEntity2) request.getAttribute(AuthorizationInterceptor.LOGIN_USER_KEY, RequestAttributes.SCOPE_REQUEST);
+        UserVo user =(UserVo) request.getAttribute(AuthorizationInterceptor.LOGIN_USER_KEY, RequestAttributes.SCOPE_REQUEST);
         if (user == null) {
             return null;
         }

@@ -100,6 +100,11 @@ public class ApiCardController extends ApiBaseAction {
             if (entity == null) {
                 return toResponsFail("未注册名片");
             }
+
+            CompanyVo company = companyService.queryObject(entity.getCompanyId());
+            company.setFileList(companyService.queryFileList(entity.getCompanyId()));
+            entity.setCompany(company);
+
             entity.setParam(param);
             entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
             entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
@@ -128,6 +133,11 @@ public class ApiCardController extends ApiBaseAction {
             if (entity == null) {
                 return toResponsFail("未注册名片");
             }
+
+            CompanyVo company = companyService.queryObject(entity.getCompanyId());
+            company.setFileList(companyService.queryFileList(entity.getCompanyId()));
+            entity.setCompany(company);
+
             entity.setParam(getShareParam(entity.getUserId(), entity.getOpenid()));
             entity.setMobile(!StringUtils.isNullOrEmpty(entity.getMobile()) ? Base64.decode(entity.getMobile()) : "");
             entity.setRealname(!StringUtils.isNullOrEmpty(entity.getRealname()) ? Base64.decode(entity.getRealname()) : "");
@@ -148,17 +158,21 @@ public class ApiCardController extends ApiBaseAction {
     public Object saveCardUser(@LoginUser UserVo loginUser) {
         JSONObject parameterJson = this.getJsonRequest();
         if (null != parameterJson) {
-            Integer companyId = 0;
+            CardUserVo entity = cardUserService.queryByUserId(loginUser.getUserId());
+
             String companyname = parameterJson.getString("companyName");
             companyname = companyname != null ? companyname.trim() : "";
-            CompanyVo company = companyService.queryByName(companyname);
+            CompanyVo company = companyService.queryObject(entity.getCompanyId());
             if (company != null) {
-                companyId = company.getCompanyId();
+                if (company.getName() != companyname) {
+                    company.setName(companyname);
+                    companyService.update(company);
+                }
             } else {
                 company = new CompanyVo();
                 company.setName(companyname);
                 companyService.save(company);
-                companyId = company.getCompanyId();
+                entity.setCompanyId(company.getCompanyId());
             }
 
             String mobile = parameterJson.getString("mobile");
@@ -183,7 +197,6 @@ public class ApiCardController extends ApiBaseAction {
                 userService.update(user);
             }
 
-            CardUserVo entity = cardUserService.queryByUserId(loginUser.getUserId());
             Boolean isnew = true;
             if (null == entity) {
                 entity = new CardUserVo();
@@ -191,7 +204,6 @@ public class ApiCardController extends ApiBaseAction {
                 isnew = false;
             }
             entity.setUserId(loginUser.getUserId());
-            entity.setCompanyId(companyId);
             entity.setRealname(realName != null ? Base64.encode(realName.trim()) : "");
             entity.setPhoto(photo != null ? photo.trim() : "");
             entity.setPosition(position != null ? position.trim() : "");
@@ -227,7 +239,7 @@ public class ApiCardController extends ApiBaseAction {
                 return toResponsFail("参数错误");
             }
             String accessToken = tokenService.getAccessToken();
-            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param="+param, "pages/card/index/index", refUserId.toString());
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index/index", refUserId.toString());
             if (!StringUtils.isNullOrEmpty(imgStr)) {
                 CardUserVo uVo = new CardUserVo();
                 uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());

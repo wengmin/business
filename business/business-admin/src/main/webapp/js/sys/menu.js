@@ -33,7 +33,7 @@ var TreeGrid = {
  */
 TreeGrid.initColumn = function () {
     var columns = [
-        {field: 'selectItem', checkbox: true},
+        {field: 'selectItem', radio: true},
         {title: '编号', field: 'menuId', visitable: false, align: 'center', valign: 'middle', width: '80px'},
         {title: '名称', field: 'name', align: 'center', valign: 'middle', width: '180px'},
         {title: '上级菜单', field: 'parentName', align: 'center', valign: 'middle', width: '100px'},

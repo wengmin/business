@@ -216,7 +216,6 @@
   color: #52a936;
 }
 
-
 .colleague {
   white-space: nowrap;
   overflow-x: auto;
@@ -313,7 +312,6 @@
   text-align: left;
   width: 100%;
   height: 50rpx;
-  margin-top: 50rpx;
   display: inline-block;
 }
 
@@ -344,13 +342,10 @@
   padding: 20rpx;
   display: inline-block;
   text-align: left;
-  border: solid 1rpx #F5F5F5;
-  box-shadow: 1rpx 1rpx 2rpx 1rpx #eee;
+  border: solid 1rpx #e7e7e7;
 }
 
 .comtop {
-  border-bottom: solid 2rpx #c6c6c6;
-  padding-bottom: 20rpx;
   display: inline-block;
   width: 100%;
   font-size: 0;
@@ -370,73 +365,31 @@
   margin-left: 20rpx;
 }
 
-.comtop navigator {
+.comtop navigator, .comtop button {
   float: right;
-  font-size: 29rpx;
+  font-size: 25rpx;
   border: solid 1px #53a349;
   color: #53a349;
   height: 70rpx;
   line-height: 70rpx;
-  padding: 0 10rpx;
+  padding: 0 20rpx;
   border-radius: 10rpx;
   margin-top: 15rpx;
 }
 
 .comdesc {
   width: 100%;
-  padding-top: 20rpx;
+  padding: 20rpx 0;
+  border-top: solid 2rpx #c6c6c6;
+  margin-top: 20rpx;
 }
 
-.itembody .top {
+.comfile {
   width: 100%;
-  height: 100rpx;
-}
-
-.itembody .top .icon {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 100%;
-  float: left;
-}
-
-.itembody .top .right {
-  float: left;
-  margin-left: 30rpx;
-  line-height: 50rpx;
-}
-
-.itembody .top .right .name {
-  width: 100%;
-  font-weight: bold;
-}
-
-.itembody .top .right .date {
-  width: 100%;
-  color: #ccc;
-}
-
-.itembody .content {
-  width: 100%;
-  margin-top: 30rpx;
-}
-
-.itembody .desc {
-  position: relative;
-}
-
-.itembody .desc .imgbg {
-  width: 100%;
-  vertical-align: middle;
-}
-
-.itembody .desc .info {
-  position: absolute;
-  width: 100%;
-  max-height: 100rpx;
-  background-color: rgba(44, 44, 42, 0.5);
-  color: #fff;
-  bottom: 0;
-  padding: 20rpx;
+  padding: 0;
+  margin: 0;
+  border: solid 2rpx #e7e7e7;
+  margin-top: 20rpx;
 }
 
 .imgs, .imgs2 {
@@ -486,7 +439,7 @@
   z-index: 10;
 }
 
-.qrcodebody{
+.qrcodebody {
   width: 600rpx;
   height: 1000rpx;
   position: relative;
@@ -586,7 +539,7 @@ button[class="closeQrCode"]::after {
   width: 100%;
   border-radius: 8rpx;
   position: relative;
-  border: solid 1rpx #E7E7E7;
+  border: solid 1rpx #e7e7e7;
 }
 
 .profile .rightinfo .k::after {
@@ -595,8 +548,8 @@ button[class="closeQrCode"]::after {
   width: 15rpx;
   height: 15rpx;
   transform: rotate(45deg);
-  border-bottom: solid 1rpx #E7E7E7;
-  border-left: solid 1rpx #E7E7E7;
+  border-bottom: solid 1rpx #e7e7e7;
+  border-left: solid 1rpx #e7e7e7;
   position: absolute;
   top: 15rpx;
   left: -9rpx;
@@ -635,7 +588,7 @@ button[class="closeQrCode"]::after {
 }
 
 .profile .rightinfo .alink {
-  display:initial;
+  display: initial;
   text-align: center;
   font-size: 28rpx;
   color: #52a936;

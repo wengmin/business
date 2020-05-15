@@ -146,4 +146,5 @@ page {
   height: 70rpx;
   line-height: 70rpx;
   border-radius: 0;
+  font-size: 30rpx;
 }

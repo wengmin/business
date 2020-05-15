@@ -10,6 +10,4 @@ import com.business.entity.UserEntity;
  * @date 2017-08-16 15:02:28
  */
 public interface UserDao extends BaseDao<UserEntity> {
-
-    void updatePromoter(UserEntity user);
 }

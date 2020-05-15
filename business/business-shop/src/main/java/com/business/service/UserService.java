@@ -70,6 +70,4 @@ public interface UserService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
-
-    void updatePromoter(UserEntity user);
 }

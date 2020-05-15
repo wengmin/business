@@ -1,6 +1,7 @@
 package com.business.service;
 
 import com.business.dao.ApiCompanyMapper;
+import com.business.entity.CompanyFileVo;
 import com.business.entity.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class ApiCompanyService {
         return companyDao.save(companyVo);
     }
 
+    public Integer update(CompanyVo companyVo) {
+        return companyDao.update(companyVo);
+    }
+
     public CompanyVo queryObject(Integer id) {
         return companyDao.queryObject(id);
     }
@@ -38,5 +43,23 @@ public class ApiCompanyService {
 
     public CompanyVo queryByName(String name) {
         return companyDao.queryByName(name);
+    }
+
+
+
+    public List<CompanyFileVo> queryFileList(Integer companyId) {
+        return companyDao.queryFileList(companyId);
+    }
+
+    public Integer saveFile(List<CompanyFileVo> fileList) {
+        return companyDao.saveFile(fileList);
+    }
+
+    public Integer deleteFile(Integer id) {
+        return companyDao.deleteFile(id);
+    }
+
+    public Integer deleteFileByCompany(Integer companyId) {
+        return companyDao.deleteFileByCompany(companyId);
     }
 }

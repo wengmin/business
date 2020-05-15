@@ -6,7 +6,6 @@ import com.business.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int save(UserEntity user) {
-        user.setRegisterTime(new Date());
         return userDao.save(user);
     }
 
@@ -58,12 +56,4 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteBatch(ids);
     }
 
-    /**
-     * 推广关系变更
-     * @param user
-     */
-    @Override
-    public void updatePromoter(UserEntity user) {
-        userDao.updatePromoter(user);
-    }
 }
