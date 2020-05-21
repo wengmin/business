@@ -35,6 +35,13 @@
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
         <i-form ref="formValidate" :model="user" :rules="ruleValidate" :label-width="80">
+            <Form-item label="选择企业" prop="companyId" style="width: 268px;">
+                <i-select v-model="user.companyId" filterable label-in-value>
+                    <i-option v-for="item in companyList" :value="item.companyId"
+                              :key="item.companyId">{{item.name}}
+                    </i-option>
+                </i-select>
+            </Form-item>
             <Form-item label="登录账号" prop="username">
                 <i-input v-model="user.username" placeholder="登录账号"/>
             </Form-item>
@@ -56,20 +63,7 @@
                 <Checkbox-group v-model="user.roleIdList">
                     <Checkbox :label="role.roleId" v-for="role in roleList">{{role.roleName}}</Checkbox>
                 </Checkbox-group>
-            </Form-item>            
-            <Form-item label="本人分佣" prop="fx">
-                <i-input v-model="user.fx" placeholder="例子：15%"/>
             </Form-item>
-            <Form-item label="分佣一级" prop="fx1">
-                <i-input v-model="user.fx1" placeholder="例子：15%"/>
-            </Form-item>
-            <Form-item label="分佣二级" prop="fx2">
-                <i-input v-model="user.fx2"  placeholder="例子：15%"/>
-            </Form-item>
-			<Form-item label="平台分佣" prop="pfx">
-                <i-input v-model="user.pfx"  placeholder="例子：15%"/>
-            </Form-item>
-            
             <Form-item label="状态" prop="status">
                 <Radio-group v-model="user.status">
                     <Radio label="0">
@@ -77,16 +71,6 @@
                     </Radio>
                     <Radio label="1">
                         <span>正常</span>
-                    </Radio>
-                </Radio-group>
-            </Form-item>
-             <Form-item label="是否显示其他商户" prop="allShow">
-                <Radio-group v-model="user.allShow">
-                    <Radio label="0">
-                        <span>不显示</span>
-                    </Radio>
-                    <Radio label="1">
-                        <span>显示</span>
                     </Radio>
                 </Radio-group>
             </Form-item>

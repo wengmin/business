@@ -1,16 +1,29 @@
 $(function () {
     $("#jqGrid").Grid({
-        url: '../companyfile/list',
+        url: '../companypost/list',
         colModel: [
-            {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: 'postId', name: 'postId', index: 'post_id', key: true, hidden: true},
             {label: '企业名称', name: 'companyName', index: 'companyName', width: 80},
             {
-                label: '附件', name: 'fileurl', index: 'fileurl', width: 80, formatter: function (value) {
+                label: '照片', name: 'photo', index: 'photo', width: 80, formatter: function (value) {
                     return transImg(value);
                 }
             },
+            {label: '姓名', name: 'name', index: 'name', width: 80},
+            {label: '职位', name: 'position', index: 'position', width: 80},
+            {label: '手机号码', name: 'mobile', index: 'mobile', width: 80},
+            {label: '固定电话', name: 'telephone', index: 'telephone', width: 80},
+            {label: '微信号', name: 'wechat', index: 'wechat', width: 80},
+            {label: '电子邮箱', name: 'email', index: 'email', width: 80},
+            {label: '职位简介', name: 'profile', index: 'profile', width: 80},
+            {label: '二维码', name: 'qrCode', index: 'qr_code', width: 80},
             {
                 label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
+            },
+            {
+                label: '更新时间', name: 'updateTime', index: 'update_time', width: 80, formatter: function (value) {
                     return transDate(value);
                 }
             }]
@@ -22,14 +35,20 @@ let vm = new Vue({
     data: {
         showList: true,
         title: null,
-        companyFile: {},
+        companyPost: {},
         ruleValidate: {
             name: [
-                {required: true, message: '名称不能为空', trigger: 'blur'}
+                {required: true, message: '姓名不能为空', trigger: 'blur'}
+            ],
+            email: [
+                {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+            ],
+            mobile: [
+                {required: true, message: '手机号码不能为空', trigger: 'blur'}
             ]
         },
         q: {
-            companyName: ''
+            name: ''
         },
         companyList: []
     },
@@ -40,31 +59,24 @@ let vm = new Vue({
         add: function () {
             vm.showList = false;
             vm.title = "新增";
+            vm.companyPost = {companyId: null};
             vm.getCompany();
-            vm.companyFile = {companyId:null};
         },
         update: function (event) {
-            let id = getSelectedRow("#jqGrid");
-            if (id == null) {
+            let postId = getSelectedRow("#jqGrid");
+            if (postId == null) {
                 return;
             }
             vm.showList = false;
             vm.title = "修改";
 
-            vm.getCompany();
-            Ajax.request({
-                url: "../companyfile/info/" + id,
-                async: true,
-                successCallback: function (r) {
-                    vm.companyFile = r.companyFile;
-                }
-            });
+            vm.getInfo(postId)
         },
         saveOrUpdate: function (event) {
-            let url = vm.companyFile.id == null ? "../companyfile/save" : "../companyfile/update";
+            let url = vm.companyPost.postId == null ? "../companypost/save" : "../companypost/update";
             Ajax.request({
                 url: url,
-                params: JSON.stringify(vm.companyFile),
+                params: JSON.stringify(vm.companyPost),
                 type: "POST",
                 contentType: "application/json",
                 successCallback: function (r) {
@@ -75,15 +87,15 @@ let vm = new Vue({
             });
         },
         del: function (event) {
-            let ids = getSelectedRows("#jqGrid");
-            if (ids == null) {
+            let postIds = getSelectedRows("#jqGrid");
+            if (postIds == null) {
                 return;
             }
 
             confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-                    url: "../companyfile/delete",
-                    params: JSON.stringify(ids),
+                    url: "../companypost/delete",
+                    params: JSON.stringify(postIds),
                     type: "POST",
                     contentType: "application/json",
                     successCallback: function () {
@@ -94,6 +106,16 @@ let vm = new Vue({
                 });
             });
         },
+        getInfo: function (postId) {
+            Ajax.request({
+                url: "../companypost/info/" + postId,
+                async: true,
+                successCallback: function (r) {
+                    vm.companyPost = r.companyPost;
+                    vm.getCompany();
+                }
+            });
+        },
         reload: function (event) {
             vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
@@ -102,6 +124,18 @@ let vm = new Vue({
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
+        },
+        getCompany: function () {//获取所有企业
+            Ajax.request({
+                url: "../company/getAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.companyList = r.list;
+                    if (r.cid != 0) {
+                        vm.companyPost.companyId = r.cid;
+                    }
+                }
+            });
         },
         reloadSearch: function () {
             vm.q = {
@@ -117,20 +151,8 @@ let vm = new Vue({
         handleReset: function (name) {
             handleResetForm(this, name);
         },
-        getCompany: function () {//获取所有企业
-            Ajax.request({
-                url: "../company/getAll",
-                async: true,
-                successCallback: function (r) {
-                    vm.companyList = r.list;
-                    if (r.cid != 0) {
-                        vm.companyFile.companyId = r.cid;
-                    }
-                }
-            });
-        },
         handleSuccessNewPicUrl: function (res, file) {
-            vm.companyFile.fileurl = file.response.url;
+            vm.companyPost.photo = file.response.url;
         },
         handleFormatError: function (file) {
             this.$Notice.warning({
@@ -141,11 +163,11 @@ let vm = new Vue({
         handleMaxSize: function (file) {
             this.$Notice.warning({
                 title: '超出文件大小限制',
-                desc: '文件 ' + file.name + ' 太大，不能超过 1024KB。'
+                desc: '文件 ' + file.name + ' 太大，不能超过 500KB。'
             });
         },
         eyeImageNewPicUrl: function () {
-            var url = vm.companyFile.fileurl;
+            var url = vm.companyPost.photo;
             eyeImage(url);
         }
     }

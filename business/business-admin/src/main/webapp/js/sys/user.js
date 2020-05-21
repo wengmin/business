@@ -64,7 +64,8 @@ var vm = new Vue({
             mobile: [
                 {required: true, message: '手机号不能为空', trigger: 'blur'}
             ]
-        }
+        },
+        companyList: []
     },
     methods: {
         query: function () {
@@ -79,6 +80,7 @@ var vm = new Vue({
             //获取角色信息
             this.getRoleList();
             vm.getDept();
+            vm.getCompany();
         },
         getDept: function () {
             //加载部门树
@@ -113,6 +115,7 @@ var vm = new Vue({
                     //获取角色信息
                     vm.getRoleList();
                     vm.getDept();
+                    vm.getCompany();
                 }
             });
 
@@ -192,6 +195,15 @@ var vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        getCompany: function () {//获取所有企业
+            Ajax.request({
+                url: "../company/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.companyList = r.list;
+                }
+            });
         }
     }
 });

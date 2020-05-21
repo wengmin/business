@@ -1,14 +1,20 @@
 package com.business.controller;
 
 import com.business.entity.CompanyServiceEntity;
+import com.business.entity.SysMacroEntity;
 import com.business.service.CompanyServiceService;
-import com.business.utils.PageUtils;
-import com.business.utils.Query;
-import com.business.utils.R;
+import com.business.service.SysMacroService;
+import com.business.utils.*;
+import com.business.validator.ValidatorUtils;
+import com.business.validator.group.AddGroup;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +30,8 @@ import java.util.Map;
 public class CompanyServiceController {
     @Autowired
     private CompanyServiceService companyServiceService;
+    @Autowired
+    private SysMacroService sysMacroService;
 
     /**
      * 查看列表
@@ -33,7 +41,9 @@ public class CompanyServiceController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            query.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyServiceEntity> companyServiceList = companyServiceService.queryList(query);
         int total = companyServiceService.queryTotal(query);
 
@@ -45,11 +55,13 @@ public class CompanyServiceController {
     /**
      * 查看信息
      */
-    @RequestMapping("/info/{serviceId}")
+    @RequestMapping("/info")
     @RequiresPermissions("companyservice:info")
-    public R info(@PathVariable("serviceId") Integer serviceId) {
-        CompanyServiceEntity companyService = companyServiceService.queryObject(serviceId);
-
+    public R info(Integer companyId, String serviceClass) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+        }
+        CompanyServiceEntity companyService = companyServiceService.queryByCompanyService(companyId, serviceClass);
         return R.ok().put("companyService", companyService);
     }
 
@@ -59,20 +71,85 @@ public class CompanyServiceController {
     @RequestMapping("/save")
     @RequiresPermissions("companyservice:save")
     public R save(@RequestBody CompanyServiceEntity companyService) {
-        companyServiceService.save(companyService);
+        ValidatorUtils.validateEntity(companyService, AddGroup.class);
+        int companyId = 0;
+        if (Constant.SUPER_ADMIN == ShiroUtils.getUserEntity().getUserId()) {
+            companyId = companyService.getCompanyId();
+        } else {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+        }
+        if (companyId == 0 || companyService.getListServiceTag() == null) {
+            return R.error("参数不满足要求");
+        }
+        companyServiceService.disableByCompanyService(companyId, companyService.getServiceClass());
+        for (String s : companyService.getListServiceTag()) {
+            CompanyServiceEntity hastag = companyServiceService.hasTag(companyId, companyService.getServiceClass(), s);
+            if (hastag == null) {
+                CompanyServiceEntity entity = new CompanyServiceEntity();
+                entity.setCompanyId(companyId);
+                entity.setServiceClass(companyService.getServiceClass());
+                entity.setServiceTag(s);
+                companyServiceService.save(entity);
+            } else {
+                CompanyServiceEntity entity = new CompanyServiceEntity();
+                entity.setServiceId(hastag.getServiceId());
+                entity.setStatus(0);
+                companyServiceService.update(entity);
+            }
+        }
 
         return R.ok();
     }
 
     /**
-     * 修改
+     * 保存
      */
-    @RequestMapping("/update")
-    @RequiresPermissions("companyservice:update")
-    public R update(@RequestBody CompanyServiceEntity companyService) {
-        companyServiceService.update(companyService);
+    @RequestMapping("/saveTag")
+    @RequiresPermissions("companyservice:save")
+    public R saveTag(Integer companyId, String serviceClass, String serviceTag) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+        }
+        if (companyId == 0 || StringUtils.isNullOrEmpty(serviceClass) || StringUtils.isNullOrEmpty(serviceTag)) {
+            return R.error("参数不满足要求");
+        }
+        CompanyServiceEntity hastag = companyServiceService.hasTag(companyId, serviceClass, serviceTag);
+        if (hastag == null) {
+            CompanyServiceEntity entity = new CompanyServiceEntity();
+            entity.setCompanyId(companyId);
+            entity.setServiceClass(serviceClass);
+            entity.setServiceTag(serviceTag);
+            companyServiceService.save(entity);
+            return R.ok();
+        } else {
+            CompanyServiceEntity entity = new CompanyServiceEntity();
+            entity.setServiceId(hastag.getServiceId());
+            entity.setStatus(0);
+            companyServiceService.update(entity);
+            return R.ok();
+        }
+    }
 
-        return R.ok();
+    /**
+     * 根据value查询数据字典
+     *
+     * @param companyId value
+     * @return R
+     */
+    @RequestMapping("/getServiceTag")
+    public R getServiceTag(Integer companyId, String serviceClass) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+        }
+        List<String> list = new ArrayList<String>();
+        List<SysMacroEntity> mlist = sysMacroService.queryMacrosByValue(serviceClass);
+        for (SysMacroEntity sysMacroEntity : mlist) {
+            list.add(sysMacroEntity.getName());
+        }
+        List<String> alist = companyServiceService.queryTagList(companyId, serviceClass);
+        list.removeAll(alist);
+        list.addAll(alist);
+        return R.ok().put("list", list);
     }
 
     /**
@@ -80,8 +157,8 @@ public class CompanyServiceController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("companyservice:delete")
-    public R delete(@RequestBody Integer[] serviceIds) {
-        companyServiceService.deleteBatch(serviceIds);
+    public R delete(Integer companyId, String serviceClass) {
+        companyServiceService.deleteByCompanyService(companyId, serviceClass);
 
         return R.ok();
     }

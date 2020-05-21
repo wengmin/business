@@ -6,36 +6,36 @@
 </head>
 <body>
 <div id="rrapp" v-cloak>
-	<div v-show="showList">
+    <div v-show="showList">
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
-                    <i-input v-model="q.companyName" @on-enter="query" placeholder="名称"/>
+                    <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                 </i-col>
                 <i-button @click="query">查询</i-button>
                 <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
-                #if($shiro.hasPermission("companyfile:save"))
+                #if($shiro.hasPermission("companypost:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
                 #end
-                #if($shiro.hasPermission("companyfile:update"))
+                #if($shiro.hasPermission("companypost:update"))
                 <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
                 #end
-                #if($shiro.hasPermission("companyfile:delete"))
+                #if($shiro.hasPermission("companypost:delete"))
                 <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
                 #end
             </div>
         </Row>
-	    <table id="jqGrid"></table>
-	    <div id="jqGridPager"></div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
     </div>
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="companyFile" :rules="ruleValidate" :label-width="80">
+        <i-form ref="formValidate" :model="companyPost" :rules="ruleValidate" :label-width="80">
             <Form-item label="选择企业" prop="companyId" style="width: 268px;">
-                <i-select v-model="companyFile.companyId" label-in-value>
+                <i-select v-model="companyPost.companyId" label-in-value>
                     <i-option v-for="item in companyList" :value="item.companyId"
                               :key="item.companyId">{{item.name}}
                     </i-option>
@@ -43,14 +43,14 @@
             </Form-item>
             <Row>
                 <i-col span="16">
-                    <Form-item label="附件" prop="fileurl">
-                        <i-input v-model="companyFile.fileurl" placeholder="附件"/>
+                    <Form-item label="照片" prop="photo">
+                        <i-input v-model="companyPost.photo" placeholder="照片"/>
                     </Form-item>
                 </i-col>
                 <i-col span="3">
                     <Form-item :label-width="1">
-                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png','MP4','gif']"
-                                max-size="1024"
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="500"
                                 :on-success="handleSuccessNewPicUrl" :on-format-error="handleFormatError"
                                 :show-upload-list="false"
                                 :on-exceeded-size="handleMaxSize">
@@ -60,19 +60,43 @@
                 </i-col>
                 <i-col span="3">
                     <Form-item :label-width="1">
-                        <i-button icon="eye" @click="eyeImageNewPicUrl">预览</i-button>
+                        <i-button icon="eye" @click="eyeImageNewPicUrl">预览图片</i-button>
                     </Form-item>
                 </i-col>
             </Row>
+            <Form-item label="姓名" prop="name">
+                <i-input v-model="companyPost.name" placeholder="姓名"/>
+            </Form-item>
+            <Form-item label="职位" prop="position">
+                <i-input v-model="companyPost.position" placeholder="职位"/>
+            </Form-item>
+            <Form-item label="手机号码" prop="mobile">
+                <i-input v-model="companyPost.mobile" placeholder="手机号码" type="tel"/>
+            </Form-item>
+            <Form-item label="固定电话" prop="telephone">
+                <i-input v-model="companyPost.telephone" placeholder="固定电话"/>
+            </Form-item>
+            <Form-item label="微信号" prop="wechat">
+                <i-input v-model="companyPost.wechat" placeholder="微信号"/>
+            </Form-item>
+            <Form-item label="电子邮箱" prop="email">
+                <i-input v-model="companyPost.email" placeholder="电子邮箱"/>
+            </Form-item>
+            <Form-item label="职位简介" prop="profile">
+                <i-input v-model="companyPost.profile" placeholder="职位简介"/>
+            </Form-item>
+            <Form-item label="二维码" prop="qrCode">
+                <i-input v-model="companyPost.qrCode" placeholder="二维码"/>
+            </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
                 <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
             </Form-item>
         </i-form>
-	</Card>
+    </Card>
 </div>
 
-<script src="${rc.contextPath}/js/company/file.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/js/company/post.js?_${date.systemTime}"></script>
 </body>
 </html>

@@ -15,10 +15,12 @@
         <result property="scale" column="scale"/>
         <result property="trade" column="trade"/>
         <result property="introduction" column="introduction"/>
+        <result property="qrcode" column="qrcode"/>
         <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
 	    `company_id`,
 	    `name`,
 	    `province`,
@@ -30,23 +32,28 @@
 	    `scale`,
 	    `trade`,
 	    `introduction`,
-	    `create_time`
+	    `qrcode`,
+	    `create_time`,
+	    `update_time`
   	</sql>
 
     <select id="queryObject" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from company_info
         where company_id = #{id}
     </select>
 
     <select id="queryList" resultType="com.business.entity.CompanyEntity">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from company_info
-        WHERE 1=1
+        WHERE status!=2
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_id=#{companyId}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -63,9 +70,12 @@
 
     <select id="queryTotal" resultType="int">
         select count(*) from company_info
-        WHERE 1=1
+        WHERE status!=2
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_id=#{companyId}
         </if>
     </select>
 
@@ -82,6 +92,8 @@
           `scale`,
           `trade`,
           `introduction`,
+          `qrcode`,
+          `status`,
           `create_time`,
           `update_time`          )
 		values(
@@ -96,6 +108,8 @@
           #{scale},
           #{trade},
           #{introduction},
+          #{qrcode},
+          0,
           #{createTime},
           #{updateTime}         )
 	</insert>
@@ -133,6 +147,9 @@
             <if test="introduction != null">
                 `introduction` = #{introduction},
             </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},
             </if>
@@ -143,14 +160,23 @@
         where company_id = #{companyId}
     </update>
 
-    <delete id="delete" parameterType="java.lang.Long" >
-        delete from company_info
+    <update id="delete" parameterType="java.lang.Long">
+        update company_info
+        <set>
+            `status` = 2,
+            `update_time` = now()
+        </set>
         where company_id = #{value}
-    </delete>
-    <delete id="deleteBatch">
-        delete from company_info where company_id in
+    </update>
+    <update id="deleteBatch">
+        update company_info
+        <set>
+            `status` = 2,
+            `update_time` = now()
+        </set>
+        where company_id in
         <foreach item="companyId" collection="array" open="(" separator="," close=")">
             #{companyId}
         </foreach>
-    </delete>
+    </update>
 </mapper>

@@ -19,47 +19,6 @@
 		select * from company_info where company_id = #{value}
 	</select>
 
-    <select id="queryByName" resultMap="BaseResultMap">
-		select * from company_info where name = #{value}
-	</select>
-
-    <select id="queryList" resultType="com.business.entity.CompanyVo">
-        select
-        `company_id`,
-        `name`,
-        `address`,
-        `phone`,
-        `logo`,
-        `scale`,
-        `trade`,
-        `introduction`,
-        `create_time`
-        from company_info
-        WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
-        <choose>
-            <when test="sidx != null and sidx.trim() != ''">
-                order by ${sidx} ${order}
-            </when>
-            <otherwise>
-                order by company_id desc
-            </otherwise>
-        </choose>
-        <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
-        </if>
-    </select>
-
-    <select id="queryTotal" resultType="int">
-        select count(*) from company_info
-        WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
-    </select>
-
     <insert id="save" parameterType="com.business.entity.CompanyVo" useGeneratedKeys="true" keyProperty="companyId">
 		insert into company_info(
         `name`,
@@ -112,18 +71,6 @@
         where company_id = #{companyId}
     </update>
 
-    <delete id="delete">
-		delete from company_info where company_id = #{value}
-	</delete>
-
-    <delete id="deleteBatch">
-        delete from company_info where user_id in
-        <foreach item="companyId" collection="array" open="(" separator="," close=")">
-            #{companyId}
-        </foreach>
-    </delete>
-
-
     <select id="queryFileList" resultType="com.business.entity.CompanyFileVo">
         select
         `id`,
@@ -160,4 +107,81 @@
     <delete id="deleteFileByCompany">
 		delete from company_file where company_id = #{value}
 	</delete>
+
+
+    <select id="queryPost" resultType="com.business.entity.CompanyPostVo">
+        select
+        `post_id`,
+        `company_id`,
+        `photo`,
+        `name`,
+        `position`,
+        `mobile`,
+        `telephone`,
+        `wechat`,
+        `email`,
+        `profile`,
+        `qr_code`,
+        `status`,
+        `create_time`,
+        `update_time`
+        from company_post
+        WHERE status=0 and post_id = #{value}
+    </select>
+    <select id="queryPostList" resultType="com.business.entity.CompanyPostVo">
+        select
+        `post_id`,
+        `company_id`,
+        `photo`,
+        `name`,
+        `position`,
+        `mobile`,
+        `telephone`,
+        `wechat`,
+        `email`,
+        `profile`,
+        `qr_code`,
+        `status`,
+        `create_time`,
+        `update_time`
+        from company_post
+        WHERE status=0
+        <if test="companyId != null and companyId != '0'">
+            AND company_id = #{companyId}
+        </if>
+        <if test="postId != null and postId != '0'">
+            AND post_id != #{postId}
+        </if>
+        order by create_time desc
+    </select>
+
+
+    <select id="queryRoom" resultType="com.business.entity.CompanyRoomVo">
+        select
+	    `room_id`,
+	    `company_id`,
+	    `name`,
+	    `tung`,
+	    `floor`,
+	    `wifiname`,
+	    `wifipass`,
+	    `wifimac`,
+	    `qrcode`
+        from company_room
+        WHERE status=0 and room_id = #{value}
+    </select>
+
+
+    <select id="queryServiceList" resultType="com.business.entity.CompanyServiceVo">
+        select
+	    `service_id`,
+	    `company_id`,
+	    `service_class`,
+	    `service_tag`
+        from company_service
+        WHERE status=0 and company_id = #{value}
+        <if test="serviceClass != null and serviceClass != '0'">
+            AND service_class != #{serviceClass}
+        </if>
+    </select>
 </mapper>

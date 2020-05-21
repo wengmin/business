@@ -18,6 +18,11 @@ $(function () {
             {label: '行业', name: 'trade', index: 'trade', width: 80},
             {label: '公司简介', name: 'introduction', index: 'introduction', width: 80},
             {
+                label: '二维码', name: 'qrcode', index: 'qrcode', width: 80, formatter: function (value) {
+                    return transImg(value);
+                }
+            },
+            {
                 label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
                     return transDate(value);
                 }
@@ -45,6 +50,7 @@ let vm = new Vue({
         cityNames:[],
         selCityId:0,
         countyNames:[],
+        cid:-1
     },
     methods: {
         query: function () {
@@ -66,7 +72,16 @@ let vm = new Vue({
             vm.showList = false;
             vm.title = "修改";
 
-            vm.getInfo(companyId)
+            this.getProvinceNames();
+            this.getCityNames();
+            this.getCountyNames();
+            Ajax.request({
+                url: "../company/info/" + companyId,
+                async: true,
+                successCallback: function (r) {
+                    vm.companyInfo = r.companyInfo;
+                }
+            });
         },
         saveOrUpdate: function (event) {
             let url = vm.companyInfo.companyId == null ? "../company/save" : "../company/update";
@@ -101,18 +116,6 @@ let vm = new Vue({
                     }
                 });
             });
-        },
-        getInfo: function (companyId) {
-            Ajax.request({
-                url: "../company/info/" + companyId,
-                async: true,
-                successCallback: function (r) {
-                    vm.companyInfo = r.companyInfo;
-                }
-            });
-            this.getProvinceNames();
-            this.getCityNames();
-            this.getCountyNames();
         },
         reload: function (event) {
             vm.showList = true;

@@ -1,7 +1,7 @@
 package com.business.controller;
 
-import com.business.entity.CompanyStaffEntity;
-import com.business.service.CompanyStaffService;
+import com.business.entity.CompanyPostEntity;
+import com.business.service.CompanyPostService;
 import com.business.utils.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +15,29 @@ import java.util.Map;
  *
  * @author wengmin
  * @email wengmin@vip.qq.com
- * @date 2020-05-14 13:46:23
+ * @date 2020-05-18 17:09:25
  */
 @RestController
-@RequestMapping("companystaff")
-public class CompanyStaffController {
+@RequestMapping("companypost")
+public class CompanyPostController {
     @Autowired
-    private CompanyStaffService companyStaffService;
+    private CompanyPostService companyPostService;
 
     /**
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("companystaff:list")
+    @RequiresPermissions("companypost:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
             query.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
         }
-        List<CompanyStaffEntity> companyStaffList = companyStaffService.queryList(query);
-        int total = companyStaffService.queryTotal(query);
+        List<CompanyPostEntity> companyPostList = companyPostService.queryList(query);
+        int total = companyPostService.queryTotal(query);
 
-        PageUtils pageUtil = new PageUtils(companyStaffList, total, query.getLimit(), query.getPage());
+        PageUtils pageUtil = new PageUtils(companyPostList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
     }
@@ -45,23 +45,24 @@ public class CompanyStaffController {
     /**
      * 查看信息
      */
-    @RequestMapping("/info/{staffId}")
-    @RequiresPermissions("companystaff:info")
-    public R info(@PathVariable("staffId") Integer staffId) {
-        CompanyStaffEntity companyStaff = companyStaffService.queryObject(staffId);
-        return R.ok().put("companyStaff", companyStaff);
+    @RequestMapping("/info/{postId}")
+    @RequiresPermissions("companypost:info")
+    public R info(@PathVariable("postId") Integer postId) {
+        CompanyPostEntity companyPost = companyPostService.queryObject(postId);
+
+        return R.ok().put("companyPost", companyPost);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("companystaff:save")
-    public R save(@RequestBody CompanyStaffEntity companyStaff) {
+    @RequiresPermissions("companypost:save")
+    public R save(@RequestBody CompanyPostEntity companyPost) {
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyStaff.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            companyPost.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
         }
-        companyStaffService.save(companyStaff);
+        companyPostService.save(companyPost);
 
         return R.ok();
     }
@@ -70,12 +71,12 @@ public class CompanyStaffController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("companystaff:update")
-    public R update(@RequestBody CompanyStaffEntity companyStaff) {
+    @RequiresPermissions("companypost:update")
+    public R update(@RequestBody CompanyPostEntity companyPost) {
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyStaff.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            companyPost.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
         }
-        companyStaffService.update(companyStaff);
+        companyPostService.update(companyPost);
 
         return R.ok();
     }
@@ -84,9 +85,9 @@ public class CompanyStaffController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("companystaff:delete")
-    public R delete(@RequestBody Integer[] staffIds) {
-        companyStaffService.deleteBatch(staffIds);
+    @RequiresPermissions("companypost:delete")
+    public R delete(@RequestBody Integer[] postIds) {
+        companyPostService.deleteBatch(postIds);
 
         return R.ok();
     }
@@ -99,7 +100,7 @@ public class CompanyStaffController {
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
             params.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
         }
-        List<CompanyStaffEntity> list = companyStaffService.queryList(params);
+        List<CompanyPostEntity> list = companyPostService.queryList(params);
 
         return R.ok().put("list", list);
     }

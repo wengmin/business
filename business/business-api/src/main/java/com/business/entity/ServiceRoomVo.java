@@ -2,39 +2,35 @@ package com.business.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 实体
- * 表名 company_service
+ * 表名 service_room
  *
  * @author wengmin
  * @email wengmin@vip.qq.com
- * @date 2020-05-14 13:46:23
+ * @date 2020-05-21 17:42:29
  */
-public class CompanyServiceEntity implements Serializable {
+public class ServiceRoomVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
     private Integer serviceId;
     //
     private Integer companyId;
-
-    private String companyName;
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
+    //房间号
+    private Integer roomId;
+    //
+    private Integer userId;
     //服务类型
     private String serviceClass;
-    //服务类型
+    //项
     private String serviceTag;
-    //标签
-    private List<String> listServiceTag;
-    //0启用，1禁用，2删除
+    //备注
+    private String remark;
+    //预约时间
+    private Date appointmentTime;
+    //状态
     private Integer status;
     //
     private Date createTime;
@@ -68,6 +64,32 @@ public class CompanyServiceEntity implements Serializable {
         return companyId;
     }
     /**
+     * 设置：房间号
+     */
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    /**
+     * 获取：房间号
+     */
+    public Integer getRoomId() {
+        return roomId;
+    }
+    /**
+     * 设置：
+     */
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * 获取：
+     */
+    public Integer getUserId() {
+        return userId;
+    }
+    /**
      * 设置：服务类型
      */
     public void setServiceClass(String serviceClass) {
@@ -80,31 +102,58 @@ public class CompanyServiceEntity implements Serializable {
     public String getServiceClass() {
         return serviceClass;
     }
-
-    public String getServiceTag() {
-        return serviceTag;
-    }
-
+    /**
+     * 设置：项
+     */
     public void setServiceTag(String serviceTag) {
         this.serviceTag = serviceTag;
     }
 
-    public List<String> getListServiceTag() {
-        return listServiceTag;
+    /**
+     * 获取：项
+     */
+    public String getServiceTag() {
+        return serviceTag;
+    }
+    /**
+     * 设置：备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
-    public void setListServiceTag(List<String> listServiceTag) {
-        this.listServiceTag = listServiceTag;
+    /**
+     * 获取：备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+    /**
+     * 设置：预约时间
+     */
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
-    public Integer getStatus() {
-        return status;
+    /**
+     * 获取：预约时间
+     */
+    public Date getAppointmentTime() {
+        return appointmentTime;
     }
-
+    /**
+     * 设置：状态
+     */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
+    /**
+     * 获取：状态
+     */
+    public Integer getStatus() {
+        return status;
+    }
     /**
      * 设置：
      */

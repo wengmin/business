@@ -28,6 +28,11 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
     }
 
     @Override
+    public CompanyServiceEntity queryByCompanyService(Integer companyId, String serviceClass) {
+        return companyServiceDao.queryByCompanyService(companyId, serviceClass);
+    }
+
+    @Override
     public List<CompanyServiceEntity> queryList(Map<String, Object> map) {
         return companyServiceDao.queryList(map);
     }
@@ -38,8 +43,30 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
     }
 
     @Override
+    public CompanyServiceEntity hasTag(Integer companyId, String serviceClass, String serviceTag) {
+        return companyServiceDao.hasTag(companyId, serviceClass, serviceTag);
+    }
+
+    @Override
+    public void disableByCompanyService(Integer companyId, String serviceClass) {
+        companyServiceDao.disableByCompanyService(companyId, serviceClass);
+    }
+
+    @Override
+    public void deleteByCompanyService(Integer companyId, String serviceClass) {
+        companyServiceDao.deleteByCompanyService(companyId, serviceClass);
+    }
+
+    @Override
+    public List<String> queryTagList(Integer companyId, String serviceClass) {
+        return companyServiceDao.queryTagList(companyId, serviceClass);
+    }
+
+
+    @Override
     public int save(CompanyServiceEntity companyService) {
         companyService.setCreateTime(new Date());
+        companyService.setStatus(0);
         return companyServiceDao.save(companyService);
     }
 

@@ -6,7 +6,7 @@ import com.business.annotation.IgnoreAuth;
 import com.business.service.ApiUserService;
 import com.business.util.ApiBaseAction;
 import com.business.util.ApiUserUtils;
-import com.business.utils.WeChatDecryptUtil;
+import com.business.utils.WeChatUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -151,7 +151,7 @@ public class ApiMobileController extends ApiBaseAction {
                 return toResponsFail("登录失败");
             }
             String mobile = "";
-            String mobileStr = WeChatDecryptUtil.decryptData(encryptedData, session_key, iv);
+            String mobileStr = WeChatUtils.decryptData(encryptedData, session_key, iv);
             JSONObject json = JSONObject.parseObject(mobileStr);
             if (json.containsKey("phoneNumber")) {
                 mobile = json.getString("phoneNumber");

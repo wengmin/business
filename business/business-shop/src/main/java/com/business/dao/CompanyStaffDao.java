@@ -9,5 +9,5 @@ import com.business.entity.CompanyStaffEntity;
  * @date 创建日期：2020/5/14
  * @time 创建时间: 13:58
  */
-public interface CompanyStaffDao  extends BaseDao<CompanyStaffEntity> {
+public interface CompanyStaffDao extends BaseDao<CompanyStaffEntity> {
 }

@@ -3,6 +3,8 @@ package com.business.utils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.encoders.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,25 +16,30 @@ import java.security.Security;
  * @author 创建人：Vsoft
  * @version 版本号：V1.0
  * @Description 功能说明：
- * @date 创建日期：2020/3/13
- * @time 创建时间: 14:12
+ * @date 创建日期：2020/5/21
+ * @time 创建时间: 15:00
  */
-public class WeChatDecryptUtil {
-
-    public static String decryptData(String encryptDataB64, String sessionKeyB64, String ivB64) {
-        return new String(
-                decryptOfDiyIV(
-                        Base64.decode(encryptDataB64),
-                        Base64.decode(sessionKeyB64),
-                        Base64.decode(ivB64)
-                )
-        );
-    }
+public class WeChatUtils {
+    @Autowired
+    private RestTemplate restTemplate;
 
     private static final String KEY_ALGORITHM = "AES";
     private static final String ALGORITHM_STR = "AES/CBC/PKCS7Padding";
     private static Key key;
     private static Cipher cipher;
+
+    //2小时后过期
+    private final static int EXPIRE2 = 3600 * 2;
+
+    public static String decryptData(String encryptDataB64, String sessionKeyB64, String ivB64) {
+        return new String(
+                decryptOfDiyIV(
+                        org.bouncycastle.util.encoders.Base64.decode(encryptDataB64),
+                        org.bouncycastle.util.encoders.Base64.decode(sessionKeyB64),
+                        Base64.decode(ivB64)
+                )
+        );
+    }
 
     private static void init(byte[] keyBytes) {
         // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要

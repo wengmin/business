@@ -9,6 +9,7 @@ import com.business.service.ApiUserService;
 import com.business.service.TokenService;
 import com.business.util.ApiBaseAction;
 import com.business.util.ApiUserUtils;
+import com.business.util.QRCodeUtils;
 import com.business.utils.Base64;
 import com.business.utils.R;
 import com.business.validator.Assert;
@@ -176,4 +177,21 @@ public class ApiAuthController extends ApiBaseAction {
         return toResponsSuccess(resultObj);
     }
 
+
+    /**
+     * 生成二维码
+     */
+    @ApiOperation(value = "生成二维码")
+    @IgnoreAuth
+    @GetMapping("createQrCode")
+    public Object createQrCode(String param, String url, String fileName) {
+        try {
+            String accessToken = tokenService.getAccessToken();
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, param, url, fileName);
+            return toResponsSuccess(imgStr);
+        } catch (Exception e) {
+            logger.error("auth=>createQrCode.param=>" + param, e);
+        }
+        return toResponsFail("生成二维码错误");
+    }
 }

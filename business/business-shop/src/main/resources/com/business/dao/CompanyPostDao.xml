@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.business.dao.CompanyStaffDao">
+<mapper namespace="com.business.dao.CompanyPostDao">
 
-    <resultMap type="com.business.entity.CompanyStaffEntity" id="BaseResultMap">
-        <result property="staffId" column="staff_id"/>
+    <resultMap type="com.business.entity.CompanyPostEntity" id="BaseResultMap">
+        <result property="postId" column="post_id"/>
         <result property="companyId" column="company_id"/>
         <result property="companyName" column="companyName"/>
+        <result property="photo" column="photo"/>
         <result property="name" column="name"/>
+        <result property="position" column="position"/>
         <result property="mobile" column="mobile"/>
-        <result property="post" column="post"/>
-        <result property="openid" column="openid"/>
+        <result property="telephone" column="telephone"/>
+        <result property="wechat" column="wechat"/>
+        <result property="email" column="email"/>
+        <result property="profile" column="profile"/>
+        <result property="qrCode" column="qr_code"/>
         <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-	    `staff_id`,
+	    `post_id`,
 	    `company_id`,
-	    (select name from company_info where company_info.company_id=company_staff.company_id) as companyName,
+	    (select name from company_info where company_info.company_id=company_post.company_id) as companyName,
+	    `photo`,
 	    `name`,
+	    `position`,
 	    `mobile`,
-	    `post`,
-	    `openid`,
+	    `telephone`,
+	    `wechat`,
+	    `email`,
+	    `profile`,
+	    `qr_code`,
 	    `status`,
 	    `create_time`,
 	    `update_time`
@@ -32,14 +42,14 @@
     <select id="queryObject" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from company_staff
-        where staff_id = #{id,jdbcType=BIGINT}
+        from company_post
+        where post_id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="queryList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from company_staff
+        from company_post
         WHERE status!=2
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -52,7 +62,7 @@
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by staff_id desc
+                order by post_id desc
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -61,7 +71,7 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-        select count(*) from company_staff
+        select count(*) from company_post
         WHERE status!=2
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -72,45 +82,70 @@
     </select>
 
     <insert id="save" parameterType="com.business.entity.CompanyStaffEntity">
-		insert into company_staff(
-          `staff_id`,
+		insert into company_post(
+          `post_id`,
           `company_id`,
+          `photo`,
           `name`,
+          `position`,
           `mobile`,
-          `post`,
-          `openid`,
+          `telephone`,
+          `wechat`,
+          `email`,
+          `profile`,
+          `qr_code`,
           `status`,
           `create_time`,
           `update_time`        )
 		values(
-          #{staffId},
+          #{postId},
           #{companyId},
+          #{photo},
           #{name},
+          #{position},
           #{mobile},
-          #{post},
-          #{openid},
-          #{status},
+          #{telephone},
+          #{wechat},
+          #{email},
+          #{profile},
+          #{qrCode},
+          0,
           #{createTime},
           #{updateTime}         )
 	</insert>
 
     <update id="update" parameterType="com.business.entity.CompanyStaffEntity">
-        update company_staff
+        update company_post
         <set>
             <if test="companyId != null">
                 `company_id` = #{companyId},
             </if>
+            <if test="photo != null">
+                `photo` = #{photo},
+            </if>
             <if test="name != null">
                 `name` = #{name},
+            </if>
+            <if test="position != null">
+                `position` = #{position},
             </if>
             <if test="mobile != null">
                 `mobile` = #{mobile},
             </if>
-            <if test="post != null">
-                `post` = #{post},
+            <if test="telephone != null">
+                `telephone` = #{telephone},
             </if>
-            <if test="openid != null">
-                `openid` = #{openid},
+            <if test="wechat != null">
+                `wechat` = #{wechat},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="profile != null">
+                `profile` = #{profile},
+            </if>
+            <if test="qrCode != null">
+                `qr_code` = #{qrCode},
             </if>
             <if test="status != null">
                 `status` = #{status},
@@ -122,24 +157,24 @@
                 `update_time` = #{updateTime}
             </if>
         </set>
-        where staff_id = #{staffId}
+        where post_id = #{postId}
     </update>
 
     <update id="delete">
-        update company_staff
+        update company_post
         <set>
             `status` = 2,
         </set>
-        where staff_id = #{value}
+        where post_id = #{value}
     </update>
     <update id="deleteBatch">
-        update company_staff
+        update company_post
         <set>
             `status` = 2,
         </set>
-        where staff_id in
-        <foreach item="staffId" collection="array" open="(" separator="," close=")">
-            #{staffId}
+        where post_id in
+        <foreach item="postId" collection="array" open="(" separator="," close=")">
+            #{postId}
         </foreach>
     </update>
 </mapper>

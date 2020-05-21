@@ -11,8 +11,16 @@ $(function () {
             {label: 'wifi密码', name: 'wifipass', index: 'wifipass', width: 80},
             {label: 'wifimac地址', name: 'wifimac', index: 'wifimac', width: 80},
             {label: '房价二维码', name: 'qrcode', index: 'qrcode', width: 80},
-            {label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
-            {label: '更新时间', name: 'updateTime', index: 'update_time', width: 80}]
+            {
+                label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
+            },
+            {
+                label: '更新时间', name: 'updateTime', index: 'update_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
+            }]
     });
 });
 
@@ -40,7 +48,8 @@ let vm = new Vue({
         add: function () {
             vm.showList = false;
             vm.title = "新增";
-            vm.companyRoom = {};
+            vm.companyRoom = {companyId: null};
+
             vm.getCompany();
         },
         update: function (event) {
@@ -99,10 +108,13 @@ let vm = new Vue({
         },
         getCompany: function () {//获取商品顶部轮播图
             Ajax.request({
-                url: "../company/queryAll",
+                url: "../company/getAll",
                 async: true,
                 successCallback: function (r) {
                     vm.companyList = r.list;
+                    if (r.cid != 0) {
+                        vm.companyRoom.companyId = r.cid;
+                    }
                 }
             });
         },

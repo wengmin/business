@@ -1,31 +1,22 @@
 package com.business.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * @author 创建人：Vsoft
- * @version 版本号：V1.0
- * @Description 功能说明：
- * @date 创建日期：2020/5/13
- * @time 创建时间: 18:19
+ * 实体
+ * 表名 company_room
+ *
+ * @author wengmin
+ * @email wengmin@vip.qq.com
+ * @date 2020-05-21 17:42:29
  */
-public class CompanyRoomEntity  implements Serializable {
+public class CompanyRoomVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
     private Integer roomId;
     //
     private Integer companyId;
-
-    private String companyName;
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
     //
     private String name;
     //
@@ -40,12 +31,6 @@ public class CompanyRoomEntity  implements Serializable {
     private String wifimac;
     //
     private String qrcode;
-    //0启用，1禁用，2删除
-    private Integer status;
-    //
-    private Date createTime;
-    //房价二维码
-    private Date updateTime;
 
     /**
      * 设置：
@@ -163,40 +148,5 @@ public class CompanyRoomEntity  implements Serializable {
      */
     public String getQrcode() {
         return qrcode;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    /**
-     * 设置：
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 获取：
-     */
-    public Date getCreateTime() {
-        return createTime;
-    }
-    /**
-     * 设置：房价二维码
-     */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    /**
-     * 获取：房价二维码
-     */
-    public Date getUpdateTime() {
-        return updateTime;
     }
 }

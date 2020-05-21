@@ -9,30 +9,22 @@ import java.util.Date;
  *
  * @author wengmin
  * @email wengmin@vip.qq.com
- * @date 2020-05-14 13:46:23
+ * @date 2020-05-21 17:42:29
  */
-public class CompanyStaffEntity implements Serializable {
+public class CompanyStaffVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
     private Integer staffId;
     //企业编号
     private Integer companyId;
-    private String companyName;
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
     //对应后台账号
     private String name;
     //名片
     private String mobile;
-    //0未绑定，1待审核，2已审核，3离职
+    //是否管理员0否1是
     private String post;
-
+    //
     private String openid;
     //0未绑定，1待审核，2删除，3已审核，4离职
     private Integer status;
@@ -106,24 +98,28 @@ public class CompanyStaffEntity implements Serializable {
     public String getPost() {
         return post;
     }
-
-    public String getOpenid() {
-        return openid;
-    }
-
+    /**
+     * 设置：
+     */
     public void setOpenid(String openid) {
         this.openid = openid;
     }
 
     /**
-     * 设置：0在职，1离职
+     * 获取：
+     */
+    public String getOpenid() {
+        return openid;
+    }
+    /**
+     * 设置：0未绑定，1待审核，2删除，3已审核，4离职
      */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
-     * 获取：0在职，1离职
+     * 获取：0未绑定，1待审核，2删除，3已审核，4离职
      */
     public Integer getStatus() {
         return status;
@@ -154,5 +150,4 @@ public class CompanyStaffEntity implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     }
-
 }

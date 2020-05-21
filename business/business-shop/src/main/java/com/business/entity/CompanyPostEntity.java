@@ -4,20 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author 创建人：Vsoft
- * @version 版本号：V1.0
- * @Description 功能说明：
- * @date 创建日期：2020/5/13
- * @time 创建时间: 18:19
+ * 实体
+ * 表名 company_post
+ *
+ * @author wengmin
+ * @email wengmin@vip.qq.com
+ * @date 2020-05-18 17:09:25
  */
-public class CompanyRoomEntity  implements Serializable {
+public class CompanyPostEntity  implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
-    private Integer roomId;
+    private Integer postId;
     //
     private Integer companyId;
-
     private String companyName;
     public String getCompanyName() {
         return companyName;
@@ -27,38 +27,42 @@ public class CompanyRoomEntity  implements Serializable {
         this.companyName = companyName;
     }
     //
+    private String photo;
+    //
     private String name;
     //
-    private String tung;
+    private String position;
     //
-    private String floor;
+    private String mobile;
     //
-    private String wifiname;
+    private String telephone;
     //
-    private String wifipass;
+    private String wechat;
     //
-    private String wifimac;
+    private String email;
     //
-    private String qrcode;
+    private String profile;
+    //
+    private String qrCode;
     //0启用，1禁用，2删除
     private Integer status;
     //
     private Date createTime;
-    //房价二维码
+    //
     private Date updateTime;
 
     /**
      * 设置：
      */
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
+    public void setPostId(Integer postId) {
+        this.postId = postId;
     }
 
     /**
      * 获取：
      */
-    public Integer getRoomId() {
-        return roomId;
+    public Integer getPostId() {
+        return postId;
     }
     /**
      * 设置：
@@ -76,6 +80,19 @@ public class CompanyRoomEntity  implements Serializable {
     /**
      * 设置：
      */
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getPhoto() {
+        return photo;
+    }
+    /**
+     * 设置：
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -89,80 +106,93 @@ public class CompanyRoomEntity  implements Serializable {
     /**
      * 设置：
      */
-    public void setTung(String tung) {
-        this.tung = tung;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     /**
      * 获取：
      */
-    public String getTung() {
-        return tung;
+    public String getPosition() {
+        return position;
     }
     /**
      * 设置：
      */
-    public void setFloor(String floor) {
-        this.floor = floor;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     /**
      * 获取：
      */
-    public String getFloor() {
-        return floor;
+    public String getMobile() {
+        return mobile;
     }
     /**
      * 设置：
      */
-    public void setWifiname(String wifiname) {
-        this.wifiname = wifiname;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     /**
      * 获取：
      */
-    public String getWifiname() {
-        return wifiname;
+    public String getTelephone() {
+        return telephone;
     }
     /**
      * 设置：
      */
-    public void setWifipass(String wifipass) {
-        this.wifipass = wifipass;
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
     }
 
     /**
      * 获取：
      */
-    public String getWifipass() {
-        return wifipass;
+    public String getWechat() {
+        return wechat;
     }
     /**
      * 设置：
      */
-    public void setWifimac(String wifimac) {
-        this.wifimac = wifimac;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
      * 获取：
      */
-    public String getWifimac() {
-        return wifimac;
+    public String getEmail() {
+        return email;
     }
     /**
      * 设置：
      */
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     /**
      * 获取：
      */
-    public String getQrcode() {
-        return qrcode;
+    public String getProfile() {
+        return profile;
+    }
+    /**
+     * 设置：
+     */
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getQrCode() {
+        return qrCode;
     }
 
     public Integer getStatus() {
@@ -187,14 +217,14 @@ public class CompanyRoomEntity  implements Serializable {
         return createTime;
     }
     /**
-     * 设置：房价二维码
+     * 设置：
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
     /**
-     * 获取：房价二维码
+     * 获取：
      */
     public Date getUpdateTime() {
         return updateTime;

@@ -4,46 +4,52 @@
 <mapper namespace="com.business.dao.CompanyServiceDao">
 
     <resultMap type="com.business.entity.CompanyServiceEntity" id="BaseResultMap">
-        <result property="serviceId" column="service_id"/>
-        <result property="companyId" column="company_id"/>
-        <result property="companyName" column="companyName"/>
-        <result property="class" column="class"/>
-        <result property="tag" column="tag"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
+        <id property="companyId" column="company_id"/>
+        <id property="companyName" column="companyName"/>
+        <id property="serviceClass" column="service_class"/>
+        <!-- 描述集合属性 -->
+        <collection property="listServiceTag" ofType="String">
+            <result property="serviceTag" column="service_tag"/>
+        </collection>
     </resultMap>
 
-    <sql id="Base_Column_List" >
-	    `service_id`,
-	    `company_id`,
-	    (select name from company_info where company_info.company_id=company_id) as companyName,
-	    `class`,
-	    `tag`,
-	    `create_time`,
-	    `update_time`
-  	</sql>
-
-    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="queryByCompanyService" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        from company_service
-        where service_id = #{id,jdbcType=BIGINT}
+        company_service.company_id,
+        company_info.name as companyName,
+        company_service.service_class,
+        company_service.service_tag
+        from company_service left join company_info on company_service.company_id=company_info.company_id
+        where company_service.status=0 and company_service.company_id = #{companyId} and  company_service.service_class = #{serviceClass}
     </select>
 
-    <select id="queryList" resultType="com.business.entity.CompanyServiceEntity">
-        select
-        <include refid="Base_Column_List" />
+    <select id="queryTagList" resultType="String">
+        select service_tag
         from company_service
-        WHERE 1=1
+        where status!=2 and company_id = #{companyId} and  service_class = #{serviceClass}
+    </select>
+
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+        company_service.company_id,
+        company_info.name as companyName,
+        company_service.service_class,
+        company_service.service_tag
+        from company_service
+        left join company_info on company_service.company_id=company_info.company_id
+        WHERE company_service.status=0
         <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND company_info.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_service.company_id=#{companyId}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by service_id desc
+                order by company_service.company_id desc
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -52,26 +58,54 @@
     </select>
 
     <select id="queryTotal" resultType="int">
-        select count(*) from company_service
-        WHERE 1=1
+        select count(*) from (select company_id ,service_class from company_service WHERE status=0
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_service.company_id=#{companyId}
+        </if>
+        group by company_id,service_class) a
     </select>
+
+    <select id="hasTag" resultType="com.business.entity.CompanyServiceEntity">
+        select * from company_service
+        WHERE company_id = #{companyId} and  service_class = #{serviceClass} and service_tag=#{serviceTag}
+    </select>
+
+    <update id="disableByCompanyService">
+        update company_service
+        <set>
+            `status` = 1,
+            `update_time` = now()
+        </set>
+        where company_id = #{companyId} and service_class = #{serviceClass}
+    </update>
+
+    <update id="deleteByCompanyService">
+        update company_service
+        <set>
+            `status` = 2,
+            `update_time` = now()
+        </set>
+        where company_id = #{companyId} and service_class = #{serviceClass}
+    </update>
 
     <insert id="save" parameterType="com.business.entity.CompanyServiceEntity">
 		insert into company_service(
           `service_id`,
           `company_id`,
-          `class`,
-          `tag`,
+          `service_class`,
+          `service_tag`,
+          `status`,
           `create_time`,
           `update_time`        )
 		values(
           #{serviceId},
           #{companyId},
-          #{class},
-          #{tag},
+          #{serviceClass},
+          #{serviceTag},
+          0,
           #{createTime},
           #{updateTime}         )
 	</insert>
@@ -82,11 +116,14 @@
             <if test="companyId != null">
                 `company_id` = #{companyId},
             </if>
-            <if test="class != null">
-                `class` = #{class},
+            <if test="serviceClass != null">
+                `service_class` = #{serviceClass},
             </if>
-            <if test="tag != null">
-                `tag` = #{tag},
+            <if test="serviceTag != null">
+                `service_tag` = #{serviceTag},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},
@@ -97,15 +134,4 @@
         </set>
         where service_id = #{serviceId}
     </update>
-
-    <delete id="delete" parameterType="java.lang.Long" >
-        delete from company_service
-        where service_id = #{value}
-    </delete>
-    <delete id="deleteBatch">
-        delete from company_service where service_id in
-        <foreach item="serviceId" collection="array" open="(" separator="," close=")">
-            #{serviceId}
-        </foreach>
-    </delete>
 </mapper>

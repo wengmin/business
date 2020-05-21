@@ -38,7 +38,7 @@
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="companyRoom" :rules="ruleValidate" :label-width="80">
             <Form-item label="选择企业" prop="companyId" style="width: 268px;">
-                <i-select v-model="companyRoom.companyId" filterable label-in-value>
+                <i-select v-model="companyRoom.companyId" label-in-value>
                     <i-option v-for="item in companyList" :value="item.companyId"
                               :key="item.companyId">{{item.name}}
                     </i-option>

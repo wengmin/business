@@ -34,8 +34,12 @@ public class CompanyEntity implements Serializable {
     private Integer scale;
     //行业
     private Integer trade;
+    //行业
+    private Integer status;
     //公司简介
     private String introduction;
+    //
+    private String qrcode;
     //
     private Date createTime;
 
@@ -192,6 +196,23 @@ public class CompanyEntity implements Serializable {
     public String getIntroduction() {
         return introduction;
     }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
     /**
      * 设置：
      */

@@ -2,7 +2,9 @@ package com.business.service.impl;
 
 import com.business.dao.CompanyStaffDao;
 import com.business.entity.CompanyStaffEntity;
+import com.business.service.CardService;
 import com.business.service.CompanyStaffService;
+import com.business.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ import java.util.Map;
 public class CompanyStaffServiceImpl implements CompanyStaffService {
     @Autowired
     private CompanyStaffDao companyStaffDao;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private SysUserService sysUserService;
 
     @Override
     public CompanyStaffEntity queryObject(Integer staffId) {

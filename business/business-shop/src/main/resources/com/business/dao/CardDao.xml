@@ -83,6 +83,41 @@
         </if>
     </select>
 
+    <insert id="save" parameterType="com.business.entity.CardUserVo">
+		insert into card_user(
+          `user_id`,
+          `company_id`,
+          `realname`,
+          `photo`,
+          `position`,
+          `wechat`,
+          `email`,
+          `profile`,
+          `province`,
+          `city`,
+          `county`,
+          `address`,
+          `telephone`,
+          `qr_code`,
+          `create_time`)
+		values(
+          #{userId},
+          #{companyId},
+          #{realname},
+          #{photo},
+          #{position},
+          #{wechat},
+          #{email},
+          #{profile},
+          #{province},
+          #{city},
+          #{county},
+          #{address},
+          #{telephone},
+          #{qrCode},
+          now())
+	</insert>
+
     <update id="update" parameterType="com.business.entity.CardEntity">
         update card_user
         <set>

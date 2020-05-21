@@ -68,6 +68,8 @@ public class SysUserEntity implements Serializable {
     private Date createTime;
 
     private Long deptId;
+
+    private Integer companyId;
     /**
      * 部门名称
      */
@@ -229,5 +231,13 @@ public class SysUserEntity implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }

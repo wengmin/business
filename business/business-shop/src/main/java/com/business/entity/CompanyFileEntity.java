@@ -19,6 +19,7 @@ public class CompanyFileEntity implements Serializable {
     private Integer companyId;
 
     private String companyName;
+
     public String getCompanyName() {
         return companyName;
     }
@@ -29,6 +30,8 @@ public class CompanyFileEntity implements Serializable {
 
     //
     private String fileurl;
+    //0启用，1禁用，2删除
+    private Integer status;
     //
     private Date createTime;
 
@@ -45,6 +48,7 @@ public class CompanyFileEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
     /**
      * 设置：
      */
@@ -58,6 +62,7 @@ public class CompanyFileEntity implements Serializable {
     public Integer getCompanyId() {
         return companyId;
     }
+
     /**
      * 设置：
      */
@@ -71,6 +76,16 @@ public class CompanyFileEntity implements Serializable {
     public String getFileurl() {
         return fileurl;
     }
+
+    public Integer getStatus() {
+
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     /**
      * 设置：
      */

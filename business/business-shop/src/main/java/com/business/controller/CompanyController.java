@@ -2,13 +2,12 @@ package com.business.controller;
 
 import com.business.entity.CompanyEntity;
 import com.business.service.CompanyService;
-import com.business.utils.PageUtils;
-import com.business.utils.Query;
-import com.business.utils.R;
+import com.business.utils.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,9 @@ public class CompanyController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            query.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyEntity> companyInfoList = companyService.queryList(query);
         int total = companyService.queryTotal(query);
 
@@ -48,6 +49,9 @@ public class CompanyController {
     @RequestMapping("/info/{companyId}")
     @RequiresPermissions("companyinfo:info")
     public R info(@PathVariable("companyId") Integer companyId) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+        }
         CompanyEntity companyInfo = companyService.queryObject(companyId);
 
         return R.ok().put("companyInfo", companyInfo);
@@ -59,6 +63,9 @@ public class CompanyController {
     @RequestMapping("/save")
     @RequiresPermissions("companyinfo:save")
     public R save(@RequestBody CompanyEntity companyInfo) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyInfo.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyService.save(companyInfo);
 
         return R.ok();
@@ -70,6 +77,9 @@ public class CompanyController {
     @RequestMapping("/update")
     @RequiresPermissions("companyinfo:update")
     public R update(@RequestBody CompanyEntity companyInfo) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyInfo.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyService.update(companyInfo);
 
         return R.ok();
@@ -91,26 +101,30 @@ public class CompanyController {
      */
     @RequestMapping("/queryAll")
     public R queryAll(@RequestParam Map<String, Object> params) {
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            params.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyEntity> list = companyService.queryList(params);
 
         return R.ok().put("list", list);
     }
 
     /**
-     * 生成二维码
+     * 查看所有列表
      */
-    @RequestMapping("/createQrCode")
-    public Object createQrCode(String param) {
-        try {
-            //String accessToken = tokenService.getAccessToken();
-            //String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index/index", refUserId.toString());
-            //if (!StringUtils.isNullOrEmpty(imgStr)) {
-            //}
-            return R.ok();
-        } catch (Exception e) {
-
+    @RequestMapping("/getAll")
+    public R getAll() {
+        Map<String, Object> params = new HashMap<>();
+        int companyId = 0;
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyId = ShiroUtils.getUserEntity().getCompanyId();
+            params.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
         }
-        return R.error("创建二维码失败");
+
+        List<CompanyEntity> list = companyService.queryList(params);
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", list);
+        map.put("cid", companyId);
+        return R.ok(map);
     }
 }

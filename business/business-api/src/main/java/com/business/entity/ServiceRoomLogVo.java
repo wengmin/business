@@ -5,77 +5,77 @@ import java.util.Date;
 
 /**
  * 实体
- * 表名 company_file
+ * 表名 service_room_log
  *
  * @author wengmin
  * @email wengmin@vip.qq.com
  * @date 2020-05-21 17:42:29
  */
-public class CompanyFileVo implements Serializable {
+public class ServiceRoomLogVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
-    private Integer id;
+    private Integer logId;
     //
-    private Integer companyId;
+    private Integer serviceId;
     //
-    private String fileurl;
-    //0启用，1禁用，2删除
     private Integer status;
+    //
+    private String remark;
     //
     private Date createTime;
 
     /**
      * 设置：
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setLogId(Integer logId) {
+        this.logId = logId;
     }
 
     /**
      * 获取：
      */
-    public Integer getId() {
-        return id;
+    public Integer getLogId() {
+        return logId;
     }
     /**
      * 设置：
      */
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
     }
 
     /**
      * 获取：
      */
-    public Integer getCompanyId() {
-        return companyId;
+    public Integer getServiceId() {
+        return serviceId;
     }
     /**
      * 设置：
-     */
-    public void setFileurl(String fileurl) {
-        this.fileurl = fileurl;
-    }
-
-    /**
-     * 获取：
-     */
-    public String getFileurl() {
-        return fileurl;
-    }
-    /**
-     * 设置：0启用，1禁用，2删除
      */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
-     * 获取：0启用，1禁用，2删除
+     * 获取：
      */
     public Integer getStatus() {
         return status;
+    }
+    /**
+     * 设置：
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    /**
+     * 获取：
+     */
+    public String getRemark() {
+        return remark;
     }
     /**
      * 设置：

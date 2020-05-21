@@ -8,31 +8,36 @@
         <result property="companyId" column="company_id"/>
         <result property="companyName" column="companyName"/>
         <result property="fileurl" column="fileurl"/>
+        <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
 
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
 	    `id`,
 	    `company_id`,
 	    (select name from company_info where company_info.company_id=company_file.company_id) as companyName,
 	    `fileurl`,
+	    `status`,
 	    `create_time`
   	</sql>
 
-    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="queryObject" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from company_file
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id}
     </select>
 
     <select id="queryList" resultType="com.business.entity.CompanyFileEntity">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from company_file
-        WHERE 1=1
+        WHERE status!=2
         <if test="companyName != null and companyName.trim() != ''">
             AND companyId in (select company_id from company_info where companyName LIKE concat('%',#{companyName},'%'))
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_id=#{companyId}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -49,9 +54,12 @@
 
     <select id="queryTotal" resultType="int">
         select count(*) from company_file
-        WHERE 1=1
+        WHERE status!=2
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_id=#{companyId}
         </if>
     </select>
 
@@ -60,11 +68,13 @@
           `id`,
           `company_id`,
           `fileurl`,
+          `status`,
           `create_time`        )
 		values(
           #{id},
           #{companyId},
           #{fileurl},
+          0,
           #{createTime}         )
 	</insert>
 
@@ -77,6 +87,9 @@
             <if test="fileurl != null">
                 `fileurl` = #{fileurl},
             </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
             <if test="createTime != null">
                 `create_time` = #{createTime}
             </if>
@@ -84,14 +97,21 @@
         where id = #{id}
     </update>
 
-    <delete id="delete" parameterType="java.lang.Long" >
-        delete from company_file
+    <update id="delete" parameterType="java.lang.Long">
+        update company_file
+        <set>
+            `status` = 2,
+        </set>
         where id = #{value}
-    </delete>
-    <delete id="deleteBatch">
-        delete from company_file where id in
+    </update>
+    <update id="deleteBatch">
+        update company_file
+        <set>
+            `status` = 2,
+        </set>
+        where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

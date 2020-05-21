@@ -2,9 +2,7 @@ package com.business.controller;
 
 import com.business.entity.CompanyFileEntity;
 import com.business.service.CompanyFileService;
-import com.business.utils.PageUtils;
-import com.business.utils.Query;
-import com.business.utils.R;
+import com.business.utils.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,9 @@ public class CompanyFileController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            query.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyFileEntity> companyFileList = companyFileService.queryList(query);
         int total = companyFileService.queryTotal(query);
 
@@ -59,6 +59,9 @@ public class CompanyFileController {
     @RequestMapping("/save")
     @RequiresPermissions("companyfile:save")
     public R save(@RequestBody CompanyFileEntity companyFile) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyFile.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyFileService.save(companyFile);
 
         return R.ok();
@@ -70,6 +73,9 @@ public class CompanyFileController {
     @RequestMapping("/update")
     @RequiresPermissions("companyfile:update")
     public R update(@RequestBody CompanyFileEntity companyFile) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyFile.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyFileService.update(companyFile);
 
         return R.ok();
@@ -91,7 +97,9 @@ public class CompanyFileController {
      */
     @RequestMapping("/queryAll")
     public R queryAll(@RequestParam Map<String, Object> params) {
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            params.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyFileEntity> list = companyFileService.queryList(params);
 
         return R.ok().put("list", list);

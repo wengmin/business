@@ -1,13 +1,11 @@
 package com.business.service;
 
 import com.business.dao.ApiCompanyMapper;
-import com.business.entity.CompanyFileVo;
-import com.business.entity.CompanyVo;
+import com.business.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 创建人：Vsoft
@@ -33,19 +31,6 @@ public class ApiCompanyService {
         return companyDao.queryObject(id);
     }
 
-    public List<CompanyVo> queryList(Map<String, Object> map) {
-        return companyDao.queryList(map);
-    }
-
-    public Integer queryTotal(Map<String, Object> map) {
-        return companyDao.queryTotal(map);
-    }
-
-    public CompanyVo queryByName(String name) {
-        return companyDao.queryByName(name);
-    }
-
-
 
     public List<CompanyFileVo> queryFileList(Integer companyId) {
         return companyDao.queryFileList(companyId);
@@ -61,5 +46,24 @@ public class ApiCompanyService {
 
     public Integer deleteFileByCompany(Integer companyId) {
         return companyDao.deleteFileByCompany(companyId);
+    }
+
+
+    public CompanyPostVo queryPost(Integer postId) {
+        return companyDao.queryPost(postId);
+    }
+
+    public List<CompanyPostVo> queryPostList(Integer companyId, Integer postId) {
+        return companyDao.queryPostList(companyId, postId);
+    }
+
+
+    public CompanyRoomVo queryRoom(Integer roomId) {
+        return companyDao.queryRoom(roomId);
+    }
+
+
+    public List<CompanyServiceVo> queryServiceList(Integer companyId, String serviceClass) {
+        return companyDao.queryServiceList(companyId, serviceClass);
     }
 }

@@ -2,117 +2,139 @@ $(function () {
     $("#jqGrid").Grid({
         url: '../companystaff/list',
         colModel: [
-			{label: 'staffId', name: 'staffId', index: 'staff_id', key: true, hidden: true},
-			{label: '企业编号', name: 'companyId', index: 'company_id', width: 80},
-			{label: '对应后台账号', name: 'sysUserId', index: 'sys_user_id', width: 80},
-			{label: '名片', name: 'cardId', index: 'card_id', width: 80},
-			{label: '是否管理员', name: 'isAdmin', index: 'is_admin', width: 80},
-			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80}]
+            {label: 'staffId', name: 'staffId', index: 'staff_id', key: true, hidden: true},
+            {label: '企业名称', name: 'companyName', index: 'companyName', width: 80},
+            {label: '姓名', name: 'name', index: 'name', width: 80},
+            {label: '手机号码', name: 'mobile', index: 'mobile', width: 80},
+            {label: '岗位', name: 'post', index: 'post', width: 80},
+            {
+                label: '状态', name: 'status', index: 'status', width: 80, formatter: function (value) {
+                    var txt = "";
+                    if (value == "0") {
+                        txt = "未绑定";
+                    }
+                    if (value == "1") {
+                        txt = "待审核";
+                    }
+                    if (value == "2") {
+                        txt = "已审核";
+                    }
+                    if (value == "3") {
+                        txt = "离职";
+                    }
+                    return txt;
+                }
+            },
+            {
+                label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
+            },
+            {
+                label: '更新时间', name: 'updateTime', index: 'update_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
+            }]
     });
 });
 
 let vm = new Vue({
-	el: '#rrapp',
-	data: {
+    el: '#rrapp',
+    data: {
         showList: true,
         title: null,
-		companyStaff: {},
-		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
-			]
-		},
-		q: {
-		    name: ''
-		},
-        provinceNames:[],
-        selProId:0,
-        selCityProId:0,
-        cityNames:[],
-        selCityId:0,
-        countyNames:[],
-	},
-	methods: {
-		query: function () {
-			vm.reload();
-		},
-		add: function () {
-			vm.showList = false;
-			vm.title = "新增";
-			vm.companyStaff = {};
-            this.getProvinceNames();
-            this.getCityNames();
-            this.getCountyNames();
-		},
-		update: function (event) {
+        companyStaff: {
+            status: 0
+        },
+        ruleValidate: {
+            name: [
+                {required: true, message: '名称不能为空', trigger: 'blur'}
+            ]
+        },
+        q: {
+            name: '',
+            companyName: ''
+        },
+        companyList: []
+    },
+    methods: {
+        query: function () {
+            vm.reload();
+        },
+        add: function () {
+            vm.showList = false;
+            vm.title = "新增";
+            vm.companyStaff = {companyId: null, status: 0};
+
+            vm.getCompany();
+        },
+        update: function (event) {
             let staffId = getSelectedRow("#jqGrid");
-			if (staffId == null) {
-				return;
-			}
-			vm.showList = false;
+            if (staffId == null) {
+                return;
+            }
+            vm.showList = false;
             vm.title = "修改";
 
             vm.getInfo(staffId)
-		},
-		saveOrUpdate: function (event) {
+        },
+        saveOrUpdate: function (event) {
             let url = vm.companyStaff.staffId == null ? "../companystaff/save" : "../companystaff/update";
             Ajax.request({
-			    url: url,
+                url: url,
                 params: JSON.stringify(vm.companyStaff),
                 type: "POST",
-			    contentType: "application/json",
+                contentType: "application/json",
                 successCallback: function (r) {
                     alert('操作成功', function (index) {
                         vm.reload();
                     });
                 }
-			});
-		},
-		del: function (event) {
+            });
+        },
+        del: function (event) {
             let staffIds = getSelectedRows("#jqGrid");
-			if (staffIds == null){
-				return;
-			}
+            if (staffIds == null) {
+                return;
+            }
 
-			confirm('确定要删除选中的记录？', function () {
+            confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-				    url: "../companystaff/delete",
+                    url: "../companystaff/delete",
                     params: JSON.stringify(staffIds),
                     type: "POST",
-				    contentType: "application/json",
+                    contentType: "application/json",
                     successCallback: function () {
                         alert('操作成功', function (index) {
                             vm.reload();
                         });
-					}
-				});
-			});
-		},
-		getInfo: function(staffId){
+                    }
+                });
+            });
+        },
+        getInfo: function (staffId) {
             Ajax.request({
-                url: "../companystaff/info/"+staffId,
+                url: "../companystaff/info/" + staffId,
                 async: true,
                 successCallback: function (r) {
                     vm.companyStaff = r.companyStaff;
+                    vm.getCompany();
                 }
             });
-            this.getProvinceNames();
-            this.getCityNames();
-            this.getCountyNames();
-		},
-		reload: function (event) {
-			vm.showList = true;
+        },
+        reload: function (event) {
+            vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
-			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+            $("#jqGrid").jqGrid('setGridParam', {
+                postData: {'name': vm.q.name, 'companyName': vm.q.companyName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
-		},
-        reloadSearch: function() {
+        },
+        reloadSearch: function () {
             vm.q = {
-                name: ''
+                name: '',
+                companyName: ''
             }
             vm.reload();
         },
@@ -124,73 +146,17 @@ let vm = new Vue({
         handleReset: function (name) {
             handleResetForm(this, name);
         },
-        /**
-         * 获取省列表
-         */
-        getProvinceNames: function () {
+        getCompany: function () {//获取所有企业
             Ajax.request({
-                url: "../sys/region/getAllProvice?areaId="+1,
+                url: "../company/getAll",
                 async: true,
                 successCallback: function (r) {
-                    vm.provinceNames = r.list;
+                    vm.companyList = r.list;
+                    if (r.cid != 0) {
+                        vm.companyStaff.companyId = r.cid;
+                    }
                 }
             });
-        },
-        /**
-         * 选择省操作调用方法
-         */
-        proNameChange: function(val){
-            console.log('-------val',val);
-            if(val == null || val == ""){
-                console.log('proNameChange-------val',val);
-                return;
-            }
-            vm.selProId = val;
-            vm.getCityNames();
-        },
-        /**
-         * 获取市列表
-         */
-        getCityNames: function () {
-            if(vm.selProId == null || vm.selProId == ""){
-                console.log('getCityNames-------vm.selProId',vm.selProId);
-                return;
-            }
-            Ajax.request({
-                url: "../sys/region/getAllCityByName?areaName="+vm.selProId,
-                async: true,
-                successCallback: function (r) {
-                    vm.cityNames = r.list;
-                }
-            });
-        },
-        /**
-         * 选择市操作调用方法
-         */
-        proNameCityChange: function(val){
-            console.log('-------val2',val);
-            if(val == null || val == ""){
-                console.log('proNameCityChange-------val',val);
-                return;
-            }
-            vm.selCityProId = val;
-            vm.getCountyNames();
-        },
-        /**
-         * 获取区列表
-         */
-        getCountyNames: function () {
-            if(vm.selCityProId == null || vm.selCityProId == ""){
-                console.log('getCountyNames-------vm.selCityProId',vm.selCityProId);
-                return;
-            }
-            Ajax.request({
-                url: "../sys/region/getChildrenDistrictByName?areaName="+vm.selCityProId,
-                async: true,
-                successCallback: function (r) {
-                    vm.countyNames = r.list;
-                }
-            });
-        },
-	}
+        }
+    }
 });

@@ -1,6 +1,7 @@
 package com.business.service;
 
 import com.business.entity.CompanyServiceEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,14 @@ public interface CompanyServiceService {
      * @return 实体
      */
     CompanyServiceEntity queryObject(Integer serviceId);
+
+    /**
+     * 根据主键查询实体
+     *
+     * @param id 主键
+     * @return 实体
+     */
+    CompanyServiceEntity queryByCompanyService(Integer companyId, String serviceClass);
 
     /**
      * 分页查询
@@ -45,6 +54,23 @@ public interface CompanyServiceService {
      * @return 保存条数
      */
     int save(CompanyServiceEntity companyService);
+
+    /**
+     * 查询是否存在
+     *
+     * @param
+     * @return 保存条数
+     */
+    CompanyServiceEntity hasTag(Integer companyId,  String serviceClass,  String serviceTag);
+
+    void disableByCompanyService(Integer companyId, String serviceClass);
+
+    void deleteByCompanyService(Integer companyId, String serviceClass);
+
+    /*
+    根据企业编号和服务类型获取该企业下的项目
+     */
+    List<String> queryTagList(Integer companyId, String serviceClass);
 
     /**
      * 根据主键更新实体

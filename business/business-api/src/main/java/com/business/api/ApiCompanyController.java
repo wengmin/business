@@ -2,11 +2,9 @@ package com.business.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.business.annotation.IgnoreAuth;
 import com.business.annotation.LoginUser;
-import com.business.entity.CardUserVo;
-import com.business.entity.CompanyFileVo;
-import com.business.entity.CompanyVo;
-import com.business.entity.UserVo;
+import com.business.entity.*;
 import com.business.service.ApiCardUserService;
 import com.business.service.ApiCompanyService;
 import com.business.util.ApiBaseAction;
@@ -95,13 +93,48 @@ public class ApiCompanyController extends ApiBaseAction {
         return toResponsFail("参数错误");
     }
 
-    @ApiOperation(value = "删除收藏记录")
-    @PostMapping("deleteCollect")
-    public Object deleteCollect(@RequestParam("id") Integer id) {
+    @ApiOperation(value = "删除附件")
+    @PostMapping("deleteFile")
+    public Object deleteFile(@RequestParam("id") Integer id) {
         if (id == 0 || id == null) {
             return toResponsFail("参数错误");
         }
         companyService.deleteFile(id);
         return toResponsSuccess("删除成功");
+    }
+
+
+    @IgnoreAuth
+    @ApiOperation(value = "获取岗位")
+    @GetMapping("postDetail")
+    public Object postDetail(Integer postId) {
+        CompanyPostVo entity = companyService.queryPost(postId);
+        return toResponsSuccess(entity);
+    }
+
+    @IgnoreAuth
+    @ApiOperation(value = "获取企业下的岗位")
+    @GetMapping("postList")
+    public Object postList(@RequestParam("companyId") Integer companyId, @RequestParam(value = "postId", defaultValue = "0") Integer postId) {
+        List<CompanyPostVo> entity = companyService.queryPostList(companyId, postId);
+        return toResponsSuccess(entity);
+    }
+
+
+    @IgnoreAuth
+    @ApiOperation(value = "获取房间信息")
+    @GetMapping("roomDetail")
+    public Object roomDetail(Integer roomId) {
+        CompanyRoomVo entity = companyService.queryRoom(roomId);
+        return toResponsSuccess(entity);
+    }
+
+
+    @IgnoreAuth
+    @ApiOperation(value = "获取企业下的服务")
+    @GetMapping("serviceList")
+    public Object serviceList(Integer companyId, String serviceClass) {
+        List<CompanyServiceVo> entity = companyService.queryServiceList(companyId, serviceClass);
+        return toResponsSuccess(entity);
     }
 }

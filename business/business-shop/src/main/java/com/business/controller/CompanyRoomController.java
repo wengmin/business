@@ -2,9 +2,7 @@ package com.business.controller;
 
 import com.business.entity.CompanyRoomEntity;
 import com.business.service.CompanyRoomService;
-import com.business.utils.PageUtils;
-import com.business.utils.Query;
-import com.business.utils.R;
+import com.business.utils.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,9 @@ public class CompanyRoomController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            query.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyRoomEntity> companyRoomList = companyRoomService.queryList(query);
         int total = companyRoomService.queryTotal(query);
 
@@ -59,6 +59,9 @@ public class CompanyRoomController {
     @RequestMapping("/save")
     @RequiresPermissions("companyroom:save")
     public R save(@RequestBody CompanyRoomEntity companyRoom) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyRoom.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyRoomService.save(companyRoom);
 
         return R.ok();
@@ -70,6 +73,9 @@ public class CompanyRoomController {
     @RequestMapping("/update")
     @RequiresPermissions("companyroom:update")
     public R update(@RequestBody CompanyRoomEntity companyRoom) {
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            companyRoom.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+        }
         companyRoomService.update(companyRoom);
 
         return R.ok();
@@ -91,7 +97,9 @@ public class CompanyRoomController {
      */
     @RequestMapping("/queryAll")
     public R queryAll(@RequestParam Map<String, Object> params) {
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            params.put("companyId", ShiroUtils.getUserEntity().getCompanyId());
+        }
         List<CompanyRoomEntity> list = companyRoomService.queryList(params);
 
         return R.ok().put("list", list);

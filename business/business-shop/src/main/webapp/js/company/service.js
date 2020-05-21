@@ -2,102 +2,138 @@ $(function () {
     $("#jqGrid").Grid({
         url: '../companyservice/list',
         colModel: [
-			{label: 'serviceId', name: 'serviceId', index: 'service_id', key: true, hidden: true},
-			{label: '企业名称', name: 'companyId', index: 'company_id', width: 80},
-			{label: '服务类型', name: 'class', index: 'class', width: 80},
-			{label: '标签', name: 'tag', index: 'tag', width: 80},
-			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80}]
+            {label: '', name: 'companyId', index: '', key: true, hidden: true},
+            {label: '企业名称', name: 'companyName', index: 'companyName', width: 80},
+            {
+                label: '服务类型', name: 'serviceClass', index: '', width: 80, formatter: function (value) {
+                    var txt = "";
+                    if (value == "clean") {
+                        txt = "清洁";
+                    }
+                    if (value == "lease") {
+                        txt = "物品租借";
+                    }
+                    if (value == "repair") {
+                        txt = "维修";
+                    }
+                    if (value == "complaint") {
+                        txt = "投诉";
+                    }
+                    return txt;
+                }
+            },
+            {label: '', name: 'serviceClass', index: '', key: true, hidden: true},
+            {
+                label: '标签', name: 'listServiceTag', index: 'listServiceTag', width: 80, formatter: function (value) {
+                    var txt = "";
+                    for (var i = 0; i < value.length; i++) {
+                        txt += value[i] + "、";
+                    }
+                    return txt;
+                }
+            }]
     });
 });
 
 let vm = new Vue({
-	el: '#rrapp',
-	data: {
+    el: '#rrapp',
+    data: {
         showList: true,
         title: null,
-		companyService: {},
-		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
-			]
-		},
-		q: {
-		    name: ''
-		}
-	},
-	methods: {
-		query: function () {
-			vm.reload();
-		},
-		add: function () {
-			vm.showList = false;
-			vm.title = "新增";
-			vm.companyService = {};
-		},
-		update: function (event) {
-            let serviceId = getSelectedRow("#jqGrid");
-			if (serviceId == null) {
-				return;
-			}
-			vm.showList = false;
-            vm.title = "修改";
+        companyService: {},
+        ruleValidate: {
+            name: [
+                {required: true, message: '名称不能为空', trigger: 'blur'}
+            ]
+        },
+        q: {
+            name: ''
+        },
+        companyList: [],
+        serviceClass: [],
+        serviceTag: [],
+        othertag: ''
+    },
+    methods: {
+        query: function () {
+            vm.reload();
+        },
+        add: function () {
+            vm.showList = false;
+            vm.title = "新增";
+            vm.companyService = {companyId:null};
+            vm.othertag = "";
 
-            vm.getInfo(serviceId)
-		},
-		saveOrUpdate: function (event) {
-            let url = vm.companyService.serviceId == null ? "../companyservice/save" : "../companyservice/update";
+            vm.getServiceClass();
+            vm.getCompany();
+        },
+        update: function (event) {
+            let entity = getSelectedRowData("#jqGrid");
+            if (entity == null) {
+                return;
+            }
+            vm.showList = false;
+            vm.title = "修改";
+            vm.othertag = "";
+
+            vm.getInfo(entity.companyId, entity.serviceClass)
+        },
+        saveOrUpdate: function (event) {
             Ajax.request({
-			    url: url,
+                url: "../companyservice/save",
                 params: JSON.stringify(vm.companyService),
                 type: "POST",
-			    contentType: "application/json",
+                contentType: "application/json",
                 successCallback: function (r) {
                     alert('操作成功', function (index) {
                         vm.reload();
                     });
                 }
-			});
-		},
-		del: function (event) {
-            let serviceIds = getSelectedRows("#jqGrid");
-			if (serviceIds == null){
-				return;
-			}
+            });
+        },
+        del: function (event) {
+            let entity = getSelectedRowData("#jqGrid");
+            if (entity == null) {
+                return;
+            }
 
-			confirm('确定要删除选中的记录？', function () {
+            confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-				    url: "../companyservice/delete",
-                    params: JSON.stringify(serviceIds),
+                    url: "../companyservice/delete",
+                    params: {
+                        "companyId": entity.companyId,
+                        "serviceClass": entity.serviceClass
+                    },
                     type: "POST",
-				    contentType: "application/json",
                     successCallback: function () {
                         alert('操作成功', function (index) {
                             vm.reload();
                         });
-					}
-				});
-			});
-		},
-		getInfo: function(serviceId){
+                    }
+                });
+            });
+        },
+        getInfo: function (companyId, serviceClass) {
             Ajax.request({
-                url: "../companyservice/info/"+serviceId,
+                url: "../companyservice/info?companyId=" + companyId + "&serviceClass=" + serviceClass,
                 async: true,
                 successCallback: function (r) {
                     vm.companyService = r.companyService;
+                    vm.getCompany();
+                    vm.getServiceClass();
                 }
             });
-		},
-		reload: function (event) {
-			vm.showList = true;
+        },
+        reload: function (event) {
+            vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
-			$("#jqGrid").jqGrid('setGridParam', {
+            $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'name': vm.q.name},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
-		},
-        reloadSearch: function() {
+        },
+        reloadSearch: function () {
             vm.q = {
                 name: ''
             }
@@ -110,6 +146,55 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
-        }
-	}
+        },
+        getCompany: function () {//获取所有企业
+            Ajax.request({
+                url: "../company/getAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.companyList = r.list;
+                    if (r.cid != 0) {
+                        vm.companyService.companyId = r.cid;
+                    }
+                }
+            });
+        },
+        getServiceClass: function () {
+            Ajax.request({
+                url: "../sys/macro/queryMacrosByValue?value=serviceClass",
+                async: true,
+                successCallback: function (r) {
+                    vm.serviceClass = r.list;
+                }
+            });
+        },
+        changeServiceClass: function (opt) {
+            let model = opt.value
+            if (model && (!vm.companyService.companyId || vm.companyService.companyId == 0)) {
+                iview.Message.error("请选择企业");
+                return
+            }
+            Ajax.request({
+                url: "../companyservice/getServiceTag?companyId=" + vm.companyService.companyId + "&serviceClass=" + model,
+                async: true,
+                successCallback: function (r) {
+                    vm.serviceTag = r.list;
+                }
+            });
+        },
+        handleAdd() {
+            Ajax.request({
+                url: '../companyservice/saveTag',
+                params: {
+                    "companyId": vm.companyService.companyId,
+                    "serviceClass": vm.companyService.serviceClass,
+                    "serviceTag": vm.othertag
+                },
+                type: "POST",
+                successCallback: function (r) {
+                    vm.serviceTag.push(vm.othertag)
+                }
+            });
+        },
+    }
 });
