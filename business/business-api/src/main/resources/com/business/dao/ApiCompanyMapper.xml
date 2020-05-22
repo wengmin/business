@@ -172,6 +172,23 @@
     </select>
 
 
+    <resultMap type="com.business.entity.CompanyServiceVo" id="ServiceMap">
+        <id property="companyId" column="company_id"/>
+        <id property="serviceClass" column="service_class"/>
+        <!-- 描述集合属性 -->
+        <collection property="listServiceTag" ofType="String">
+            <result property="serviceTag" column="service_tag"/>
+        </collection>
+    </resultMap>
+    <select id="queryServiceGroup" resultMap="ServiceMap">
+        select
+        company_service.company_id,
+        company_service.service_class,
+        company_service.service_tag
+        from company_service
+        left join company_info on company_service.company_id=company_info.company_id
+        WHERE company_service.status=0 and company_service.company_id = #{value}
+    </select>
     <select id="queryServiceList" resultType="com.business.entity.CompanyServiceVo">
         select
 	    `service_id`,

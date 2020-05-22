@@ -1,6 +1,7 @@
 package com.business.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 实体
@@ -21,6 +22,16 @@ public class CompanyServiceVo implements Serializable {
     private String serviceClass;
     //标签
     private String serviceTag;
+    //标签
+    private List<String> listServiceTag;
+
+    public List<String> getListServiceTag() {
+        return listServiceTag;
+    }
+
+    public void setListServiceTag(List<String> listServiceTag) {
+        this.listServiceTag = listServiceTag;
+    }
 
     /**
      * 设置：

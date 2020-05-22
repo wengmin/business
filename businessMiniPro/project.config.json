@@ -62,6 +62,13 @@
 					"pathName": "pages/card/index/index",
 					"query": "param=4~6CkgY",
 					"scene": 1001
+				},
+				{
+					"id": -1,
+					"name": "pages/service/index/index",
+					"pathName": "pages/service/index/index",
+					"query": "roomId=1",
+					"scene": null
 				}
 			]
 		}

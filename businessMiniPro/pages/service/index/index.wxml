@@ -22,105 +22,42 @@
       <text>开票</text>
     </navigator>
   </view>
-
-
-
-
   <view class="swiper-nav">
-    <view class="item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="itemChange">
-      <image src="/static/images/service/lease.png" data-current="0"></image>
-      <text data-current="0">租借物品</text>
-    </view>
-    <view class="item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="itemChange">
-      <image src="/static/images/service/clean.png" data-current="1"></image>
-      <text data-current="1">清洁</text>
-    </view>
-    <view class="item {{currentTab==2 ? 'on' : ''}}" data-current="2" bindtap="itemChange">
-      <image src="/static/images/service/repair.png" data-current="2"></image>
-      <text data-current="2">维修</text>
-    </view>
-    <view class="item {{currentTab==3 ? 'on' : ''}}" data-current="3" bindtap="itemChange">
-      <image src="/static/images/service/complaint.png" data-current="3"></image>
-      <text data-current="3">投诉</text>
+    <view class="item {{currentTab==index ? 'on' : ''}}" data-current="{{index}}" bindtap="itemChange" wx:for="{{service}}" wx:key="index">
+      <image src="/static/images/service/{{item.serviceClass}}.png" data-current="{{index}}"></image>
+      <text data-current="{{index}}">{{item.serviceClass}}</text>
     </view>
   </view>
   <swiper current="{{currentTab}}" class="swiper" style="height:{{swiperHeight}}" duration="300" bindchange="indexChange">
-    <swiper-item>
-      <view class="body swiperitem0">
-        <view class="checkbox">
-          <view class="item">雨衣</view>
-          <view class="item">雨伞</view>
-          <view class="item">手套</view>
-          <view class="item">指甲钳</view>
-          <view class="item">路由器</view>
-          <view class="item">剪刀</view>
-          <view class="item">苹果充电器</view>
-          <view class="item">安卓充电器</view>
-          <view class="item">电风扇</view>
-          <view class="item">充电宝</view>
+    <swiper-item wx:for="{{service}}" wx:key="index">
+      <view class="body swiperitem{{index}}">
+        <view class="real" wx:if="{{item.serviceClass=='complaint'}}">
+          <image src="/static/images/bussiness-man.png"></image>
+          <view class="con">宾客您好，我是本店经理，驻点过程中遇到任何问题，都可以反馈给我，我会帮您解决，希望您住店愉快！</view>
         </view>
-        <button class="subbtn">立即提交</button>
-      </view>
-    </swiper-item>
-    <swiper-item>
-      <view class="body swiperitem1">
         <view class="checkbox">
-          <view class="item">屋内清洁</view>
-          <view class="item">更换毛巾</view>
-          <view class="item">更好浴巾</view>
-          <view class="item">更好地巾</view>
-          <view class="item">更好浴袍</view>
-          <view class="item">更好床单被套</view>
-          <view class="item">补充一次性用品</view>
+          <view class="{{checkClass.getClass(checkItem,items)}} item" wx:for="{{item.listServiceTag}}" wx:key="index" wx:for-item="items" bindtap='classCheck' data-value="{{items}}">{{items}}</view>
         </view>
-        <view class="control">
+        <view class="control" wx:if="{{item.serviceClass=='clean'}}">
           <view class="form-item">
             <view class="left">处理时间</view>
             <input class="inputright" placeholder="选择时间"></input>
           </view>
           <view class="form-item">
-            <textarea class="textarea" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="有什么需要告知我们的？" value="{{user.profile}}" />
+            <textarea class="textarea" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="有什么需要告知我们的？" />
           </view>
         </view>
-        <button class="subbtn">立即提交</button>
-      </view>
-    </swiper-item>
-    <swiper-item>
-      <view class="body swiperitem2">
-        <view class="checkbox">
-          <view class="item">更好灯泡</view>
-          <view class="item">空调不冷</view>
-          <view class="item">开关坏掉</view>
-          <view class="item">排插没电</view>
-          <view class="item">门锁坏了</view>
-          <view class="item">卫生间没水</view>
-        </view>
-        <button class="subbtn">立即提交</button>
-      </view>
-    </swiper-item>
-    <swiper-item>
-      <view class="body swiperitem3">
-        <view class="real">
-          <image src="/static/images/bussiness-man.png"></image>
-          <view class="con">宾客您好，我是本店经理，驻点过程中遇到任何问题，都可以反馈给我，我会帮您解决，希望您住店愉快！</view>
-        </view>
-        <view class="checkbox" style="padding-top:30rpx;">
-          <view class="item">屋内清洁</view>
-          <view class="item">更换毛巾</view>
-          <view class="item">更好浴巾</view>
-          <view class="item">更好地巾</view>
-          <view class="item">更好浴袍</view>
-          <view class="item">更好床单被套</view>
-          <view class="item">补充一次性用品</view>
-        </view>
-        <button class="subbtn">立即提交</button>
+        <button class="subbtn" data-class="{{item.serviceClass}}" bindtap='subService'>立即提交</button>
       </view>
     </swiper-item>
   </swiper>
-
-
-
-
-
-
 </view>
+<wxs module="checkClass">
+  function getClass(arr, str) {
+    if (arr.indexOf(str) > -1)
+      return "check";
+    else
+      return ""
+  }
+  module.exports.getClass = getClass;
+</wxs>

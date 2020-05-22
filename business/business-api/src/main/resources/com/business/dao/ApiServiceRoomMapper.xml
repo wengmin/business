@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ServiceRoomMapper">
+
+    <resultMap type="com.business.entity.ServiceRoomEntity" id="BaseResultMap">
+        <result property="serviceId" column="service_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="serviceClass" column="service_class"/>
+        <result property="serviceTag" column="service_tag"/>
+        <result property="remark" column="remark"/>
+        <result property="appointmentTime" column="appointment_time"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+	    `service_id`,
+	    `company_id`,
+	    `room_id`,
+	    `user_id`,
+	    `service_class`,
+	    `service_tag`,
+	    `remark`,
+	    `appointment_time`,
+	    `status`,
+	    `create_time`,
+	    `update_time`
+  	</sql>
+
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.business.entity.example.ServiceRoomExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from service_room
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <if test="pageStart!=null and pageStart gt -1" >
+            limit ${pageStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from service_room
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from service_room
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.business.entity.example.ServiceRoomExample" >
+        delete from service_room
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <delete id="deleteBatch">
+        delete from service_room where service_id in
+<foreach item="serviceId" collection="array" open="(" separator="," close=")">
+          #{serviceId}
+</foreach>
+    </delete>
+    <insert id="insert" parameterType="com.business.entity.ServiceRoomEntity">
+		insert into service_room(
+          `service_id`,
+          `company_id`,
+          `room_id`,
+          `user_id`,
+          `service_class`,
+          `service_tag`,
+          `remark`,
+          `appointment_time`,
+          `status`,
+          `create_time`,
+          `update_time`        )
+		values(
+          #{serviceId},
+          #{companyId},
+          #{roomId},
+          #{userId},
+          #{serviceClass},
+          #{serviceTag},
+          #{remark},
+          #{appointmentTime},
+          #{status},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+
+
+    <insert id="insertSelective" parameterType="com.business.entity.ServiceRoomEntity">
+        insert into service_room
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="serviceId != null">
+            `service_id`,
+          </if>
+          <if test="companyId != null">
+            `company_id`,
+          </if>
+          <if test="roomId != null">
+            `room_id`,
+          </if>
+          <if test="userId != null">
+            `user_id`,
+          </if>
+          <if test="serviceClass != null">
+            `service_class`,
+          </if>
+          <if test="serviceTag != null">
+            `service_tag`,
+          </if>
+          <if test="remark != null">
+            `remark`,
+          </if>
+          <if test="appointmentTime != null">
+            `appointment_time`,
+          </if>
+          <if test="status != null">
+            `status`,
+          </if>
+          <if test="createTime != null">
+            `create_time`,
+          </if>
+          <if test="updateTime != null">
+            `update_time`
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="serviceId != null">
+              #{serviceId},
+            </if>
+            <if test="companyId != null">
+              #{companyId},
+            </if>
+            <if test="roomId != null">
+              #{roomId},
+            </if>
+            <if test="userId != null">
+              #{userId},
+            </if>
+            <if test="serviceClass != null">
+              #{serviceClass},
+            </if>
+            <if test="serviceTag != null">
+              #{serviceTag},
+            </if>
+            <if test="remark != null">
+              #{remark},
+            </if>
+            <if test="appointmentTime != null">
+              #{appointmentTime},
+            </if>
+            <if test="status != null">
+              #{status},
+            </if>
+            <if test="createTime != null">
+              #{createTime},
+            </if>
+            <if test="updateTime != null">
+              #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.business.entity.example.ServiceRoomExample" resultType="java.lang.Integer" >
+        select count(*) from service_room
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update service_room
+        <set>
+          <if test="companyId != null">
+              `company_id` = #{companyId},
+          </if>
+          <if test="roomId != null">
+              `room_id` = #{roomId},
+          </if>
+          <if test="userId != null">
+              `user_id` = #{userId},
+          </if>
+          <if test="serviceClass != null">
+              `service_class` = #{serviceClass},
+          </if>
+          <if test="serviceTag != null">
+              `service_tag` = #{serviceTag},
+          </if>
+          <if test="remark != null">
+              `remark` = #{remark},
+          </if>
+          <if test="appointmentTime != null">
+              `appointment_time` = #{appointmentTime},
+          </if>
+          <if test="status != null">
+              `status` = #{status},
+          </if>
+          <if test="createTime != null">
+              `create_time` = #{createTime},
+          </if>
+          <if test="updateTime != null">
+              `update_time` = #{updateTime}
+          </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update service_room
+        <set>
+          `company_id` = #{companyId},
+          `room_id` = #{roomId},
+          `user_id` = #{userId},
+          `service_class` = #{serviceClass},
+          `service_tag` = #{serviceTag},
+          `remark` = #{remark},
+          `appointment_time` = #{appointmentTime},
+          `status` = #{status},
+          `create_time` = #{createTime},
+          `update_time` = #{updateTime}
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.business.entity.ServiceRoomEntity">
+        update service_room
+        <set>
+          <if test="companyId != null">
+            `company_id` = #{companyId},
+          </if>
+          <if test="roomId != null">
+            `room_id` = #{roomId},
+          </if>
+          <if test="userId != null">
+            `user_id` = #{userId},
+          </if>
+          <if test="serviceClass != null">
+            `service_class` = #{serviceClass},
+          </if>
+          <if test="serviceTag != null">
+            `service_tag` = #{serviceTag},
+          </if>
+          <if test="remark != null">
+            `remark` = #{remark},
+          </if>
+          <if test="appointmentTime != null">
+            `appointment_time` = #{appointmentTime},
+          </if>
+          <if test="status != null">
+            `status` = #{status},
+          </if>
+          <if test="createTime != null">
+            `create_time` = #{createTime},
+          </if>
+          <if test="updateTime != null">
+            `update_time` = #{updateTime}
+          </if>
+        </set>
+        where id = #{serviceId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.business.entity.ServiceRoomEntity" >
+        update service_room
+        <set>
+            `company_id` = #{companyId},
+            `room_id` = #{roomId},
+            `user_id` = #{userId},
+            `service_class` = #{serviceClass},
+            `service_tag` = #{serviceTag},
+            `remark` = #{remark},
+            `appointment_time` = #{appointmentTime},
+            `status` = #{status},
+            `create_time` = #{createTime},
+            `update_time` = #{updateTime}
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+    <select id="queryList" resultType="com.business.entity.ServiceRoomEntity">
+        select
+          `service_id`,
+          `company_id`,
+          `room_id`,
+          `user_id`,
+          `service_class`,
+          `service_tag`,
+          `remark`,
+          `appointment_time`,
+          `status`,
+          `create_time`,
+          `update_time`
+        from service_room
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by service_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from service_room
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+</mapper>

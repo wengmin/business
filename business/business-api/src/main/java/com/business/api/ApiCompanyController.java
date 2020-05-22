@@ -137,4 +137,13 @@ public class ApiCompanyController extends ApiBaseAction {
         List<CompanyServiceVo> entity = companyService.queryServiceList(companyId, serviceClass);
         return toResponsSuccess(entity);
     }
+
+
+    @IgnoreAuth
+    @ApiOperation(value = "获取企业下的服务")
+    @GetMapping("serviceGroup")
+    public Object serviceGroup(Integer companyId) {
+        List<CompanyServiceVo> entity = companyService.queryServiceGroup(companyId);
+        return toResponsSuccess(entity);
+    }
 }

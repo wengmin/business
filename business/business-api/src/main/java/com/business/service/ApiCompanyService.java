@@ -66,4 +66,7 @@ public class ApiCompanyService {
     public List<CompanyServiceVo> queryServiceList(Integer companyId, String serviceClass) {
         return companyDao.queryServiceList(companyId, serviceClass);
     }
+    public List<CompanyServiceVo> queryServiceGroup(Integer companyId) {
+        return companyDao.queryServiceGroup(companyId);
+    }
 }
