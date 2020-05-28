@@ -11,13 +11,33 @@ Page({
     currentTab: 0,
     swiperHeight: '',
     service: [],
-    checkItem: []
+    addservice: {
+      tagList: [],
+      remark: '',
+      appointmentTime: ''
+    },
+    startDate: util.formatTime(new Date()),
+    endDate: util.formatTime(new Date(+new Date() + 2 * 1000 * 60 * 60 * 24))
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    let token = wx.getStorageSync('token');
+    // 页面显示
+    if (!token) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000
+      })
+      wx.redirectTo({
+        url: '/pages/auth/login/login?id=-5&param=' + options.roomId
+      })
+      wx.removeStorageSync('userInfo');
+      return;
+    }
     if (options.roomId != "undefined" && typeof(options.roomId) != "undefined") {
       this.setData({
         roomId: options.roomId,
@@ -111,7 +131,7 @@ Page({
   getSwiper(n) { //获取swiperItem的高度,异步给swiper设置高度
     let that = this;
     this.setData({
-      checkItem: []
+      "addservice.tagList": []
     })
     wx.createSelectorQuery().select('.swiperitem' + n).boundingClientRect(function(rect) {
       let res = rect.height + 'px'
@@ -122,7 +142,7 @@ Page({
     }).exec();
   },
   classCheck: function(e) {
-    var array = this.data.checkItem;
+    var array = this.data.addservice.tagList;
     var val = e.currentTarget.dataset.value;
     if (array.indexOf(val) >= 0) {
       for (var i = 0; i < array.length; i++) {
@@ -134,19 +154,53 @@ Page({
       array.push(val)
     }
     this.setData({
-      checkItem: array
+      "addservice.tagList": array
     })
   },
-  subService: function (e) {
-    let that = this
-    util.request(api.CompanyRoomDetail, {
-      roomId: that.data.roomId
-    }).then(function (res) {
+  bindinputValue(event) {
+    switch (event.currentTarget.dataset.type) {
+      case "remark":
+        this.setData({
+          "addservice.remark": event.detail.value
+        });
+        break;
+    }
+  },
+  onPickerChange(e) {
+    this.setData({
+      "addservice.appointmentTime": e.detail.dateString
+    })
+  },
+  saveService: function(e) {
+    let that = this;
+    let datas = this.data.addservice;
+    var sc = e.currentTarget.dataset.class;
+    if (datas.tagList == null || datas.tagList.length == 0) {
+      util.showErrorToast('请选择服务项目');
+      return false;
+    }
+    if (sc == "clean") {
+      if (!datas.appointmentTime) {
+        util.showErrorToast('请选择处理时间');
+        return false;
+      }
+    }
+    util.request(api.ServiceRoomSave, {
+      roomId: that.data.roomId,
+      serviceClass: sc,
+      tagList: datas.tagList,
+      remark: datas.remark,
+      appointmentTime: datas.appointmentTime
+    }, 'POST').then(function(res) {
       if (res.errno === 0) {
+        wx.showToast({
+          title: '提交成功'
+        });
         that.setData({
-          room: res.data,
+          "addservice.tagList": [],
+          "addservice.remark": '',
+          "addservice.appointmentTime": ''
         })
-        that.getService();
       }
     })
   }

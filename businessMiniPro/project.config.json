@@ -64,9 +64,51 @@
 					"scene": 1001
 				},
 				{
-					"id": -1,
-					"name": "pages/service/index/index",
+					"id": 1,
+					"name": "service index",
 					"pathName": "pages/service/index/index",
+					"query": "roomId=1",
+					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "pages/company/post/post",
+					"pathName": "pages/company/post/post",
+					"query": "postId=1",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "pages/company/index/index",
+					"pathName": "pages/company/index/index",
+					"query": "companyId=1",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "staffBind",
+					"pathName": "pages/company/staffBind/staffBind",
+					"query": "companyId=1",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "pages/companyManage/index/index",
+					"pathName": "pages/companyManage/index/index",
+					"query": "companyId=3",
+					"scene": null
+				},
+				{
+					"id": 6,
+					"name": "companyManage/serviceRoomList",
+					"pathName": "pages/companyManage/serviceRoomList/serviceRoomList",
+					"query": "companyId=3",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "service  invoice",
+					"pathName": "pages/service/invoice/invoice",
 					"query": "roomId=1",
 					"scene": null
 				}

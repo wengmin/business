@@ -10,7 +10,7 @@
         <result property="name" column="name"/>
         <result property="mobile" column="mobile"/>
         <result property="post" column="post"/>
-        <result property="openid" column="openid"/>
+        <result property="userId" column="user_id"/>
         <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -23,7 +23,7 @@
 	    `name`,
 	    `mobile`,
 	    `post`,
-	    `openid`,
+	    `user_id`,
 	    `status`,
 	    `create_time`,
 	    `update_time`
@@ -78,7 +78,7 @@
           `name`,
           `mobile`,
           `post`,
-          `openid`,
+          `user_id`,
           `status`,
           `create_time`,
           `update_time`        )
@@ -88,7 +88,7 @@
           #{name},
           #{mobile},
           #{post},
-          #{openid},
+          #{userId},
           #{status},
           #{createTime},
           #{updateTime}         )
@@ -109,8 +109,8 @@
             <if test="post != null">
                 `post` = #{post},
             </if>
-            <if test="openid != null">
-                `openid` = #{openid},
+            <if test="userId != null">
+                `user_id` = #{userId},
             </if>
             <if test="status != null">
                 `status` = #{status},

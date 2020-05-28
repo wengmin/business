@@ -3,53 +3,60 @@
     <view class="add-form">
       <view class="form-item">
         <view class="ttext">
-          <text class="m">*</text>发票类型</view>
-        <input class="inputright" bindinput="bindVal" data-type="realname" maxlength="12" placeholder="请输入姓名" value="{{user.realname}}" />
+          <text class="m">*</text>抬头类型
+        </view>
+        <radio-group bindchange="radioChange">
+          <radio class="radio" value="1" checked="true">个人</radio>
+          <radio class="radio" value="2">单位</radio>
+        </radio-group>
       </view>
       <view class="form-item">
         <view class="ttext">
-          <text class="m">*</text>发票内容</view>
-        <input class="inputright" bindinput="bindVal" data-type="mobile" value="{{user.mobile}}" maxlength="15" type="number" placeholder="住店" />
+          <text class="m">*</text>发票内容
+        </view>
+        <input class="inputright" disabled="true" value="住店" placeholder="住店" />
       </view>
-      <view class="form-item">
-        <view class="ttext"><text class="m">*</text>发票抬头</view>
-        <input class="inputright" bindinput="bindVal" maxlength="20" data-type="telephone" value="{{user.telephone}}" placeholder="请输入固定电话" />
-      </view>
-      <view class="personal" wx:if="{{!isCompany}}">
+      <block class="personal" wx:if="{{invoice.titletype==1}}">
         <view class="form-item">
           <view class="ttext">发票抬头</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="请输入发票抬头" />
+          <input class="inputright" bindinput="bindVal" maxlength="50" data-type="titlename" value="{{invoice.titlename}}" placeholder="请输入发票抬头" />
         </view>
-      </view>
-      <view class="company" wx:if="{{isCompany}}">
+      </block>
+      <block class="company" wx:if="{{invoice.titletype==2}}">
         <view class="form-item">
-          <view class="ttext"><text class="m">*</text>单位名称</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <view class="ttext">
+            <text class="m">*</text>单位名称
+          </view>
+          <input class="inputright" bindinput="bindVal" data-type="titlename" maxlength="50" value="{{invoice.titlename}}" placeholder="请输入单位名称" />
         </view>
         <view class="form-item">
           <view class="ttext">发票税号</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <input class="inputright" bindinput="bindVal" data-type="taxno" maxlength="25" value="{{invoice.taxno}}" placeholder="请输入发票税号" />
         </view>
         <view class="form-item">
           <view class="ttext">注册地址</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <input class="inputright" bindinput="bindVal" data-type="registaddress" maxlength="50" value="{{invoice.registaddress}}" placeholder="请输入注册地址" />
         </view>
         <view class="form-item">
           <view class="ttext">注册电话</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <input class="inputright" bindinput="bindVal" data-type="registphone" maxlength="20" value="{{invoice.registphone}}" placeholder="请输入注册电话" />
         </view>
         <view class="form-item">
           <view class="ttext">开户银行</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <input class="inputright" bindinput="bindVal" data-type="bank" maxlength="25" value="{{invoice.bank}}" placeholder="请输入开户银行" />
         </view>
         <view class="form-item">
           <view class="ttext">银行账号</view>
-          <input class="inputright" bindinput="bindVal" data-type="email" maxlength="20" value="{{user.email}}" placeholder="" />
+          <input class="inputright" bindinput="bindVal" data-type="bankaccount" maxlength="20" value="{{invoice.bankaccount}}" placeholder="请输入银行账号" />
         </view>
+      </block>
+      <view class="form-item">
+        <view class="ttext">备注</view>
+        <textarea class="input_n" bindinput="bindVal" data-type="remark" maxlength="50" value="{{invoice.remark}}" placeholder="请输入备注" />
       </view>
     </view>
     <view class="btns">
-      <button class="save" bindtap="">提交</button>
+      <button class="save" bindtap="save">提交</button>
     </view>
   </view>
 </view>

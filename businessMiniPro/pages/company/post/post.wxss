@@ -1,0 +1,484 @@
+.cardsbody {
+  width: 100%;
+  text-align: center;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+}
+
+.cardsbg {
+  width: 100%;
+  text-align: center;
+  padding: 20rpx;
+  background: -webkit-linear-gradient(top, #dcdcdc 0%, #fff 70%);
+}
+
+.cards_zyz {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  border: solid 2rpx #d1d1d1;
+  box-shadow: 2rpx 2rpx 5rpx 0rpx rgba(150, 150, 150, 0.363);
+}
+
+.cards_zyz .left {
+  width: 40%;
+  height: 400rpx;
+  float: left;
+}
+
+.cards_zyz .left image {
+  width: 100%;
+  height: 100%;
+}
+
+.cards_zyz .right {
+  float: left;
+  width: 60%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+}
+
+.cards_zyz .right .comname {
+  width: 100%;
+  text-align: right;
+  margin-top: 20rpx;
+  padding-right: 20rpx;
+}
+
+.cards_zyz .right .infobg {
+  width: 100%;
+  padding: 15rpx 20rpx;
+  text-align: left;
+  background-color: #efefef;
+  margin-top: 20rpx;
+}
+
+.cards_zyz .right .infobg .name {
+  font-size: 38rpx;
+  font-weight: bold;
+}
+
+.cards_zyz .right .infobg .position {
+  font-size: 25rpx;
+}
+
+.cards_zyz .right .iconitems {
+  margin-top: 20rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: right;
+  background-size: 30rpx 30rpx;
+  background-position: center right;
+  background-repeat: no-repeat;
+  padding-right: 35rpx;
+  margin-right: 20rpx;
+  font-size: 25rpx;
+}
+
+.cards_zyz .right .email {
+  background-image: url(https://emiaoweb.com/business/upload/icon/email.png);
+}
+
+.cards_zyz .right .mobile {
+  background-image: url(https://emiaoweb.com/business/upload/icon/phonecall.png);
+}
+
+.cards_zyz .right .address {
+  background-image: url(https://emiaoweb.com/business/upload/icon/region.png);
+}
+
+.cards_zyz .right .items view {
+  float: right;
+}
+
+.cards_zy {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  border: solid 2rpx #d1d1d1;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.cards_zy .left {
+  position: absolute;
+  left: -15%;
+  width: 53%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+  transform: skewX(-15deg);
+  border-right: 5px solid #d1d1d1;
+  overflow: hidden;
+  border-top: solid 1px #d1d1d1;
+  border-bottom: solid 1rpx #ededed;
+}
+
+.cards_zy .left image {
+  transform: skewX(15deg);
+  width: 100%;
+  margin-left: 15%;
+  height: 400rpx;
+}
+
+.cards_zy .right {
+  position: absolute;
+  right: -15%;
+  padding-right: 15%;
+  width: 75%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+  transform: skewX(-15deg);
+  border-top: solid 1px #d1d1d1;
+  border-left: solid 1rpx #ededed;
+  border-bottom: solid 1rpx #ededed;
+}
+
+.cards_zy .right .comname {
+  width: 90%;
+  text-align: center;
+  transform: skewX(15deg);
+  margin-top: 20rpx;
+}
+
+.cards_zy .right .infobg {
+  width: 110%;
+  padding: 5px 20px;
+  text-align: left;
+  background-color: #efefef;
+  margin-top: 20rpx;
+}
+
+.cards_zy .right .infobg .name {
+  font-size: 22px;
+  font-weight: bold;
+  transform: skewX(15deg);
+}
+
+.cards_zy .right .infobg .position {
+  font-size: 12px;
+  transform: skewX(15deg);
+  margin-left: 8px;
+  margin-top: 5px;
+}
+
+.cards_zy .right .bg {
+  transform: skewX(15deg);
+  padding-top: 10px;
+}
+
+.cards_zy .right .bg image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+  vertical-align: middle;
+}
+
+.cards_zy .right .bg .items {
+  margin-top: 20rpx;
+  height: 30rpx;
+  text-align: right;
+}
+
+.navbody {
+  width: 100%;
+  margin-top: 20rpx;
+  display: inline-block;
+  position: relative;
+}
+
+.navbody button {
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10rpx;
+  padding: 0;
+}
+
+.navbody .navleft {
+  float: left;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.navbody .navright {
+  float: right;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.itembodyslide {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  text-align: left;
+}
+
+.itembodyslide .btn, .itembodyslide .imgbtn {
+  display: inline-block;
+  vertical-align: top;
+  padding: 20rpx;
+  height: 100rpx;
+  margin-top: 20rpx;
+  margin-right: 20rpx;
+  background-color: #fff;
+  border-radius: 3px;
+  line-height: 0;
+  text-align: left;
+  border: solid 1rpx rgb(200, 200, 200);
+  box-shadow: 2rpx 2rpx 5rpx 2rpx rgba(150, 150, 150, 0.363);
+  margin-bottom: 5rpx;
+}
+
+.itembodyslide .imgbtn {
+  padding: 10rpx;
+  text-align: center;
+}
+
+.itembodyslide .imgbtn image {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.itembodyslide .imgbtn text {
+  font-size: 25rpx;
+  display: block;
+}
+
+.itembodyslide .btn:last-child {
+  margin-right: 5rpx;
+}
+
+.itembodyslide .btn .title {
+  font-size: 25rpx;
+  height: 30rpx;
+  line-height: 25rpx;
+}
+
+.itembodyslide .btn image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+.itembodyslide .btn .info {
+  font-size: 22rpx;
+  color: #7c7a7a;
+  margin-top: 20rpx;
+  display: block;
+}
+
+.itembodyslide navigator {
+  display: inline-block;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  margin-right: 20rpx;
+  background-color: #fff;
+  border-radius: 6rpx;
+}
+
+.itembodyslide navigator:last-child {
+  margin-right: 0px;
+}
+
+.itembodyslide navigator image {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.itembodyslide navigator text {
+  width: 200rpx;
+  text-align: center;
+  display: block;
+}
+
+.itembodyslide navigator .pos {
+  font-size: 12px;
+  color: rgba(110, 105, 105, 0.705);
+  margin-top: 8px;
+}
+
+.itemarea {
+  padding: 20rpx;
+}
+
+.itemtitle {
+  text-align: left;
+  width: 100%;
+  height: 50rpx;
+  display: inline-block;
+}
+
+.itemtitle .icon {
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
+
+.itemtitle text {
+  height: 50rpx;
+  line-height: 50rpx;
+  vertical-align: middle;
+  margin-left: 10rpx;
+}
+
+.itemtitle navigator {
+  float: right;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+
+.itembody {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  padding: 20rpx;
+  display: inline-block;
+  text-align: left;
+  border: solid 1rpx #e7e7e7;
+}
+
+.comtop {
+  display: inline-block;
+  width: 100%;
+  font-size: 0;
+}
+
+.comtop image {
+  width: 100rpx;
+  height: 100rpx;
+  float: left;
+  border-radius: 10rpx;
+}
+
+.comtop text {
+  line-height: 100rpx;
+  float: left;
+  font-size: 29rpx;
+  margin-left: 20rpx;
+}
+
+.comtop navigator, .comtop button {
+  float: right;
+  font-size: 25rpx;
+  border: solid 1px #53a349;
+  color: #53a349;
+  height: 70rpx;
+  line-height: 70rpx;
+  padding: 0 20rpx;
+  border-radius: 10rpx;
+  margin-top: 15rpx;
+}
+
+.comdesc {
+  width: 100%;
+  padding: 20rpx 0;
+  border-top: solid 2rpx #c6c6c6;
+  margin-top: 20rpx;
+}
+
+.comfile {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: solid 2rpx #e7e7e7;
+  margin-top: 20rpx;
+}
+
+.profile {
+  width: 100%;
+  padding: 20rpx;
+  display: inline-block;
+  margin-top: 30rpx;
+}
+
+.profile .leftimg {
+  width: 70rpx;
+  height: 70rpx;
+  float: left;
+  border-radius: 10rpx;
+}
+
+.profile .rightinfo {
+  float: right;
+  width: 620rpx;
+  padding-left: 10rpx;
+}
+
+.profile .rightinfo .k {
+  margin-top: 10rpx;
+  background-color: #fff;
+  padding: 20rpx;
+  display: inline-block;
+  width: 100%;
+  border-radius: 8rpx;
+  position: relative;
+  border: solid 1rpx #e7e7e7;
+}
+
+.profile .rightinfo .k::after {
+  content: '';
+  background: #fff;
+  width: 15rpx;
+  height: 15rpx;
+  transform: rotate(45deg);
+  border-bottom: solid 1rpx #e7e7e7;
+  border-left: solid 1rpx #e7e7e7;
+  position: absolute;
+  top: 15rpx;
+  left: -9rpx;
+}
+
+.profile .rightinfo .desc {
+  line-height: 50rpx;
+}
+
+.profile .rightinfo .sharebtn {
+  float: left;
+  width: 49%;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.profile .rightinfo .collectbtn {
+  float: right;
+  width: 49%;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  border: solid 2rpx #52a936;
+  background-color: #52a936;
+  color: #fff;
+}
+
+.profile .rightinfo .alink {
+  display: initial;
+  text-align: center;
+  font-size: 28rpx;
+  color: #52a936;
+  background-color: #fff;
+  padding: 0;
+  line-height: normal;
+}

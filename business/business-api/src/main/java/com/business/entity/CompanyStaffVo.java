@@ -25,7 +25,7 @@ public class CompanyStaffVo implements Serializable {
     //是否管理员0否1是
     private String post;
     //
-    private String openid;
+    private Integer userId;
     //0未绑定，1待审核，2删除，3已审核，4离职
     private Integer status;
     //
@@ -98,19 +98,15 @@ public class CompanyStaffVo implements Serializable {
     public String getPost() {
         return post;
     }
-    /**
-     * 设置：
-     */
-    public void setOpenid(String openid) {
-        this.openid = openid;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    /**
-     * 获取：
-     */
-    public String getOpenid() {
-        return openid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
+
     /**
      * 设置：0未绑定，1待审核，2删除，3已审核，4离职
      */

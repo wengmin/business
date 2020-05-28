@@ -3,13 +3,6 @@
 
 <mapper namespace="com.business.dao.ApiCardRecordMapper">
 
-    <resultMap type="com.business.entity.CardRecordVo" id="BaseResultMap">
-        <result property="recordId" column="record_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="touserId" column="touser_id"/>
-        <result property="createTime" column="create_time"/>
-    </resultMap>
-
     <select id="queryByToUserId"  resultType="com.business.entity.CardRecordVo">
         select * from card_record
         WHERE user_id=#{userId} and touser_id=#{touserId}
@@ -17,8 +10,8 @@
 
     <select id="queryList" resultType="com.business.entity.CardRecordVo">
         select user_id,touser_id,create_time,
-        (select name from customer_company where customer_company.company_id=(select company_id from card_user where card_user.user_id=card_record.touser_id)) as touserComName,
-        (select openid from customer_user where customer_user.user_id=card_record.touser_id) as openid,
+        (select name from company_info where company_info.company_id=(select company_id from card_user where card_user.user_id=card_record.touser_id)) as touserComName,
+        (select openid from member_user where member_user.user_id=card_record.touser_id) as openid,
         (select photo from card_user where card_user.user_id=card_record.touser_id) as touserAvatar,
         (select realname from card_user where card_user.user_id=card_record.touser_id) as touserName
         from card_record
@@ -28,7 +21,7 @@
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by record_id desc
+                order by create_time desc
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">

@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="list">
+    <view class="font1">来自{{invoice.roomName}}</view>
+    <view class="font1 font1class">
+      {{invoice.titletype=="1"?"个人":invoice.titletype=="2"?"单位":""}}
+    </view>
+    <block wx:if="{{invoice.titletype==1}}">
+      <view class="font1">发票抬头：{{invoice.titlename}}</view>
+    </block>
+    <block wx:else>
+      <view class="font1">单位名称：{{invoice.titlename}}</view>
+      <view class="font1" wx:if="{{invoice.taxno}}">发票税号：{{invoice.taxno}}</view>
+      <view class="font1" wx:if="{{invoice.registaddress}}">注册地址：{{invoice.registaddress}}</view>
+      <view class="font1" wx:if="{{invoice.registphone}}">注册电话：{{invoice.registphone}}</view>
+      <view class="font1" wx:if="{{invoice.bank}}">开户银行：{{invoice.bank}}</view>
+      <view class="font1" wx:if="{{invoice.bankaccount}}">银行账号：{{invoice.bankaccount}}</view>
+    </block>
+    <view class="font1" wx:if="{{invoice.remark}}">备注：{{invoice.remark}}</view>
+    <view class="time">申请时间：{{invoice.createTime}}</view>
+    <view class="font1" wx:if="{{invoice.reply}}">处理备注：{{invoice.reply}}</view>
+    <view class="time" wx:if="{{invoice.updateTime}}">开票时间：{{invoice.updateTime}}</view>
+    <view class="statustag">{{invoice.status==0?"未开票":invoice.status==1?"已开票":""}}</view>
+  </view>
+  <block wx:if="{{invoice.status==0}}">
+    <view class="control">
+      <textarea class="textarea" maxlength="50" bindinput="bindinputValue" data-type="reply" placeholder="请描述处理备注" />
+      <button class="btn" bindtap="billing">开票</button>
+    </view>
+  </block>
+  <button wx:if="{{invoice.status==1}}" class="btn" disabled="true">已开票</button>
+</view>

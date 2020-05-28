@@ -19,6 +19,10 @@ public class ServiceRoomLogVo implements Serializable {
     //
     private Integer serviceId;
     //
+    private Integer staffId;
+    //
+    private String staffName;
+    //
     private Integer status;
     //
     private String remark;
@@ -51,6 +55,23 @@ public class ServiceRoomLogVo implements Serializable {
     public Integer getServiceId() {
         return serviceId;
     }
+
+    public Integer getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
     /**
      * 设置：
      */

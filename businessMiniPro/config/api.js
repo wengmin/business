@@ -23,14 +23,26 @@ module.exports = {
   CardDeleteCollect: NewApiRootUrl + 'card/deleteCollect',
   CardIsCollect: NewApiRootUrl + 'card/isCollect',
 
-  CompanyDetails: NewApiRootUrl + 'company/detail',
+  CompanyDetailsByUserID: NewApiRootUrl + 'company/detail',
+  CompanyDetailsByID: NewApiRootUrl + 'company/detailById',
   CompanySave: NewApiRootUrl + 'company/save',
   CompanyPostDetail: NewApiRootUrl + 'company/postDetail',
   CompanyPostList: NewApiRootUrl + 'company/postList',
   CompanyRoomDetail: NewApiRootUrl + 'company/roomDetail',
   CompanyServiceList: NewApiRootUrl + 'company/serviceList',
   CompanyServiceGroup: NewApiRootUrl + 'company/serviceGroup',
+  CompanyStaffBind: NewApiRootUrl + 'company/staffBind',
 
+  ServiceRoomSave: NewApiRootUrl + 'serviceroom/save',
+  ServiceRoomList: NewApiRootUrl + 'serviceroom/list',
+  ServiceRoomDetail: NewApiRootUrl + 'serviceroom/detail',
+  ServiceRoomUpdate: NewApiRootUrl + 'serviceroom/update',
+  ServiceRoomLogList: NewApiRootUrl + 'serviceroom/logList',  
+
+  ServiceInvoiceSave: NewApiRootUrl + 'serviceinvoice/save',
+  ServiceInvoiceList: NewApiRootUrl + 'serviceinvoice/list',
+  ServiceInvoiceDetail: NewApiRootUrl + 'serviceinvoice/detail',
+  ServiceInvoiceUpdate: NewApiRootUrl + 'serviceinvoice/update',
 
   CreateQrCodeByWifi: NewApiRootUrl + 'card/createQrCodeByWifi',
 };

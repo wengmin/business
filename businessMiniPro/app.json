@@ -1,20 +1,27 @@
 {
   "pages": [
-    "pages/service/index/index",
     "pages/card/index/index",
     "pages/card/collect/collect",
     "pages/card/record/record",
     "pages/card/adduser/adduser",
-    "pages/company/add/add",
     "pages/auth/login/login",
     "pages/index/index",
     "pages/ucenter/index/index",
     "pages/ucenter/feedback/feedback",
-    "pages/service/wifi/wifi",
     "pages/pay/pay/pay",
     "pages/pay/result/result",
+    "pages/service/index/index",
+    "pages/service/invoice/invoice",
+    "pages/service/wifi/wifi",
+    "pages/company/add/add",
     "pages/company/index/index",
-    "pages/service/invoice/invoice"
+    "pages/company/post/post",
+    "pages/company/staffBind/staffBind",
+    "pages/companyManage/index/index",
+    "pages/companyManage/serviceRoomList/serviceRoomList",
+    "pages/companyManage/invoiceList/invoiceList",
+    "pages/companyManage/invoice/invoice",
+    "pages/companyManage/serviceRoom/serviceRoom"
   ],
   "window": {
     "backgroundTextStyle": "dark",

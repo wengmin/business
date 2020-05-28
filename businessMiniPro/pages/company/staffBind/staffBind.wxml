@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="avatar">
+    <image src="{{avatar}}"></image>
+  </view>
+  <view class="add-form">
+    <view class="form-item">
+      <view class="ttext">姓名</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="name" maxlength="50" placeholder="请输入姓名" value="{{name}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">手机号码</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="mobile" maxlength="50" placeholder="请输入手机号码" value="{{mobile}}" />
+    </view>
+  </view>
+  <view class="btns">
+    <button class="save" bindtap="bindStaff" disabled="{{disabled}}">绑定</button>
+  </view>
+</view>

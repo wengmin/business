@@ -103,6 +103,14 @@ Page({
       wx.redirectTo({
         url: '/pages/card/index/index?param=' + that.data.param
       })
+    } else if (that.data.id == -5) {
+      wx.redirectTo({
+        url: '/pages/service/index/index?roomId=' + that.data.param
+      })
+    } else if (that.data.id == -6) {
+      wx.redirectTo({
+        url: '/pages/company/staffBind/staffBind'
+      })
     } else {
       wx.redirectTo({
         url: '/pages/card/index/index?param='

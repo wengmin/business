@@ -1,0 +1,6 @@
+<!--components/pickerYMDHM/pickerYMDHM.wxml-->
+<view>
+  <picker disabled="{{disabled}}" mode="multiSelector" bindchange="pickerChange" bindcolumnchange="pickerColumnChange" bindcancel ="pickerCancel" value="{{pickerIndex}}" range="{{pickerArray}}" range-key="{{'name'}}">
+    <view style='line-height: 60rpx;height: 60rpx;text-align:right'>{{placeholder}}</view>
+  </picker>
+</view>

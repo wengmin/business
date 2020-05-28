@@ -33,7 +33,7 @@ public class CompanyStaffEntity implements Serializable {
     //0未绑定，1待审核，2已审核，3离职
     private String post;
 
-    private String openid;
+    private Integer userId;
     //0未绑定，1待审核，2删除，3已审核，4离职
     private Integer status;
     //
@@ -107,12 +107,12 @@ public class CompanyStaffEntity implements Serializable {
         return post;
     }
 
-    public String getOpenid() {
-        return openid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**

@@ -29,5 +29,13 @@ public interface ApiCompanyMapper extends BaseDao<CompanyVo> {
     CompanyRoomVo queryRoom(Integer roomId);
 
     List<CompanyServiceVo> queryServiceList(@Param(value = "companyId") Integer companyId, @Param(value = "serviceClass") String serviceClass);
+
     List<CompanyServiceVo> queryServiceGroup(Integer companyId);
+
+
+    CompanyStaffVo queryStaffByKey(@Param(value = "companyId") Integer companyId, @Param(value = "name") String name, @Param(value = "mobile") String mobile);
+
+    CompanyStaffVo queryStaffByUserIdCompanyId(@Param(value = "companyId") Integer companyId, @Param(value = "userId") Integer userId);
+
+    int updateStaff(CompanyStaffVo companyStaff);
 }

@@ -71,6 +71,13 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 //}
                 ////设置userId到request里，后续根据userId，获取用户信息
                 //request.setAttribute(LOGIN_USER_KEY, mlsUser);
+            } else if (openId.startsWith("company_")) {//企业身份
+                //MlsUserEntity2 mlsUser = mlsUserSer.getEntityMapper().findByDeviceId(openId);
+                //if (mlsUser == null && annotation == null) {
+                //    throw new ApiRRException("请先登录", 401);
+                //}
+                ////设置userId到request里，后续根据userId，获取用户信息
+                //request.setAttribute(LOGIN_USER_KEY, mlsUser);
             } else {
                 //UserVo userVo = userService.queryByOpenId(openId);
                 UserVo userVo = userService.queryByOpenId(openId);

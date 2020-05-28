@@ -8,6 +8,7 @@ import com.business.entity.*;
 import com.business.service.ApiCardUserService;
 import com.business.service.ApiCompanyService;
 import com.business.util.ApiBaseAction;
+import com.business.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,17 @@ public class ApiCompanyController extends ApiBaseAction {
         }
         CompanyVo company = companyService.queryObject(entity.getCompanyId());
         company.setFileList(companyService.queryFileList(entity.getCompanyId()));
+        return toResponsSuccess(company);
+    }
+
+    @ApiOperation(value = "获取用户企业信息")
+    @GetMapping("detailById")
+    public Object detailById(Integer companyId) {
+        if (companyId == null || companyId == 0) {
+            return toResponsFail("参数错误");
+        }
+        CompanyVo company = companyService.queryObject(companyId);
+        company.setFileList(companyService.queryFileList(companyId));
         return toResponsSuccess(company);
     }
 
@@ -108,6 +120,9 @@ public class ApiCompanyController extends ApiBaseAction {
     @ApiOperation(value = "获取岗位")
     @GetMapping("postDetail")
     public Object postDetail(Integer postId) {
+        if (postId == null || postId == 0) {
+            return toResponsFail("参数错误");
+        }
         CompanyPostVo entity = companyService.queryPost(postId);
         return toResponsSuccess(entity);
     }
@@ -121,29 +136,65 @@ public class ApiCompanyController extends ApiBaseAction {
     }
 
 
-    @IgnoreAuth
     @ApiOperation(value = "获取房间信息")
     @GetMapping("roomDetail")
     public Object roomDetail(Integer roomId) {
+        if (roomId == null || roomId == 0) {
+            return toResponsFail("参数错误");
+        }
         CompanyRoomVo entity = companyService.queryRoom(roomId);
         return toResponsSuccess(entity);
     }
 
 
-    @IgnoreAuth
     @ApiOperation(value = "获取企业下的服务")
     @GetMapping("serviceList")
     public Object serviceList(Integer companyId, String serviceClass) {
+        if (companyId == null || companyId == 0) {
+            return toResponsFail("参数错误");
+        }
         List<CompanyServiceVo> entity = companyService.queryServiceList(companyId, serviceClass);
         return toResponsSuccess(entity);
     }
 
 
-    @IgnoreAuth
     @ApiOperation(value = "获取企业下的服务")
     @GetMapping("serviceGroup")
     public Object serviceGroup(Integer companyId) {
+        if (companyId == null || companyId == 0) {
+            return toResponsFail("参数错误");
+        }
         List<CompanyServiceVo> entity = companyService.queryServiceGroup(companyId);
         return toResponsSuccess(entity);
+    }
+
+
+    @ApiOperation(value = "员工绑定")
+    @PostMapping("staffBind")
+    public Object staffBind(@LoginUser UserVo loginUser) {
+        try {
+            JSONObject parameterJson = this.getJsonRequest();
+            int companyId = StringUtils.isNullOrEmpty(parameterJson.getString("companyId")) ? 0 : Integer.parseInt(parameterJson.getString("companyId"));
+            String name = parameterJson.getString("name");
+            String mobile = parameterJson.getString("mobile");
+            if (companyId == 0 || StringUtils.isNullOrEmpty(name) || StringUtils.isNullOrEmpty(mobile)) {
+                return toResponsFail("参数错误");
+            }
+            CompanyStaffVo entity = companyService.queryStaffByKey(companyId, name, mobile);
+            if (entity == null) {
+                return toResponsFail("查无此人");
+            } else {
+                if (StringUtils.parseInt(entity.getUserId()) != 0) {
+                    return toResponsFail("已绑定过");
+                }
+            }
+            entity.setUserId(loginUser.getUserId());
+            entity.setStatus(1);
+            companyService.updateStaff(entity);
+            return toResponsSuccess("绑定成功");
+        } catch (Exception e) {
+            logger.error("staffBind.", e);
+            return toResponsFail("程序出错");
+        }
     }
 }

@@ -1,10 +1,13 @@
 package com.business.service;
 
 import com.business.dao.ApiServiceRoomMapper;
+import com.business.entity.ServiceRoomLogVo;
 import com.business.entity.ServiceRoomVo;
+import com.business.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +23,7 @@ public class ApiServiceRoomService {
     @Autowired
     private ApiServiceRoomMapper serviceRoomMapper;
 
-    
+
     public ServiceRoomVo queryObject(Integer serviceId) {
         return serviceRoomMapper.queryObject(serviceId);
     }
@@ -34,18 +37,37 @@ public class ApiServiceRoomService {
     }
 
     public int save(ServiceRoomVo serviceRoom) {
-        return serviceRoomMapper.save(serviceRoom);
+        serviceRoom.setCreateTime(new Date());
+        int serviceId = serviceRoomMapper.save(serviceRoom);
+        if (StringUtils.parseInt(serviceId) == 0) {
+            return 0;
+        }
+        ServiceRoomLogVo log = new ServiceRoomLogVo();
+        log.setServiceId(serviceId);
+        log.setStatus(serviceRoom.getStatus());
+        log.setRemark(serviceRoom.getRemark());
+        log.setCreateTime(new Date());
+        serviceRoomMapper.saveLog(log);
+        return serviceId;
     }
 
-    public int update(ServiceRoomVo serviceRoom) {
-        return serviceRoomMapper.update(serviceRoom);
+    public int update(ServiceRoomVo serviceRoom, int staffId, String remark) {
+        serviceRoom.setUpdateTime(new Date());
+        int count = serviceRoomMapper.update(serviceRoom);
+        if (count == 0) {
+            return 0;
+        }
+        ServiceRoomLogVo log = new ServiceRoomLogVo();
+        log.setServiceId(serviceRoom.getServiceId());
+        log.setStaffId(staffId);
+        log.setStatus(serviceRoom.getStatus());
+        log.setRemark(remark);
+        log.setCreateTime(new Date());
+        serviceRoomMapper.saveLog(log);
+        return count;
     }
 
-    public int delete(Integer serviceId) {
-        return serviceRoomMapper.delete(serviceId);
-    }
-
-    public int deleteBatch(Integer[] serviceIds) {
-        return serviceRoomMapper.deleteBatch(serviceIds);
+    public List<ServiceRoomLogVo> queryLogList(Integer id) {
+        return serviceRoomMapper.queryLogList(id);
     }
 }

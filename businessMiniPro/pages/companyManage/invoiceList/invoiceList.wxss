@@ -1,0 +1,74 @@
+.status {
+  width: 100%;
+  height: 100rpx;
+  background: #fff;
+  border-top: solid 2rpx #d3d1d1;
+}
+
+.status .item {
+  width: 50%;
+  text-align: center;
+  float: left;
+  line-height: 100rpx;
+  height: 98rpx;
+}
+
+.status .check {
+  border-bottom: solid 10rpx #52a936;
+}
+
+.container {
+  text-align: center;
+}
+
+.list {
+  width: 700rpx;
+  clear: both;
+  padding: 30rpx;
+  background-color: #fff;
+  margin: 0 auto;
+  margin-top: 20rpx;
+  border-radius: 10rpx;
+  text-align: left;
+  position: relative;
+}
+
+.list .statustag {
+  position: absolute;
+  top:30rpx;
+  right: 30rpx;
+  background: rgb(223, 191, 7);
+  color: #f87306;
+  border-radius: 30rpx;
+  padding: 5rpx 20rpx;
+}
+
+.list .font1 {
+  margin-top: 20rpx;
+  font-size: 36rpx;
+}
+
+.list .font1:first-child {
+  margin-top: 0;
+}
+
+.list .font1class {
+  color: #f87306
+}
+
+.list .time {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: #ccc;
+}
+
+.loading {
+  color: rgb(7, 207, 207);
+  width: 100%;
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.complete {
+  color: #000;
+}

@@ -19,6 +19,9 @@
                 <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
+                #if($shiro.hasPermission("companyroom:update"))
+                <i-button type="warning" @click="createQrCode"><i class="fa fa-pencil-square-o"></i>&nbsp;生成二维码</i-button>
+                #end
                 #if($shiro.hasPermission("companyroom:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
                 #end
@@ -61,9 +64,6 @@
             </Form-item>
             <Form-item label="mac地址" prop="wifimac">
                 <i-input v-model="companyRoom.wifimac" placeholder=""/>
-            </Form-item>
-            <Form-item label="二维码" prop="qrcode">
-                <i-input v-model="companyRoom.qrcode" placeholder=""/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

@@ -37,7 +37,7 @@ public class SysUploadController {
         String fileName = file.getOriginalFilename();//获取文件名加后缀
         if (fileName != null && fileName != "") {
             //String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/upload/cover/";//存储路径
-            String returnUrl = "https://emiaoweb.com" + "/upload/cover/";//存储路径
+            String returnUrl = "https://emiaoweb.com/business/upload/cover/";//存储路径
             String path = request.getSession().getServletContext().getRealPath("upload/cover"); //文件存储位置
             String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
             fileName = new Date().getTime() + "_" + new Random().nextInt(1000) + fileF;//新的文件名

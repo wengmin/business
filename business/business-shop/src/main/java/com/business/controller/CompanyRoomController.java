@@ -1,12 +1,16 @@
 package com.business.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.business.entity.CompanyRoomEntity;
 import com.business.service.CompanyRoomService;
 import com.business.utils.*;
+import com.qiniu.util.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +40,10 @@ public class CompanyRoomController {
         }
         List<CompanyRoomEntity> companyRoomList = companyRoomService.queryList(query);
         int total = companyRoomService.queryTotal(query);
-
+        for (CompanyRoomEntity companyRoomEntity : companyRoomList) {
+            if (!StringUtils.isNullOrEmpty(companyRoomEntity.getQrcode()))
+                companyRoomEntity.setQrcode(ResourceUtil.getConfigByName("Api.RootUrl") + "/upload/" + companyRoomEntity.getQrcode());
+        }
         PageUtils pageUtil = new PageUtils(companyRoomList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
@@ -103,5 +110,44 @@ public class CompanyRoomController {
         List<CompanyRoomEntity> list = companyRoomService.queryList(params);
 
         return R.ok().put("list", list);
+    }
+
+    /**
+     * 创建绑定员工二维码
+     */
+    @RequestMapping("/createQrCode/{roomId}")
+    @RequiresPermissions("companyroom:update")
+    public R createQrCode(@PathVariable("roomId") Integer roomId) {
+        if (roomId == 0) {
+            return R.error("参数错误");
+        }
+        CompanyRoomEntity info = companyRoomService.queryObject(roomId);
+        if (info == null) {
+            return R.error("查询无数据");
+        } else {
+            if (!StringUtils.isNullOrEmpty(info.getQrcode())) {
+                return R.error("二维码已存在");
+            }
+            if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId() && info.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法数据");
+            }
+        }
+        String apiurl = ResourceUtil.getConfigByName("Api.RootUrl") + "/api/wechat/createQrCode";
+        Map<String, String> map = new HashMap<>();
+        map.put("param", "roomId=" + roomId);
+        map.put("path", "pages/service/index/index");
+        map.put("fileDir", "qrcode/companyroom");
+        map.put("fileName", "r_" + info.getCompanyId() + "_" + roomId);
+        String res = HttpUtil.URLGet(apiurl, map, "utf-8");
+        JSONObject json = JSON.parseObject(res);
+        String qrcode = json.getString("data");
+        if (null == json || StringUtils.isNullOrEmpty(qrcode)) {
+            return R.error("生成二维码失败");
+        }
+        CompanyRoomEntity companyRoom = new CompanyRoomEntity();
+        companyRoom.setRoomId(roomId);
+        companyRoom.setQrcode(qrcode);
+        companyRoomService.update(companyRoom);
+        return R.ok();
     }
 }

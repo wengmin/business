@@ -59,7 +59,7 @@ Page({
    */
   onReachBottom: function() {
     var that = this;
-    that.data.cardList=[];
+    //that.data.cardList=[];
     if (that.data.page < that.data.pages) {
       that.setData({
         page: that.data.page + 1

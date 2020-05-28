@@ -10,7 +10,11 @@ $(function () {
             {label: 'wifi名称', name: 'wifiname', index: 'wifiname', width: 80},
             {label: 'wifi密码', name: 'wifipass', index: 'wifipass', width: 80},
             {label: 'wifimac地址', name: 'wifimac', index: 'wifimac', width: 80},
-            {label: '房价二维码', name: 'qrcode', index: 'qrcode', width: 80},
+            {
+                label: '房价二维码', name: 'qrcode', index: 'qrcode', width: 80, formatter: function (value) {
+                    return transImg(value);
+                }
+            },
             {
                 label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
                     return transDate(value);
@@ -132,6 +136,19 @@ let vm = new Vue({
                 name: ''
             }
             vm.reload();
+        },
+        createQrCode: function () {
+            let roomId = getSelectedRow("#jqGrid");
+            if (roomId == null) {
+                return;
+            }
+            Ajax.request({
+                url: "../companyroom/createQrCode/" + roomId,
+                async: true,
+                successCallback: function (r) {
+                    vm.reloadSearch();
+                }
+            });
         },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {

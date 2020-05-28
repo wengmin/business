@@ -147,6 +147,9 @@
             <if test="introduction != null">
                 `introduction` = #{introduction},
             </if>
+            <if test="qrcode != null">
+                `qrcode` = #{qrcode},
+            </if>
             <if test="status != null">
                 `status` = #{status},
             </if>

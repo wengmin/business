@@ -205,6 +205,7 @@ public class ApiCardController extends ApiBaseAction {
             }
             entity.setUserId(loginUser.getUserId());
             entity.setRealname(realName != null ? Base64.encode(realName.trim()) : "");
+            entity.setMobile(mobile);
             entity.setPhoto(photo != null ? photo.trim() : "");
             entity.setPosition(position != null ? position.trim() : "");
             entity.setWechat(wechat != null ? Base64.encode(wechat.trim()) : "");
@@ -239,7 +240,7 @@ public class ApiCardController extends ApiBaseAction {
                 return toResponsFail("参数错误");
             }
             String accessToken = tokenService.getAccessToken();
-            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index/index", refUserId.toString());
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index/index","qrcode/card", refUserId.toString());
             if (!StringUtils.isNullOrEmpty(imgStr)) {
                 CardUserVo uVo = new CardUserVo();
                 uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());
@@ -297,7 +298,7 @@ public class ApiCardController extends ApiBaseAction {
 
     @ApiOperation(value = "删除浏览记录")
     @PostMapping("deleteRecord")
-    public Object saveRecord(@RequestParam("id") Integer id) {
+    public Object deleteRecord(@RequestParam("id") Integer id) {
         if (id == 0 || id == null) {
             return toResponsFail("参数错误");
         }
@@ -372,22 +373,5 @@ public class ApiCardController extends ApiBaseAction {
         }
         collectService.delete(id);
         return toResponsSuccess("删除成功");
-    }
-
-    /**
-     * 生成二维码
-     */
-    @ApiOperation(value = "生成二维码")
-    @IgnoreAuth
-    @GetMapping("createQrCodeByWifi")
-    public Object createQrCodeByWifi() {
-        try {
-            String accessToken = tokenService.getAccessToken();
-            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "id=CMCC-CQ&pass=cq778899", "pages/service/wifi/wifi", "wifiname");
-            return toResponsSuccess(imgStr);
-        } catch (Exception e) {
-            logger.error("createQrCodeByWifi.", e);
-        }
-        return toResponsFail("生成二维码错误");
     }
 }

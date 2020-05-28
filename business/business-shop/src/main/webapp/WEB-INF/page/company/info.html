@@ -16,6 +16,9 @@
                 <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
+                #if($shiro.hasPermission("companyinfo:update"))
+                <i-button type="warning" @click="createQrCode"><i class="fa fa-pencil-square-o"></i>&nbsp;生成二维码</i-button>
+                #end
                 #if($shiro.hasPermission("companyinfo:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
                 #end

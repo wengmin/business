@@ -132,6 +132,19 @@ let vm = new Vue({
             }
             vm.reload();
         },
+        createQrCode: function () {
+            let companyId = getSelectedRow("#jqGrid");
+            if (companyId == null) {
+                return;
+            }
+            Ajax.request({
+                url: "../company/createQrCode/" + companyId,
+                async: true,
+                successCallback: function (r) {
+                    vm.reloadSearch();
+                }
+            });
+        },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {
                 vm.saveOrUpdate()

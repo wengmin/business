@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="roomtext">房间号</view>
+  <view class="roomtext">{{room.name}}</view>
   <view class="menuarea">
     <view class="menu" bindtap="scanWifi">
       <image src="/static/images/service/wifi.png"></image>
@@ -25,7 +25,9 @@
   <view class="swiper-nav">
     <view class="item {{currentTab==index ? 'on' : ''}}" data-current="{{index}}" bindtap="itemChange" wx:for="{{service}}" wx:key="index">
       <image src="/static/images/service/{{item.serviceClass}}.png" data-current="{{index}}"></image>
-      <text data-current="{{index}}">{{item.serviceClass}}</text>
+      <text data-current="{{index}}">
+      {{item.serviceClass=="clean"?"清洁":item.serviceClass=="lease"?"物品租借":item.serviceClass=="repair"?"维修":item.serviceClass=="complaint"?"投诉":""}}
+      </text>
     </view>
   </view>
   <swiper current="{{currentTab}}" class="swiper" style="height:{{swiperHeight}}" duration="300" bindchange="indexChange">
@@ -36,18 +38,18 @@
           <view class="con">宾客您好，我是本店经理，驻点过程中遇到任何问题，都可以反馈给我，我会帮您解决，希望您住店愉快！</view>
         </view>
         <view class="checkbox">
-          <view class="{{checkClass.getClass(checkItem,items)}} item" wx:for="{{item.listServiceTag}}" wx:key="index" wx:for-item="items" bindtap='classCheck' data-value="{{items}}">{{items}}</view>
+          <view class="{{checkClass.getClass(addservice.tagList,items)}} item" wx:for="{{item.listServiceTag}}" wx:key="index" wx:for-item="items" bindtap='classCheck' data-value="{{items}}">{{items}}</view>
         </view>
         <view class="control" wx:if="{{item.serviceClass=='clean'}}">
           <view class="form-item">
             <view class="left">处理时间</view>
-            <input class="inputright" placeholder="选择时间"></input>
+            <date-time-picker placeholder="请选择" date="{{bfdzahbfd}}" bind:onPickerChange="onPickerChange" startDate="{{startDate}}" endDate="{{endDate}}"></date-time-picker>
           </view>
           <view class="form-item">
-            <textarea class="textarea" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="有什么需要告知我们的？" />
+            <textarea class="textarea" maxlength="100" bindinput="bindinputValue" data-type="remark" placeholder="有什么需要告知我们的？" value="{{addservice.remark}}" />
           </view>
         </view>
-        <button class="subbtn" data-class="{{item.serviceClass}}" bindtap='subService'>立即提交</button>
+        <button class="subbtn" data-class="{{item.serviceClass}}" bindtap='save'>立即提交</button>
       </view>
     </swiper-item>
   </swiper>

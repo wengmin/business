@@ -5,6 +5,7 @@ import com.business.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,7 +67,22 @@ public class ApiCompanyService {
     public List<CompanyServiceVo> queryServiceList(Integer companyId, String serviceClass) {
         return companyDao.queryServiceList(companyId, serviceClass);
     }
+
     public List<CompanyServiceVo> queryServiceGroup(Integer companyId) {
         return companyDao.queryServiceGroup(companyId);
+    }
+
+
+    public CompanyStaffVo queryStaffByKey(Integer companyId, String name, String mobile) {
+        return companyDao.queryStaffByKey(companyId, name, mobile);
+    }
+
+    public CompanyStaffVo queryStaffByUserIdCompanyId(Integer companyId, Integer userId) {
+        return companyDao.queryStaffByUserIdCompanyId(companyId, userId);
+    }
+
+    public int updateStaff(CompanyStaffVo companyStaff) {
+        companyStaff.setUpdateTime(new Date());
+        return companyDao.updateStaff(companyStaff);
     }
 }

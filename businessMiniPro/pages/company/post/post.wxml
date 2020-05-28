@@ -1,0 +1,97 @@
+<view class="container">
+  <view class="cardsbg">
+    <view class="cards_zyz">
+      <view class="left">
+        <image src='{{!post.photo ? "/static/images/card/w_card.jpg" : post.photo}}' mode="aspectFill" bindtap="topicPreview" data-url='{{!post.photo ? "/static/images/card/w_card.jpg" : post.photo}}'></image>
+      </view>
+      <view class="right">
+        <view class="comname fontover">{{company.name}}</view>
+        <view class="infobg">
+          <view class="name fontover">{{post.name}}</view>
+          <view class="position fontover">{{post.position}}</view>
+        </view>
+        <view class="iconitems mobile" wx:if="{{post.mobile}}">{{post.mobile}} </view>
+        <view class="iconitems email" wx:if="{{post.email}}">{{post.email}}</view>
+        <view class="iconitems address" wx:if="{{post.address}}">{{company.province+company.city+company.county+company.address}}</view>
+      </view>
+    </view>
+    <view class="itembodyslide">
+      <button class="btn" bindtap='addPhone' data-text="{{post.mobile}}" wx:if="{{post.mobile}}">
+        <view class="title">
+          <image src="/static/images/icon/maillist.png"></image>存通讯录
+        </view>
+        <text class="info">{{post.mobile}}</text>
+      </button>
+      <button class="btn" bindtap='callPhone' data-text="{{post.mobile}}" wx:if="{{post.mobile}}">
+        <view class="title">
+          <image src="/static/images/icon/phonecall.png"></image>拨打电话
+        </view>
+        <text class="info">{{post.mobile}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{post.wechat}}" wx:if="{{post.wechat}}">
+        <view class="title">
+          <image src="/static/images/icon/wechat.png"></image>加我微信
+        </view>
+        <text class="info">{{post.wechat}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{post.email}}" wx:if="{{post.email}}">
+        <view class="title">
+          <image src="/static/images/icon/email.png"></image>邮箱
+        </view>
+        <text class="info">{{post.email}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{post.address}}" wx:if="{{post.address}}">
+        <view class="title">
+          <image src="/static/images/icon/region.png"></image>地址
+        </view>
+        <text class="info">{{post.address}}</text>
+      </button>
+      <button class="btn" bindtap='callPhone' data-text="{{post.telephone}}" wx:if="{{post.telephone}}">
+        <view class="title">
+          <image src="/static/images/detail_kefu.png"></image>固定电话
+        </view>
+        <text class="info">{{post.telephone}}</text>
+      </button>
+    </view>
+  </view>
+  <view class="profile">
+    <image src='{{!post.photo ? "/static/images/card/w_card.jpg" : post.photo}}' class="leftimg"></image>
+    <view class="rightinfo">
+      <view class="name">{{post.realname}}</view>
+      <view class="k">
+        <text class="desc">{{post.profile?post.profile:" 欢迎来到我的名片 "}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="itemarea">
+  <view class="itemtitle">
+    <image src="/static/images/icon/company.png" class="icon"></image>
+    <text>酒店信息</text>
+  </view>
+  <view class="itembody">
+    <view class="comtop">
+      <image src='{{!company.logo ? "/static/images/company.png" : company.logo}}' data-url='{{company.logo}}' bindtap="topicPreview"></image>
+      <text>{{company.name}}</text>
+      <navigator hover-class="none" url="/pages/company/index/index?companyId={{company.companyId}}" open-type="reLaunch">进入酒店</navigator>
+    </view>
+    <view class="comdesc">{{company.introduction}}</view>
+  </view>
+</view>
+<view class="itemarea" wx:if="{{postlist.length>0}}">
+  <view class="itemtitle">
+    <image src="/static/images/icon/servicepost.png" class="icon"></image>
+    <text>服务岗位</text>
+  </view>
+  <view class="itembodyslide">
+    <navigator wx:for="{{postlist}}" wx:key="*this" url="/pages/company/post/post?postId={{item.postId}}" open-type="reLaunch">
+      <image src='{{!item.photo ? "/static/images/card/w_card.jpg" : item.photo}}'></image>
+      <text class="fontover">{{item.name}}</text>
+      <text class="pos fontover">{{item.position}}</text>
+    </navigator>
+  </view>
+</view>
+<view class="bottomtext">
+  <view>销擎，您的销售增长引擎</view>
+</view>
+<view style="height:100rpx;"></view>

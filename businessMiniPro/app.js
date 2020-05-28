@@ -48,9 +48,17 @@ App({
       wx.removeStorageSync('token');
     });
 
-    console.log("全局onLaunch options==" + options.query.openid)
-    if (options.query.openid != "undefined" && typeof(options.query.openid) != "undefined") {
-      this.globalData.openid = options.query.openid;
+    if (typeof(options) != "undefined") {
+      if (typeof(options.query.companyId) != "undefined" && options.query.companyId > 0) {
+        this.globalData.companyId = options.query.companyId;
+      } else if (typeof(options.query.scene) != "undefined") {
+        let scene = '?' + decodeURIComponent(options.query.scene);
+        this.globalData.companyId = util.getQueryString(scene, 'companyId');
+      }
+
+      if (typeof (options.query.roomId) != "undefined" && options.query.roomId > 0) {
+        this.globalData.roomId = options.query.roomId;
+      } 
     }
   },
   globalData: {
@@ -59,7 +67,8 @@ App({
       userName: '点击登录',
       avatarUrl: 'https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/150547696d798c.png'
     },
-    openid: 0,
     token: '',
+    companyId: 0,
+    roomId:0
   }
 })

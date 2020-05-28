@@ -16,7 +16,11 @@ $(function () {
             {label: '微信号', name: 'wechat', index: 'wechat', width: 80},
             {label: '电子邮箱', name: 'email', index: 'email', width: 80},
             {label: '职位简介', name: 'profile', index: 'profile', width: 80},
-            {label: '二维码', name: 'qrCode', index: 'qr_code', width: 80},
+            {
+                label: '二维码', name: 'qrCode', index: 'qr_code', width: 80, formatter: function (value) {
+                    return transImg(value);
+                }
+            },
             {
                 label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
                     return transDate(value);
@@ -142,6 +146,19 @@ let vm = new Vue({
                 name: ''
             }
             vm.reload();
+        },
+        createQrCode: function () {
+            let postId = getSelectedRow("#jqGrid");
+            if (postId == null) {
+                return;
+            }
+            Ajax.request({
+                url: "../companypost/createQrCode/" + postId,
+                async: true,
+                successCallback: function (r) {
+                    vm.reloadSearch();
+                }
+            });
         },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {

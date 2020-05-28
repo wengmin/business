@@ -21,7 +21,7 @@ Page({
    */
   onLoad: function(options) {
     let that = this
-    util.request(api.CompanyDetails).then(function(res) {
+    util.request(api.CompanyDetailsByUserID).then(function(res) {
       if (res.errno === 0) {
         that.setData({
           company: res.data

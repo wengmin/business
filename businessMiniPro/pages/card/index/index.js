@@ -29,15 +29,9 @@ Page({
         that.setData({
           param: util.getQueryString(scene, 'param'),
         })
-        app.globalData.param = that.data.param;
       } else if (options.param != "undefined" && typeof(options.param) != "undefined") {
         that.setData({
           param: options.param,
-        })
-        app.globalData.param = options.param;
-      } else if (app.globalData.param != "undefined" && typeof(app.globalData.param) != "undefined" && app.globalData.param != '') {
-        that.setData({
-          param: app.globalData.param,
         })
       }
     }
@@ -364,6 +358,9 @@ Page({
   topicPreview: function(e) {
     var that = this;
     var url = e.currentTarget.dataset.url;
+    if (!url) {
+      return false;
+    }
     var images = new Array();
     if (typeof(e.currentTarget.dataset.type) != "undefined") {
       var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];

@@ -90,7 +90,7 @@ public class QRCodeUtils {
      * 获取小程序商品分享二维码
      *
      */
-    public static String createQrCodeToUrl(String accessToken, String param, String path, String imageName) throws Exception {
+    public static String createQrCodeToUrl(String accessToken, String param, String path, String fileDir, String fileName) throws Exception {
         try {
             URL url = new URL("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -113,9 +113,9 @@ public class QRCodeUtils {
             // 开始获取数据
             BufferedInputStream bis = new BufferedInputStream(httpURLConnection.getInputStream());
 
-            String urlPath = System.getProperty("catalina.home") + "/webapps/business/upload/qrcode";
-            String imgname = "/" + imageName + ".png";
-            String codeUrl = urlPath + imgname;
+            String urlPath = System.getProperty("catalina.home") + "/webapps/business/upload/" + fileDir;
+            fileName = "/" + fileName + ".png";
+            String codeUrl = urlPath + fileName;
             File file = new File(urlPath);
             dirExists(file);
 
@@ -128,7 +128,7 @@ public class QRCodeUtils {
             }
             os.close();
             bis.close();
-            return "qrcode" + imgname;
+            return fileDir + fileName;
         } catch (Exception e) {
             e.printStackTrace();
         }

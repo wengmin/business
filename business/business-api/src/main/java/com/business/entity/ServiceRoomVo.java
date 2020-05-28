@@ -20,6 +20,8 @@ public class ServiceRoomVo implements Serializable {
     private Integer companyId;
     //房间号
     private Integer roomId;
+    //房间号
+    private String roomName;
     //
     private Integer userId;
     //服务类型
@@ -76,6 +78,15 @@ public class ServiceRoomVo implements Serializable {
     public Integer getRoomId() {
         return roomId;
     }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     /**
      * 设置：
      */
@@ -89,6 +100,7 @@ public class ServiceRoomVo implements Serializable {
     public Integer getUserId() {
         return userId;
     }
+
     /**
      * 设置：服务类型
      */

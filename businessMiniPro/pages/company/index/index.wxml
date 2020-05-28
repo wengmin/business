@@ -1,2 +1,46 @@
-<!--pages/company/index/index.wxml-->
-<text>pages/company/index/index.wxml</text>
+<view class="container">
+  <view class="itemarea">
+    <view class="itembody">
+      <view class="comtop">
+        <image src='{{!company.logo ? "/static/images/company.png" : company.logo}}' data-url='{{company.logo}}' bindtap="topicPreview"></image>
+        <text>{{company.name}}</text>
+      </view>
+      <view class="comdesc">{{company.introduction}}</view>
+    </view>
+    <view wx:for="{{company.fileList}}" wx:key="key">
+      <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+        <video src="{{item.fileurl}}" class="comfile"></video>
+      </block>
+      <block wx:else>
+        <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
+      </block>
+    </view>
+  </view>
+  <view class="itemarea" wx:if="{{postlist.length>0}}">
+    <view class="itemtitle">
+      <image src="/static/images/icon/servicepost.png" class="icon"></image>
+      <text>服务岗位</text>
+    </view>
+    <view class="itembodyslide">
+      <navigator wx:for="{{postlist}}" wx:key="*this" url="/pages/company/post/post?postId={{item.postId}}" open-type="reLaunch">
+        <image src='{{!item.photo ? "/static/images/card/w_card.jpg" : item.photo}}'></image>
+        <text class="fontover">{{item.name}}</text>
+        <text class="pos fontover">{{item.position}}</text>
+      </navigator>
+    </view>
+  </view>
+</view>
+<wxs module="fileType">
+  function getType(str) {
+    var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+    var videoarr = ["mp4"];
+    if (imagearr.indexOf(type) > -1)
+      return "image";
+    else if (videoarr.indexOf(type) > -1)
+      return "video";
+    else
+      return "image"
+  }
+  module.exports.getType = getType;
+</wxs>
