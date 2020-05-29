@@ -35,6 +35,9 @@ Page({
         that.setData({
           post: res.data,
         })
+        wx.setNavigationBarTitle({
+          title: res.data.name
+        })
         that.getPostList();
         that.getCompany();
       }

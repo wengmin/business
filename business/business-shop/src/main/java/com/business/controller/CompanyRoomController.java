@@ -56,7 +56,11 @@ public class CompanyRoomController {
     @RequiresPermissions("companyroom:info")
     public R info(@PathVariable("roomId") Integer roomId) {
         CompanyRoomEntity companyRoom = companyRoomService.queryObject(roomId);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            if (companyRoom.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
+        }
         return R.ok().put("companyRoom", companyRoom);
     }
 
@@ -80,8 +84,11 @@ public class CompanyRoomController {
     @RequestMapping("/update")
     @RequiresPermissions("companyroom:update")
     public R update(@RequestBody CompanyRoomEntity companyRoom) {
+        CompanyRoomEntity info = companyRoomService.queryObject(companyRoom.getRoomId());
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyRoom.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            if (info.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
         }
         companyRoomService.update(companyRoom);
 

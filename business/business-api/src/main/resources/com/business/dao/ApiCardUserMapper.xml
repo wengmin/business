@@ -96,6 +96,7 @@
           `user_id`,
           `company_id`,
           `realname`,
+          `mobile`,
           `photo`,
           `position`,
           `wechat`,
@@ -112,6 +113,7 @@
           #{userId},
           #{companyId},
           #{realname},
+          #{mobile},
           #{photo},
           #{position},
           #{wechat},
@@ -137,6 +139,9 @@
             </if>
             <if test="realname != null">
                 `realname` = #{realname},
+            </if>
+            <if test="mobile != null">
+                `mobile` = #{mobile},
             </if>
             <if test="photo != null">
                 `photo` = #{photo},

@@ -15,16 +15,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    if (typeof(options) != "undefined" && typeof(options.companyId) != "undefined" && options.companyId > 0) {
-      this.setData({
-        companyId: options.companyId,
-      })
-      app.globalData.companyId = options.companyId;
-    } else if (app.globalData.companyId != "undefined" && typeof(app.globalData.companyId) != "undefined" && app.globalData.companyId != 0) {
-      this.setData({
-        companyId: app.globalData.companyId,
-      })
-    }
+    // if (typeof(options) != "undefined" && typeof(options.companyId) != "undefined" && options.companyId > 0) {
+    //   this.setData({
+    //     companyId: options.companyId,
+    //   })
+    //   app.globalData.companyId = options.companyId;
+    // } else if (app.globalData.companyId != "undefined" && typeof(app.globalData.companyId) != "undefined" && app.globalData.companyId != 0) {
+    //   this.setData({
+    //     companyId: app.globalData.companyId,
+    //   })
+    // }
   },
 
   /**

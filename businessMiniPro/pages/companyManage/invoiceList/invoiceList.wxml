@@ -4,7 +4,7 @@
       {{item.name}}
     </view>
   </view>
-  <navigator class="list" wx:for="{{invoiceList}}" wx:key="index" hover-class="none" open-type="navigate" url="/pages/companyManage/invoice/invoice?invoiceId={{item.invoiceId}}">
+  <navigator class="list" wx:for="{{invoiceList}}" wx:key="index" open-type="navigate" url="/pages/companyManage/invoice/invoice?invoiceId={{item.invoiceId}}">
     <view class="font1">来自{{item.roomName}}</view>
     <view class="font1 font1class">
       {{item.titletype=="1"?"个人":item.titletype=="2"?"单位":""}}

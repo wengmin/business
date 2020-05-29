@@ -58,16 +58,9 @@
 			"list": [
 				{
 					"id": 0,
-					"name": "pages/card/index/index",
-					"pathName": "pages/card/index/index",
-					"query": "param=4~6CkgY",
-					"scene": 1001
-				},
-				{
-					"id": 1,
 					"name": "service index",
 					"pathName": "pages/service/index/index",
-					"query": "roomId=1",
+					"query": "roomId=2",
 					"scene": null
 				},
 				{
@@ -75,13 +68,6 @@
 					"name": "pages/company/post/post",
 					"pathName": "pages/company/post/post",
 					"query": "postId=1",
-					"scene": null
-				},
-				{
-					"id": 3,
-					"name": "pages/company/index/index",
-					"pathName": "pages/company/index/index",
-					"query": "companyId=1",
 					"scene": null
 				},
 				{
@@ -96,20 +82,6 @@
 					"name": "pages/companyManage/index/index",
 					"pathName": "pages/companyManage/index/index",
 					"query": "companyId=3",
-					"scene": null
-				},
-				{
-					"id": 6,
-					"name": "companyManage/serviceRoomList",
-					"pathName": "pages/companyManage/serviceRoomList/serviceRoomList",
-					"query": "companyId=3",
-					"scene": null
-				},
-				{
-					"id": 7,
-					"name": "service  invoice",
-					"pathName": "pages/service/invoice/invoice",
-					"query": "roomId=1",
 					"scene": null
 				}
 			]

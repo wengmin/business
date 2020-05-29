@@ -19,6 +19,11 @@ $(function () {
                 label: '创建时间', name: 'createTime', index: 'create_time', width: 80, formatter: function (value) {
                     return transDate(value);
                 }
+            },
+            {
+                label: '更新时间', name: 'updateTime', index: 'update_time', width: 80, formatter: function (value) {
+                    return transDate(value);
+                }
             }]
     });
 });

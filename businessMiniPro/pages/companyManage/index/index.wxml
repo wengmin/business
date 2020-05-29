@@ -1,10 +1,10 @@
 <view class="container">
   <view class="menu">
-    <navigator hover-class="none" open-type="navigate" url="/pages/companyManage/serviceRoomList/serviceRoomList" class="item">
+    <navigator open-type="navigate" url="/pages/companyManage/serviceRoomList/serviceRoomList" class="item">
       <image src="/static/images/service/c_roomservice.png"></image>
       <text>客房服务</text>
     </navigator>
-    <navigator hover-class="none" open-type="navigate" url="/pages/companyManage/invoiceList/invoiceList" class="item">
+    <navigator open-type="navigate" url="/pages/companyManage/invoiceList/invoiceList" class="item">
       <image src="/static/images/service/c_invoice.png"></image>
       <text>开票服务</text>
     </navigator>

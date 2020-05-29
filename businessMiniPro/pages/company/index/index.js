@@ -33,6 +33,9 @@ Page({
         that.setData({
           company: res.data,
         })
+        wx.setNavigationBarTitle({
+          title: res.data.name
+        })
       }
     })
   },

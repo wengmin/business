@@ -160,6 +160,7 @@
         select
 	    `room_id`,
 	    `company_id`,
+	    (select phone from company_info where company_info.company_id=company_room.company_id) as servicePhone,
 	    `name`,
 	    `tung`,
 	    `floor`,

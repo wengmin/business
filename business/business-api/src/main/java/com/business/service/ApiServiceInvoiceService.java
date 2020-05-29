@@ -16,7 +16,7 @@ import java.util.Map;
  * @email wengmin@vip.qq.com
  * @date 2020-05-28 18:16:20
  */
-@Service("serviceInvoiceService")
+@Service
 public class ApiServiceInvoiceService {
     @Autowired
     private ApiServiceInvoiceMapper serviceInvoiceMapper;

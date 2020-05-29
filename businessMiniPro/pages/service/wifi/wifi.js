@@ -1,11 +1,13 @@
-// pages/wifi/wifi.js
+var api = require('../../../config/api.js');
 const util = require('../../../utils/util.js');
+const app = getApp()
+
 Page({
   data: {
     error: '', //错误提示
     platform: '', //系统 android
-    ssid: 'CMCC-CQ', //wifi帐号(必填)
-    pass: 'cq778899', //无线网密码(必填)
+    ssid: '', //wifi帐号(必填)
+    pass: '', //无线网密码(必填)
     bssid: '', //设备号 自动获取
     success: ''
   },
@@ -26,27 +28,43 @@ Page({
     wx.showLoading({
       title: '连接中',
     });
-    
-    var that = this;
     if (options.scene) {
       let scene = '?' + decodeURIComponent(options.scene);
-      that.setData({
+      this.setData({
         ssid: util.getQueryString(scene, 'id'),
         pass: util.getQueryString(scene, 'pass'),
       })
-      that.checkSystem()
+      this.checkSystem()
     } else {
-      wx.hideLoading()
-      that.setData({
-        error: that.data.error + "未获取到账号密码。"
-      })
+      this.getRoom();
+      // wx.hideLoading()
+      // that.setData({
+      //   error: that.data.error + "未获取到账号密码。"
+      // })
     }
+  },
+  getRoom: function() {
+    let that = this
+    util.request(api.CompanyRoomDetail, {
+      roomId: app.globalData.roomId,
+    }).then(function(res) {
+      if (res.errno === 0) {
+        that.setData({
+          ssid: res.data.wifiname,
+          pass: res.data.wifipass,
+        })
+        that.checkSystem()
+      } else {
+        wx.hideLoading()
+        util.showErrorToast(res.errmsg);
+      }
+    })
   },
   checkSystem: function() {
     var that = this;
     //检测手机型号
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         console.log("getSystemInfo=>success." + res);
         var system = '';
         if (res.platform == 'android') system = parseInt(res.system.substr(8));
@@ -68,7 +86,7 @@ Page({
         })
         that.startWifi();
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("getSystemInfo=>fail." + res.errMsg);
         wx.hideLoading()
         that.setData({
@@ -85,7 +103,7 @@ Page({
         //请求成功连接Wifi
         that.connectWifi();
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("startWifi=>fail." + res.errMsg);
         wx.hideLoading()
         that.setData({
@@ -132,7 +150,7 @@ Page({
         //   })
         // }
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("connectWifi=>fail." + res.errMsg);
         wx.hideLoading()
         that.setData({

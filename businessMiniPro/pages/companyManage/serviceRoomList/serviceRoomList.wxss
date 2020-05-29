@@ -45,7 +45,7 @@
 
 .list .font1 {
   margin-top: 20rpx;
-  font-size: 36rpx;
+  font-size: 30rpx;
 }
 
 .list .font1:first-child {

@@ -14,6 +14,17 @@ public class CompanyRoomVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
+    private String servicePhone;
+
+    public String getServicePhone() {
+        return servicePhone;
+    }
+
+    public void setServicePhone(String servicePhone) {
+        this.servicePhone = servicePhone;
+    }
+
+    //
     private Integer roomId;
     //
     private Integer companyId;

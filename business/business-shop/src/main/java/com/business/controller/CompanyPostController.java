@@ -56,7 +56,11 @@ public class CompanyPostController {
     @RequiresPermissions("companypost:info")
     public R info(@PathVariable("postId") Integer postId) {
         CompanyPostEntity companyPost = companyPostService.queryObject(postId);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            if (companyPost.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
+        }
         return R.ok().put("companyPost", companyPost);
     }
 
@@ -80,8 +84,11 @@ public class CompanyPostController {
     @RequestMapping("/update")
     @RequiresPermissions("companypost:update")
     public R update(@RequestBody CompanyPostEntity companyPost) {
+        CompanyPostEntity info = companyPostService.queryObject(companyPost.getPostId());
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyPost.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            if (info.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
         }
         companyPostService.update(companyPost);
 

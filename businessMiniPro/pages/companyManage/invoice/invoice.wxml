@@ -18,6 +18,7 @@
     <view class="font1" wx:if="{{invoice.remark}}">备注：{{invoice.remark}}</view>
     <view class="time">申请时间：{{invoice.createTime}}</view>
     <view class="font1" wx:if="{{invoice.reply}}">处理备注：{{invoice.reply}}</view>
+    <view class="font1" wx:if="{{invoice.status==1}}">开票人：{{invoice.staffId==-1?"管理员":invoice.staffName}}</view>
     <view class="time" wx:if="{{invoice.updateTime}}">开票时间：{{invoice.updateTime}}</view>
     <view class="statustag">{{invoice.status==0?"未开票":invoice.status==1?"已开票":""}}</view>
   </view>

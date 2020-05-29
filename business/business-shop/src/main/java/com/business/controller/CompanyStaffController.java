@@ -49,6 +49,11 @@ public class CompanyStaffController {
     @RequiresPermissions("companystaff:info")
     public R info(@PathVariable("staffId") Integer staffId) {
         CompanyStaffEntity companyStaff = companyStaffService.queryObject(staffId);
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            if (companyStaff.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
+        }
         return R.ok().put("companyStaff", companyStaff);
     }
 
@@ -72,8 +77,11 @@ public class CompanyStaffController {
     @RequestMapping("/update")
     @RequiresPermissions("companystaff:update")
     public R update(@RequestBody CompanyStaffEntity companyStaff) {
+        CompanyStaffEntity info = companyStaffService.queryObject(companyStaff.getStaffId());
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyStaff.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            if (info.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
         }
         companyStaffService.update(companyStaff);
 

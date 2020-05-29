@@ -1,65 +1,76 @@
-<view class="container">
-  <view class="roomtext">{{room.name}}</view>
-  <view class="menuarea">
-    <view class="menu" bindtap="scanWifi">
-      <image src="/static/images/service/wifi.png"></image>
-      <text>一键上网</text>
+<block wx:if="{{isShow}}">
+  <view class="container">
+    <view class="roomtext">欢迎来到{{room.name}}</view>
+    <view class="menuarea">
+      <navigator class="menu" open-type="navigate" url="/pages/service/wifi/wifi">
+        <image src="/static/images/service/wifi.png"></image>
+        <text>一键上网</text>
+      </navigator>
+      <view class="menu" data-text="{{room.servicePhone}}" bindtap="callPhone" wx:if="{{room.servicePhone}}">
+        <image src="/static/images/service/ser_phone.png"></image>
+        <text>服务电话</text>
+      </view>
+      <navigator class="menu" open-type="navigate" url="/pages/company/index/index?companyId={{room.companyId}}">
+        <image src="/static/images/service/guide.png"></image>
+        <text>酒店指南</text>
+      </navigator>
+      <view class="menu">
+        <image src="/static/images/service/delivery_hui.png"></image>
+        <text>客房送餐</text>
+      </view>
+      <navigator class="menu" url="/pages/service/invoice/invoice">
+        <image src="/static/images/service/invoice.png"></image>
+        <text>开票</text>
+      </navigator>
     </view>
-    <view class="menu">
-      <image src="/static/images/service/ser_phone.png"></image>
-      <text>服务电话</text>
-    </view>
-    <view class="menu">
-      <image src="/static/images/service/guide.png"></image>
-      <text>酒店指南</text>
-    </view>
-    <view class="menu">
-      <image src="/static/images/service/delivery.png"></image>
-      <text>客房送餐</text>
-    </view>
-    <navigator class="menu" url="/pages/service/invoice/invoice">
-      <image src="/static/images/service/invoice.png"></image>
-      <text>开票</text>
-    </navigator>
-  </view>
-  <view class="swiper-nav">
-    <view class="item {{currentTab==index ? 'on' : ''}}" data-current="{{index}}" bindtap="itemChange" wx:for="{{service}}" wx:key="index">
-      <image src="/static/images/service/{{item.serviceClass}}.png" data-current="{{index}}"></image>
-      <text data-current="{{index}}">
+    <view class="swiper-nav">
+      <view class="item {{currentTab==index ? 'on' : ''}}" data-current="{{index}}" bindtap="itemChange" wx:for="{{service}}" wx:key="index">
+        <image src="/static/images/service/{{item.serviceClass}}.png" data-current="{{index}}"></image>
+        <text data-current="{{index}}">
       {{item.serviceClass=="clean"?"清洁":item.serviceClass=="lease"?"物品租借":item.serviceClass=="repair"?"维修":item.serviceClass=="complaint"?"投诉":""}}
       </text>
+      </view>
+    </view>
+    <swiper current="{{currentTab}}" class="swiper" style="height:{{swiperHeight}}" duration="300" bindchange="indexChange">
+      <swiper-item wx:for="{{service}}" wx:key="index">
+        <view class="body swiperitem{{index}}">
+          <view class="real" wx:if="{{item.serviceClass=='complaint'}}">
+            <image src="/static/images/bussiness-man.png"></image>
+            <view class="con">宾客您好，我是本店经理，驻点过程中遇到任何问题，都可以反馈给我，我会帮您解决，希望您住店愉快！</view>
+          </view>
+          <view class="checkbox">
+            <view class="{{checkClass.getClass(addservice.tagList,items)}} item" wx:for="{{item.listServiceTag}}" wx:key="index" wx:for-item="items" bindtap='classCheck' data-value="{{items}}">{{items}}</view>
+          </view>
+          <view class="control" wx:if="{{item.serviceClass=='clean'||item.serviceClass=='complaint'}}">
+            <view class="form-item" wx:if="{{item.serviceClass=='clean'}}">
+              <view class="left">处理时间</view>
+              <date-time-picker placeholder="请选择" date="{{bfdzahbfd}}" bind:onPickerChange="onPickerChange" startDate="{{startDate}}" endDate="{{endDate}}"></date-time-picker>
+            </view>
+            <view class="form-item">
+              <textarea class="textarea" maxlength="100" bindinput="bindinputValue" data-type="remark" placeholder="有什么需要告知我们的？" value="{{addservice.remark}}" />
+            </view>
+          </view>
+          <button class="subbtn" data-class="{{item.serviceClass}}" bindtap='save'>立即提交</button>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <wxs module="checkClass">
+    function getClass(arr, str) {
+      if (arr.indexOf(str) > -1)
+        return "check";
+      else
+        return ""
+    }
+    module.exports.getClass = getClass;
+  </wxs>
+</block>
+<block wx:else>
+  <view class="scan" bindtap="scanRoom">
+    <view class="desc">请扫码房间二维码</view>
+    <view class="btn">
+      <image src="/static/images/service/scan.png"></image>
+      <text>点击扫码</text>
     </view>
   </view>
-  <swiper current="{{currentTab}}" class="swiper" style="height:{{swiperHeight}}" duration="300" bindchange="indexChange">
-    <swiper-item wx:for="{{service}}" wx:key="index">
-      <view class="body swiperitem{{index}}">
-        <view class="real" wx:if="{{item.serviceClass=='complaint'}}">
-          <image src="/static/images/bussiness-man.png"></image>
-          <view class="con">宾客您好，我是本店经理，驻点过程中遇到任何问题，都可以反馈给我，我会帮您解决，希望您住店愉快！</view>
-        </view>
-        <view class="checkbox">
-          <view class="{{checkClass.getClass(addservice.tagList,items)}} item" wx:for="{{item.listServiceTag}}" wx:key="index" wx:for-item="items" bindtap='classCheck' data-value="{{items}}">{{items}}</view>
-        </view>
-        <view class="control" wx:if="{{item.serviceClass=='clean'}}">
-          <view class="form-item">
-            <view class="left">处理时间</view>
-            <date-time-picker placeholder="请选择" date="{{bfdzahbfd}}" bind:onPickerChange="onPickerChange" startDate="{{startDate}}" endDate="{{endDate}}"></date-time-picker>
-          </view>
-          <view class="form-item">
-            <textarea class="textarea" maxlength="100" bindinput="bindinputValue" data-type="remark" placeholder="有什么需要告知我们的？" value="{{addservice.remark}}" />
-          </view>
-        </view>
-        <button class="subbtn" data-class="{{item.serviceClass}}" bindtap='save'>立即提交</button>
-      </view>
-    </swiper-item>
-  </swiper>
-</view>
-<wxs module="checkClass">
-  function getClass(arr, str) {
-    if (arr.indexOf(str) > -1)
-      return "check";
-    else
-      return ""
-  }
-  module.exports.getClass = getClass;
-</wxs>
+</block>

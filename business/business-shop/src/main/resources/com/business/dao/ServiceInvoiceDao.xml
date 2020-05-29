@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ServiceInvoiceDao">
+
+    <resultMap type="com.business.entity.ServiceInvoiceEntity" id="BaseResultMap">
+        <result property="invoiceId" column="invoice_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="roomId" column="room_id"/>
+        <result property="roomName" column="roomName"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="staffName" column="staffName"/>
+        <result property="content" column="content"/>
+        <result property="titletype" column="titletype"/>
+        <result property="titlename" column="titlename"/>
+        <result property="taxno" column="taxno"/>
+        <result property="registaddress" column="registaddress"/>
+        <result property="registphone" column="registphone"/>
+        <result property="bank" column="bank"/>
+        <result property="bankaccount" column="bankaccount"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="reply" column="reply"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `invoice_id`,
+        `company_id`,
+        (select name from company_info where company_info.company_id=service_invoice.company_id) as companyName,
+        `room_id`,
+        (select name from company_room where company_room.room_id=service_invoice.room_id) as roomName,
+        `user_id`,
+        (select nickname from member_user where member_user.user_id=service_invoice.user_id) as nickname,
+        `staff_id`,
+        (select name from company_staff where company_staff.staff_id=service_invoice.staff_id) as staffName,
+        `content`,
+        `titletype`,
+        `titlename`,
+        `taxno`,
+        `registaddress`,
+        `registphone`,
+        `bank`,
+        `bankaccount`,
+        `status`,
+        `remark`,
+        `reply`,
+        `create_time`,
+        `update_time`
+  	</sql>
+
+    <select id="queryObject" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from service_invoice
+        where invoice_id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.business.entity.ServiceInvoiceEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from service_invoice
+        WHERE 1=1
+        <if test="companyName != null and companyName.trim() != ''">
+            AND company_id in (select company_id from company_info where name LIKE concat('%',#{companyName},'%'))
+        </if>
+        <if test="companyId != null and companyId != '0'">
+            AND company_id=#{companyId}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by invoice_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from service_invoice
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.business.entity.ServiceInvoiceEntity">
+        update service_invoice
+        <set>
+            <if test="staffId != null">
+                `staff_id` = #{staffId},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="reply != null">
+                `reply` = #{reply},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where invoice_id = #{invoiceId}
+    </update>
+</mapper>

@@ -1,12 +1,14 @@
 var util = require('../../../utils/util.js');
 var api = require('../../../config/api.js');
-Page({
+const app = getApp()
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-    roomId: 0,
+    //roomId: 0,
+    isShow: true,
     room: [],
     currentTab: 0,
     swiperHeight: '',
@@ -24,31 +26,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let token = wx.getStorageSync('token');
-    // 页面显示
-    if (!token) {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none',
-        duration: 2000
-      })
-      wx.redirectTo({
-        url: '/pages/auth/login/login?id=-5&param=' + options.roomId
-      })
-      wx.removeStorageSync('userInfo');
-      return;
-    }
-    if (options.roomId != "undefined" && typeof(options.roomId) != "undefined") {
+    // if (options.roomId != "undefined" && typeof(options.roomId) != "undefined") {
+    //   this.setData({
+    //     roomId: options.roomId,
+    //   })
+    // }
+    if (app.globalData.roomId > 0) {
+      let token = wx.getStorageSync('token');
+      // 页面显示
+      if (!token) {
+        wx.showToast({
+          title: '请先登录',
+          icon: 'none',
+          duration: 2000
+        })
+        wx.redirectTo({
+          url: '/pages/auth/login/login?id=-5&param=' + options.roomId
+        })
+        wx.removeStorageSync('userInfo');
+        return;
+      }
+      this.getRoom()
+    } else {
       this.setData({
-        roomId: options.roomId,
+        isShow: false
       })
     }
-    this.getRoom()
   },
   getRoom: function() {
     let that = this
     util.request(api.CompanyRoomDetail, {
-      roomId: that.data.roomId
+      roomId: app.globalData.roomId,
     }).then(function(res) {
       if (res.errno === 0) {
         that.setData({
@@ -100,14 +108,26 @@ Page({
    */
   onShareAppMessage: function() {},
 
-  scanWifi: function() {
+  // scanWifi: function() {
+  //   wx.scanCode({
+  //     onlyFromCamera: true, // 只允许从相机扫码
+  //     success(res) {
+  //       console.log(res)
+  //       console.log(res.path)
+  //       wx.navigateTo({
+  //         url: "../../../" + res.path,
+  //       })
+  //     }
+  //   })
+  // },
+  scanRoom: function() {
     wx.scanCode({
       onlyFromCamera: true, // 只允许从相机扫码
       success(res) {
         console.log(res)
         console.log(res.path)
         wx.navigateTo({
-          url: "../../../" + res.path,
+          url:"/"+ res.path,
         })
       }
     })
@@ -186,7 +206,7 @@ Page({
       }
     }
     util.request(api.ServiceRoomSave, {
-      roomId: that.data.roomId,
+      roomId: app.globalData.roomId,
       serviceClass: sc,
       tagList: datas.tagList,
       remark: datas.remark,
@@ -201,7 +221,14 @@ Page({
           "addservice.remark": '',
           "addservice.appointmentTime": ''
         })
+      } else {
+        util.showErrorToast(res.errmsg);
       }
     })
-  }
+  },
+  callPhone: function (e) {
+    wx.makePhoneCall({
+      phoneNumber: e.currentTarget.dataset.text
+    })
+  },
 })

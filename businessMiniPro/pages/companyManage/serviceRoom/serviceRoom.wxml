@@ -21,7 +21,7 @@
   <block wx:if="{{service.status==2}}">
     <view class="control">
       <view wx:for="{{serviceLog}}" wx:key="index" class="log">
-        <view class="left">{{item.staffName}}</view>
+        <view class="left">{{item.staffId==-1?"管理员":item.staffName}}</view>
         <view class="right">{{item.createTime}}</view>
         <view class="remark">{{item.remark}}</view>
       </view>

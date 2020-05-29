@@ -5,15 +5,7 @@
         <image src='{{!company.logo ? "/static/images/company.png" : company.logo}}' data-url='{{company.logo}}' bindtap="topicPreview"></image>
         <text>{{company.name}}</text>
       </view>
-      <view class="comdesc">{{company.introduction}}</view>
-    </view>
-    <view wx:for="{{company.fileList}}" wx:key="key">
-      <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
-        <video src="{{item.fileurl}}" class="comfile"></video>
-      </block>
-      <block wx:else>
-        <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
-      </block>
+      <view class="comdesc" wx:if="{{company.introduction}}">{{company.introduction}}</view>
     </view>
   </view>
   <view class="itemarea" wx:if="{{postlist.length>0}}">
@@ -22,12 +14,20 @@
       <text>服务岗位</text>
     </view>
     <view class="itembodyslide">
-      <navigator wx:for="{{postlist}}" wx:key="*this" url="/pages/company/post/post?postId={{item.postId}}" open-type="reLaunch">
+      <navigator wx:for="{{postlist}}" wx:key="*this" url="/pages/company/post/post?postId={{item.postId}}" open-type="navigate">
         <image src='{{!item.photo ? "/static/images/card/w_card.jpg" : item.photo}}'></image>
         <text class="fontover">{{item.name}}</text>
         <text class="pos fontover">{{item.position}}</text>
       </navigator>
     </view>
+  </view>
+  <view wx:for="{{company.fileList}}" wx:key="key">
+    <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+      <video src="{{item.fileurl}}" class="comfile"></video>
+    </block>
+    <block wx:else>
+      <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
+    </block>
   </view>
 </view>
 <wxs module="fileType">

@@ -49,7 +49,11 @@ public class CompanyFileController {
     @RequiresPermissions("companyfile:info")
     public R info(@PathVariable("id") Integer id) {
         CompanyFileEntity companyFile = companyFileService.queryObject(id);
-
+        if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
+            if (companyFile.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
+        }
         return R.ok().put("companyFile", companyFile);
     }
 
@@ -73,8 +77,11 @@ public class CompanyFileController {
     @RequestMapping("/update")
     @RequiresPermissions("companyfile:update")
     public R update(@RequestBody CompanyFileEntity companyFile) {
+        CompanyFileEntity info = companyFileService.queryObject(companyFile.getId());
         if (Constant.SUPER_ADMIN != ShiroUtils.getUserEntity().getUserId()) {
-            companyFile.setCompanyId(ShiroUtils.getUserEntity().getCompanyId());
+            if (info.getCompanyId() != ShiroUtils.getUserEntity().getCompanyId()) {
+                return R.error("非法操作");
+            }
         }
         companyFileService.update(companyFile);
 
