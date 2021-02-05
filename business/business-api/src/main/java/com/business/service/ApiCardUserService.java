@@ -36,4 +36,20 @@ public class ApiCardUserService {
     public void updateByOpenId(CardUserVo user) {
         cardUserDao.updateByOpenId(user);
     }
+
+    public int collectCount(Integer touserId) {
+        return cardUserDao.collectCount(touserId);
+    }
+
+    public int recordCount(Integer touserId) {
+        return cardUserDao.recordCount(touserId);
+    }
+
+    public int recordTodayCount(Integer touserId) {
+        return cardUserDao.recordTodayCount(touserId);
+    }
+
+    public int shareCount(Integer userId) {
+        return cardUserDao.shareCount(userId);
+    }
 }

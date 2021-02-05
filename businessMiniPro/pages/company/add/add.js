@@ -9,6 +9,7 @@ Page({
   data: {
     company: {
       name: '',
+      simpleName: '',
       logo: '',
       introduction: '',
       fileList: []
@@ -19,9 +20,9 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     let that = this
-    util.request(api.CompanyDetailsByUserID).then(function(res) {
+    util.request(api.CompanyDetailsByUserID).then(function (res) {
       if (res.errno === 0) {
         that.setData({
           company: res.data
@@ -38,60 +39,60 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
 
 
-  changeLogo: function(e) {
+  changeLogo: function (e) {
     var that = this
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function(res) {
+      success: function (res) {
         var tempFilePaths = res.tempFilePaths;
         wx.showLoading({
           title: '上传中',
@@ -108,7 +109,7 @@ Page({
             //和服务器约定的token, 一般也可以放在header中
             'X-Nideshop-Token': wx.getStorageSync('token')
           },
-          success: function(res) {
+          success: function (res) {
             let datas = JSON.parse(res.data)
             //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
             if (datas.errno === 0) {
@@ -129,20 +130,20 @@ Page({
             }
             wx.hideLoading()
           },
-          fail: function() {
+          fail: function () {
             wx.hideLoading()
           }
         })
       }
     })
   },
-  changeImage: function(e) {
+  changeImage: function (e) {
     var that = this
     wx.chooseImage({
       count: 9, // 默认9
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function(res) {
+      success: function (res) {
         var successUp = 0; //成功
         var failUp = 0; //失败
         var length = res.tempFilePaths.length; //总数
@@ -151,13 +152,13 @@ Page({
       }
     })
   },
-  changeVideo: function(e) {
+  changeVideo: function (e) {
     var that = this
     wx.chooseVideo({
       sourceType: ['album', 'camera'],
       maxDuration: 60,
       camera: 'back',
-      success: function(res) {
+      success: function (res) {
         var tempFilePath = res.tempFilePath;
         wx.showLoading({
           title: '上传中',
@@ -174,7 +175,7 @@ Page({
             //和服务器约定的token, 一般也可以放在header中
             'X-Nideshop-Token': wx.getStorageSync('token')
           },
-          success: function(res) {
+          success: function (res) {
             let resjson = JSON.parse(res.data)
             //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
             if (resjson.errno === 0) {
@@ -194,7 +195,7 @@ Page({
             }
             wx.hideLoading()
           },
-          fail: function() {
+          fail: function () {
             wx.hideLoading()
           }
         })
@@ -211,7 +212,7 @@ Page({
       url: api.Upload, //仅为示例，非真实的接口地址
       filePath: imgPaths[count],
       name: 'file',
-      success: function(res) {
+      success: function (res) {
         successUp++; //成功+1
         let resjson = JSON.parse(res.data)
         if (resjson.errno === 0) {
@@ -226,10 +227,10 @@ Page({
           failUp++; //失败+1
         }
       },
-      fail: function(e) {
+      fail: function (e) {
         failUp++; //失败+1
       },
-      complete: function(e) {
+      complete: function (e) {
         count++; //下一张
         if (count == length) {
           //上传完毕，作一下提示
@@ -247,12 +248,12 @@ Page({
       }
     })
   },
-  deleteFile: function(e) {
+  deleteFile: function (e) {
     let that = this
     wx.showModal({
       title: '删除附件',
       content: '是否删除该附件',
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
           var obj = that.data.company.fileList;
           obj.splice(e.target.dataset.index, 1)
@@ -264,7 +265,7 @@ Page({
     })
   },
   //预览图片
-  topicPreview: function(e) {
+  topicPreview: function (e) {
     var that = this;
     var url = e.currentTarget.dataset.url;
     var images = new Array();
@@ -288,6 +289,11 @@ Page({
           "company.name": event.detail.value
         });
         break;
+      case "simpleName":
+        this.setData({
+          "company.simpleName": event.detail.value
+        });
+        break;
       case "introduction":
         this.setData({
           "company.introduction": event.detail.value
@@ -295,7 +301,7 @@ Page({
         break;
     }
   },
-  saveCompany() {
+  submit(e) {
     console.log(this.data.company)
     let company = this.data.company;
     if (company.name == '') {
@@ -311,12 +317,21 @@ Page({
       mask: true
     });
     let that = this;
+    let filename = e.detail.value;
+    var obj = that.data.company.fileList;
+    obj.forEach(function (item, index) {
+      item.name = filename["filename" + index]
+    })
+    that.setData({
+      "company.fileList": obj
+    });
     util.request(api.CompanySave, {
       logo: company.logo,
       name: company.name,
+      simpleName: company.simpleName,
       introduction: company.introduction,
       fileList: company.fileList,
-    }, 'POST').then(function(res) {
+    }, 'POST').then(function (res) {
       if (res.errno === 0) {
         //wx.hideLoading();
         // wx.showToast({
@@ -329,7 +344,7 @@ Page({
           })
         } else {
           wx.redirectTo({
-            url: '/pages/card/index/index?param=',
+            url: '/pages/card/indexs/indexs?param=',
           })
         }
       } else {

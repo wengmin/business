@@ -1,0 +1,141 @@
+<view class="container">
+  <card-holder title="{{cards.realname}}"></card-holder>
+  <view class="cardsbg">
+    <view class="cards_zyz">
+      <view class="left">
+        <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill" bindtap="topicPreview" data-url='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'></image>
+      </view>
+      <view class="right">
+        <view class="comname fontover">{{cards.company.name}}</view>
+        <view class="infobg">
+          <view class="name fontover">{{cards.realname}}</view>
+          <view class="position fontover">{{cards.position}}</view>
+        </view>
+        <view class="iconitems mobile" wx:if="{{cards.mobile}}">{{cards.mobile}} </view>
+        <view class="iconitems email" wx:if="{{cards.email}}">{{cards.email}}</view>
+        <view class="iconitems address" wx:if="{{cards.address}}">{{cards.province+cards.city+cards.county+cards.address}}</view>
+      </view>
+    </view>
+    <view class="navbody">
+      <button class="navleft" open-type="share" data-sharetype="card">
+        转发名片
+      </button>
+      <button class="navright" bindtap="addPhone">
+        存到手机通讯录
+      </button>
+    </view>
+    <view class="colleague">
+      <button class="imgbtn" bindtap='showQrCode'>
+        <image src="/static/images/qrcode.png"></image>
+      </button>
+      <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji&&!isCollectBtn}}">
+        <image src="/static/images/shou_no.png"></image>
+      </button>
+      <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
+        <view class="title">
+          <image src="/static/images/icon/phonecall.png"></image>拨打电话
+        </view>
+        <text class="info">{{cards.mobile}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.wechat}}" wx:if="{{cards.wechat}}">
+        <view class="title">
+          <image src="/static/images/icon/wechat.png"></image>加我微信
+        </view>
+        <text class="info">{{cards.wechat}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.email}}" wx:if="{{cards.email}}">
+        <view class="title">
+          <image src="/static/images/icon/email.png"></image>邮箱
+        </view>
+        <text class="info">{{cards.email}}</text>
+      </button>
+      <button class="btn" bindtap='copyText' data-text="{{cards.address}}" wx:if="{{cards.address}}">
+        <view class="title">
+          <image src="/static/images/icon/region.png"></image>地址
+        </view>
+        <text class="info">{{cards.address}}</text>
+      </button>
+      <button class="btn" bindtap='callPhone' data-text="{{cards.telephone}}" wx:if="{{cards.telephone}}">
+        <view class="title">
+          <image src="/static/images/detail_kefu.png"></image>固定电话
+        </view>
+        <text class="info">{{cards.telephone}}</text>
+      </button>
+    </view>
+  </view>
+  <view class="profile">
+    <image src='{{cards.avatar}}' class="leftimg"></image>
+    <view class="rightinfo">
+      <view class="name">{{cards.realname}}</view>
+      <view class="k">
+        <text class="desc">{{cards.profile?cards.profile:" 欢迎来到我的名片 "}}</text>
+      </view>
+      <view class="k">
+        <view class="desc">在您方便的时候，也请给我一张您的名片，谢谢！
+          <block wx:if="{{loginOpenid}}">
+            <button class="alink" wx:if="{{!isNewUser}}" open-type="share" data-sharetype="mycard">（点击回递名片）</button>
+            <navigator class="alink" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser?name={{cards.realname}}&ava={{cards.avatar}}">（点击回递名片）</navigator>
+          </block>
+          <block wx:else>
+            <navigator class="alink" url="/pages/auth/login/login?id=-4&param={{param}}">（点击回递名片）</navigator>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view style="padding:20rpx;"  wx:if="{{cards.company.introduction}}">
+  <view class="itemtitle">
+    <image src="/static/images/icon/business.png" class="icon"></image>
+    <text>我的企业</text>
+  </view>
+  <view class="itembody">
+    <view class="comtop">
+      <image src="{{cards.company.logo}}" data-url='{{cards.company.logo}}' bindtap="topicPreview"></image>
+      <text>{{cards.company.name}}</text>
+      <button bindtap="comfileshowhide">{{isComfileshowhide?"关闭介绍":"打开介绍"}}</button>
+      <!-- <navigator hover-class="none" url="/pages/company/index/index" open-type="reLaunch">进入官网</navigator> -->
+    </view>
+    <view wx:if="{{isComfileshowhide}}" class="comdesc">{{cards.company.introduction}}</view>
+  </view>
+  <view wx:if="{{isComfileshowhide}}" wx:for="{{cards.company.fileList}}" wx:key="key">
+    <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+      <video src="{{item.fileurl}}" class="comfile"></video>
+    </block>
+    <block wx:else>
+      <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
+    </block>
+  </view>
+</view>
+<view class='imagePathBox' hidden="{{maskHidden == false}}">
+  <view class="qrcodebody">
+    <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
+    <button class='savaQrCode' bindtap='saveQRCode'>保存到手机</button>
+    <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
+  </view>
+</view>
+<view class="bottomtext">
+  <block wx:if="{{isZiji}}">
+    <navigator hover-class="none" url="/pages/card/adduser/adduser">{{isNewUser?"免费创建名片":"修改我的名片"}}</navigator>
+  </block>
+  <block wx:else>
+    <navigator hover-class="none" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser">免费创建名片</navigator>
+    <!-- <navigator hover-class="none" wx:if="{{!isNewUser}}" url="/pages/card/index/index?param=">返回我的名片</navigator> -->
+  </block>
+  <view>销擎，您的销售增长引擎</view>
+</view>
+<view style="height:100rpx;"></view>
+<wxs module="fileType">
+  function getType(str) {
+    var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+    var videoarr = ["mp4"];
+    if (imagearr.indexOf(type) > -1)
+      return "image";
+    else if (videoarr.indexOf(type) > -1)
+      return "video";
+    else
+      return "image"
+  }
+  module.exports.getType = getType;
+</wxs>

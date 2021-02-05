@@ -193,4 +193,20 @@
             #{cardId}
         </foreach>
     </delete>
+
+    <select id="collectCount" resultType="int">
+        select count(*) from card_collect where touser_id=#{touserId}
+    </select>
+
+    <select id="recordCount" resultType="int">
+        select sum(c) from (select count(*) as c from card_record where touser_id=#{touserId} group by date(create_time),user_id) as a
+    </select>
+
+    <select id="recordTodayCount" resultType="int">
+        select sum(c) from (SELECT count(*) as c FROM card_record WHERE touser_id=#{touserId} and date(create_time) = curdate() group by date(create_time),user_id) as a
+    </select>
+
+    <select id="shareCount" resultType="int">
+        SELECT count(*) FROM analysis_share WHERE user_id=#{userId}
+    </select>
 </mapper>

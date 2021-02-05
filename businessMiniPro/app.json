@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/file/edit/edit",
     "pages/card/index/index",
     "pages/card/collect/collect",
     "pages/card/record/record",
@@ -10,18 +11,13 @@
     "pages/ucenter/feedback/feedback",
     "pages/pay/pay/pay",
     "pages/pay/result/result",
-    "pages/service/index/index",
-    "pages/service/invoice/invoice",
-    "pages/service/wifi/wifi",
     "pages/company/add/add",
+    "pages/card/indexs/indexs",
+    "pages/card/index1/index1",
     "pages/company/index/index",
-    "pages/company/post/post",
-    "pages/company/staffBind/staffBind",
-    "pages/companyManage/index/index",
-    "pages/companyManage/serviceRoomList/serviceRoomList",
-    "pages/companyManage/invoiceList/invoiceList",
-    "pages/companyManage/invoice/invoice",
-    "pages/companyManage/serviceRoom/serviceRoom"
+    "pages/card/index2/index2",
+    "pages/card/indexbak/indexbak",
+    "pages/file/reader/reader"
   ],
   "window": {
     "backgroundTextStyle": "dark",

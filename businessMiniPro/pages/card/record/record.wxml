@@ -1,10 +1,10 @@
 <view class="container">
-  <navigator url="/pages/card/index/index?param={{item.param}}" open-type="redirect" class="itembody" wx:for="{{cardList}}" wx:key="*this">
+  <navigator url="/pages/card/index2/index2?param={{item.param}}" open-type="redirect" class="itembody" wx:for="{{cardList}}" wx:key="*this">
     <image src='{{item.touserAvatar?item.touserAvatar:"/static/images/card/w_card.jpg"}}' class="avaimg" mode="aspectFill"></image>
     <view class="info">
       <view class="name">{{item.touserName}}</view>
       <view class="comname">{{item.touserComName}}</view>
-      <view class="time">{{item.createTime}}</view>
+      <!-- <view class="time">{{item.createTime}}</view> -->
     </view>
   </navigator>
   <view class="loading" hidden="{{!moredata}}">正在载入更多...</view>

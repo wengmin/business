@@ -14,4 +14,8 @@ public interface ApiCardUserMapper  extends BaseDao<CardUserVo>{
     CardUserVo queryByOpenId(@Param("openId") String openId);
     CardUserVo queryByUserId(Integer userId);
     int updateByOpenId(CardUserVo user);
+    int collectCount(Integer touserId);
+    int recordCount(Integer touserId);
+    int recordTodayCount(Integer touserId);
+    int shareCount(Integer userId);
 }

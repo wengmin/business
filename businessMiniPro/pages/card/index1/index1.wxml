@@ -1,0 +1,113 @@
+<view class='main'>
+  <view class="box b1 card" animation="{{animationMain}}" bindtouchstart='touchstart' bindtouchend="touchend"
+    data-id="1" style='display:{{outpage==0?"block":"none"}}'>
+    <view class="top">
+      <image src='{{!cards.company.logo ? "/static/images/icon/company.png" : cards.company.logo}}'></image>
+      <view class="name">{{cards.company.name}}</view>
+    </view>
+    <view class="middle">
+      <view class="name">
+        <view class="liner"></view>
+        <text>{{cards.realname}}</text>
+      </view>
+      <view class="position">{{cards.position}}</view>
+      <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill"
+        bindtap="topicPreview" data-url='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'></image>
+    </view>
+    <view class="bottom">
+      <view style="padding-left: 60rpx;">
+        <view class="call" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
+          <image src="/static/images/icon/phonecall.png"></image>
+          <text class="info">{{cards.mobile}}</text>
+        </view>
+        <view class="call" bindtap='copyText' data-text="{{cards.wechat}}" wx:if="{{cards.wechat}}">
+          <image src="/static/images/icon/wechat.png"></image>
+          <text class="info">{{cards.wechat}}</text>
+        </view>
+        <view class="call" bindtap='copyText' data-text="{{cards.email}}" wx:if="{{cards.email}}">
+          <image src="/static/images/icon/email.png"></image>
+          <text class="info">{{cards.email}}</text>
+        </view>
+        <view class="call" bindtap='copyText' data-text="{{cards.address}}" wx:if="{{cards.address}}">
+          <image src="/static/images/icon/region.png"></image>
+          <text class="info">{{cards.province+cards.city+cards.county+cards.address}}</text>
+        </view>
+      </view>
+      <view class="btnarea">
+        <navigator class="imgbtn" url="/pages/ucenter/index/index">
+          <image src="/static/images/ic_menu_choice_nor.png"></image>
+        </navigator>
+        <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji&&!isCollectBtn}}">
+          <image src="/static/images/shou_no.png"></image>
+        </button>
+        <button class="imgbtn" bindtap='showQrCode'>
+          <image src="/static/images/qrcode.png"></image>
+        </button>
+        <button class="imgbtn" bindtap="addPhone">
+          <image src="/static/images/txl.png"></image>
+        </button>
+      </view>
+    </view>
+  </view>
+  <view class="box b2" animation="{{animationBack}}" bindtouchstart='touchstart' bindtouchend="touchend" data-id="2">
+    <scroll-view scroll-y="true" style="height:100vh">
+      <view class="com">
+        <view class="name">{{cards.company.name}}</view>
+        <view class="desc">{{cards.company.introduction}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="box b3" animation="{{animationMain}}" bindtouchstart='touchstart' bindtouchend="touchend" data-id="3"
+    style='display:{{outpage==1?"block":"none"}}'>
+    <scroll-view scroll-y="true" style="height:100vh;background-color:#fff">
+      <view class="imgbg"
+        style='background-image: url({{!company.shopbg ? "http://emiaoweb.com/business/statics/images/shopbg.jpg" : company.shopbg}})'>
+        <image class="logo" src='{{!cards.company.logo ? "/static/images/icon/company.png" : cards.company.logo}}'>
+        </image>
+        <view class="name">{{cards.company.name}}</view>
+      </view>
+      <view class="swiper-tab">
+        <view class="swiper-tab-list" data-current="0" bindtap="swichNav">产品</view>
+      </view>
+      <view class="good-grid">
+        <block wx:for="{{cards.company.fileList}}" wx:for-index="iindex" wx:for-item="item">
+          <view class="item">
+            <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
+              <video src="{{item.fileurl}}" class="img"></video>
+            </block>
+            <block wx:else>
+              <image src="{{item.fileurl}}" class="img" mode="" bindtap="topicPreview" data-type="Multiple"
+                data-url='{{item.fileurl}}'>
+              </image>
+            </block>
+            <text class="name">{{item.name || ''}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+<image wx:if="{{leftshow}}" src="/static/images/left.png" class="lefticon"></image>
+<image wx:if="{{rightshow}}" src="/static/images/right.png" class="righticon"></image>
+
+<view class='imagePathBox' hidden="{{maskHidden == false}}">
+  <view class="qrcodebody">
+    <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
+    <button class='savaQrCode' bindtap='saveQRCode'>保存到手机</button>
+    <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
+  </view>
+</view>
+<wxs module="fileType">
+  function getType(str) {
+    var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
+    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
+    var videoarr = ["mp4"];
+    if (imagearr.indexOf(type) > -1)
+      return "image";
+    else if (videoarr.indexOf(type) > -1)
+      return "video";
+    else
+      return "image"
+  }
+  module.exports.getType = getType;
+</wxs>

@@ -9,14 +9,18 @@ Page({
     isshow: false,
     isNewUser: false,
     param: "",
-    realname: ""
+    realname: "",
+    collectCount: 0,
+    recordCount: 0,
+    recordTodayCount: 0,
+    shareCount: 0
   },
-  checkCard: function() {
+  checkCard: function () {
     let that = this;
     if (wx.getStorageSync('token')) {
       util.request(api.CardInfoByOpenID, {
         openid: wx.getStorageSync('token')
-      }).then(function(res) {
+      }).then(function (res) {
         if (res.errno === 0) {
           if (!res.data.realname) {
             that.setData({
@@ -44,28 +48,42 @@ Page({
       });
     }
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     console.log('----dd----', app.globalData)
     this.checkCard()
   },
-  onReady: function() {
+  onReady: function () {
 
   },
-  onShow: function() {
+  onShow: function () {
     let userInfo = wx.getStorageSync('userInfo');
     let token = wx.getStorageSync('token');
     // 页面显示
     if (token) {
-      this.setData({
+      var that = this
+      that.setData({
         isshow: true
       });
-      var that = this
-      this.setData({
+      that.setData({
         isshow: true
       });
       app.globalData.userInfo = userInfo.userInfo;
       app.globalData.token = token;
+
+      util.request(api.CardReport, {}).then(function (res) {
+        if (res.errno === 0) {
+          that.setData({
+            collectCount: res.data.collectCount,
+            recordCount: res.data.recordCount,
+            recordTodayCount: res.data.recordTodayCount,
+            shareCount: res.data.shareCount
+          });
+        }
+      }).catch((err) => {
+        console.log("catch" + err)
+      });
+
     } else {
       wx.redirectTo({
         url: '/pages/auth/login/login?id=-2'
@@ -77,36 +95,25 @@ Page({
     });
 
   },
-  noLogin() {
-    if (!wx.getStorageSync('token')) {
-      console.log("}}}}}}")
-      wx.showToast({
-        title: '请先登录～',
-        icon: 'none',
-        duration: 2000
-      })
-      return false;
-    }
-  },
-  onHide: function() {
+  onHide: function () {
     // 页面隐藏 
   },
-  onUnload: function() {
+  onUnload: function () {
     // 页面关闭 
   },
-  onShareAppMessage: function(res) {
+  onShareAppMessage: function (res) {
+    util.request(api.SaveShare, {}, 'POST', 'application/x-www-form-urlencoded').then(function (res) {});
     if (res.from == 'button') {
       return {
         title: "您好，我是" + this.data.realname + "，请惠存我的名片",
         desc: '销擎名片管理',
-        path: '/pages/card/index/index?param=' + this.data.param,
+        path: '/pages/card/index2/index2?param=' + this.data.param,
         imageUrl: '/static/images/card/p_card.jpg',
       }
     }
-    this.noLogin();
     return {
       title: '邀请好友',
-      path: '/pages/card/index/index?userId=' + wx.getStorageSync('userId')
+      path: '/pages/card/index2/index2?userId=' + wx.getStorageSync('userId')
     }
   },
   bindGetUserInfo(e) {
@@ -132,7 +139,7 @@ Page({
       wx.showModal({
         title: '警告通知',
         content: '您点击了拒绝授权,将无法正常显示个人信息,点击确定重新获取授权。',
-        success: function(res) {
+        success: function (res) {
           if (res.confirm) {
             wx.openSetting({
               success: (res) => {
@@ -179,29 +186,4 @@ Page({
   //     }
   //   })
   // },
-  handlerGobackClick() {
-    wx.showModal({
-      title: '你点击了返回',
-      content: '是否确认放回',
-      success: e => {
-        if (e.confirm) {
-          const pages = getCurrentPages();
-          if (pages.length >= 2) {
-            wx.navigateBack({
-              delta: 1
-            });
-          } else {
-            wx.redirectTo({
-              url: '/pages/card/index/index?param='
-            });
-          }
-        }
-      }
-    });
-  },
-  handlerGohomeClick() {
-    wx.redirectTo({
-      url: '/pages/card/index/index?param='
-    });
-  }
 })

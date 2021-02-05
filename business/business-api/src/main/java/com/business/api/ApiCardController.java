@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -240,7 +242,7 @@ public class ApiCardController extends ApiBaseAction {
                 return toResponsFail("参数错误");
             }
             String accessToken = tokenService.getAccessToken();
-            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index/index","qrcode/card", refUserId.toString());
+            String imgStr = QRCodeUtils.createQrCodeToUrl(accessToken, "param=" + param, "pages/card/index1/index1", "qrcode/card", refUserId.toString());
             if (!StringUtils.isNullOrEmpty(imgStr)) {
                 CardUserVo uVo = new CardUserVo();
                 uVo.setCardId(cardUserService.queryByUserId(refUserId).getCardId());
@@ -291,7 +293,18 @@ public class ApiCardController extends ApiBaseAction {
             record.setUserId(loginUser.getUserId());
             recordService.save(record);
         } else {
-            recordService.updateTime(record.getRecordId());
+            Date now = new Date();
+            SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+            String nowDay = sf.format(now);
+            String day = sf.format(record.getCreateTime());
+            if (nowDay.equals(day)) {
+                recordService.updateTime(record.getRecordId());
+            } else {
+                record = new CardRecordVo();
+                record.setTouserId(refToUserId);
+                record.setUserId(loginUser.getUserId());
+                recordService.save(record);
+            }
         }
         return toResponsSuccess("添加成功");
     }
@@ -373,5 +386,21 @@ public class ApiCardController extends ApiBaseAction {
         }
         collectService.delete(id);
         return toResponsSuccess("删除成功");
+    }
+
+    @ApiOperation(value = "我的名片数据")
+    @GetMapping("report")
+    public Object report(@LoginUser UserVo loginUser) {
+        Integer collectCount = cardUserService.collectCount(loginUser.getUserId());
+        Integer recordCount = cardUserService.recordCount(loginUser.getUserId());
+        Integer recordTodayCount = cardUserService.recordTodayCount(loginUser.getUserId());
+        Integer shareCount = cardUserService.shareCount(loginUser.getUserId());
+
+        Map<String, Object> resultObj = new HashMap<String, Object>();
+        resultObj.put("collectCount", collectCount);
+        resultObj.put("recordCount", recordCount);
+        resultObj.put("recordTodayCount", recordTodayCount);
+        resultObj.put("shareCount", shareCount);
+        return toResponsSuccess(resultObj);
     }
 }

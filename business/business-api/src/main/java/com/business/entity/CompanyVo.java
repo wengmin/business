@@ -19,6 +19,8 @@ public class CompanyVo implements Serializable {
     //
     private String name;
     //
+    private String simpleName;
+    //
     private String province;
     //
     private String city;
@@ -79,6 +81,15 @@ public class CompanyVo implements Serializable {
     public String getName() {
         return name;
     }
+
+    public String getSimpleName() {
+        return simpleName;
+    }
+
+    public void setSimpleName(String simpleName) {
+        this.simpleName = simpleName;
+    }
+
     /**
      * 设置：
      */

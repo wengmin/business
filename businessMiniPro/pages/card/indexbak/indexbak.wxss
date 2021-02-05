@@ -1,0 +1,612 @@
+.cardsbody {
+  width: 100%;
+  text-align: center;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+}
+
+.cardsbg {
+  width: 100%;
+  text-align: center;
+  padding: 20rpx;
+  background: -webkit-linear-gradient(top, #dcdcdc 0%, #fff 70%);
+}
+
+.cards_zyz {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  border: solid 2rpx #d1d1d1;
+  box-shadow: 2rpx 2rpx 5rpx 0rpx rgba(150, 150, 150, 0.363);
+}
+
+.cards_zyz .left {
+  width: 40%;
+  height: 400rpx;
+  float: left;
+}
+
+.cards_zyz .left image {
+  width: 100%;
+  height: 100%;
+}
+
+.cards_zyz .right {
+  float: left;
+  width: 60%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+}
+
+.cards_zyz .right .comname {
+  width: 100%;
+  text-align: right;
+  margin-top: 20rpx;
+  padding-right: 20rpx;
+}
+
+.cards_zyz .right .infobg {
+  width: 100%;
+  padding: 15rpx 20rpx;
+  text-align: left;
+  background-color: #efefef;
+  margin-top: 20rpx;
+}
+
+.cards_zyz .right .infobg .name {
+  font-size: 38rpx;
+  font-weight: bold;
+}
+
+.cards_zyz .right .infobg .position {
+  font-size: 25rpx;
+}
+
+.cards_zyz .right .iconitems {
+  margin-top: 20rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: right;
+  background-size: 30rpx 30rpx;
+  background-position: center right;
+  background-repeat: no-repeat;
+  padding-right: 35rpx;
+  margin-right: 20rpx;
+  font-size: 25rpx;
+}
+
+.cards_zyz .right .email {
+  background-image: url(https://emiaoweb.com/business/upload/icon/email.png);
+}
+
+.cards_zyz .right .mobile {
+  background-image: url(https://emiaoweb.com/business/upload/icon/phonecall.png);
+}
+
+.cards_zyz .right .address {
+  background-image: url(https://emiaoweb.com/business/upload/icon/region.png);
+}
+
+.cards_zyz .right .items view {
+  float: right;
+}
+
+.cards_zy {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  border: solid 2rpx #d1d1d1;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.cards_zy .left {
+  position: absolute;
+  left: -15%;
+  width: 53%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+  transform: skewX(-15deg);
+  border-right: 5px solid #d1d1d1;
+  overflow: hidden;
+  border-top: solid 1px #d1d1d1;
+  border-bottom: solid 1rpx #ededed;
+}
+
+.cards_zy .left image {
+  transform: skewX(15deg);
+  width: 100%;
+  margin-left: 15%;
+  height: 400rpx;
+}
+
+.cards_zy .right {
+  position: absolute;
+  right: -15%;
+  padding-right: 15%;
+  width: 75%;
+  height: 400rpx;
+  background: #fff;
+  text-decoration: none;
+  transform: skewX(-15deg);
+  border-top: solid 1px #d1d1d1;
+  border-left: solid 1rpx #ededed;
+  border-bottom: solid 1rpx #ededed;
+}
+
+.cards_zy .right .comname {
+  width: 90%;
+  text-align: center;
+  transform: skewX(15deg);
+  margin-top: 20rpx;
+}
+
+.cards_zy .right .infobg {
+  width: 110%;
+  padding: 5px 20px;
+  text-align: left;
+  background-color: #efefef;
+  margin-top: 20rpx;
+}
+
+.cards_zy .right .infobg .name {
+  font-size: 22px;
+  font-weight: bold;
+  transform: skewX(15deg);
+}
+
+.cards_zy .right .infobg .position {
+  font-size: 12px;
+  transform: skewX(15deg);
+  margin-left: 8px;
+  margin-top: 5px;
+}
+
+.cards_zy .right .bg {
+  transform: skewX(15deg);
+  padding-top: 10px;
+}
+
+.cards_zy .right .bg image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+  vertical-align: middle;
+}
+
+.cards_zy .right .bg .items {
+  margin-top: 20rpx;
+  height: 30rpx;
+  text-align: right;
+}
+
+.navbody {
+  width: 100%;
+  margin-top: 20rpx;
+  display: inline-block;
+  position: relative;
+}
+
+.navbody button {
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10rpx;
+  padding: 0;
+}
+
+.navbody .navleft {
+  float: left;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.navbody .navright {
+  float: right;
+  width: 49%;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.colleague {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  text-align: left;
+}
+
+.colleague .btn, .colleague .imgbtn {
+  display: inline-block;
+  vertical-align: top;
+  padding: 20rpx;
+  height: 100rpx;
+  margin-top: 20rpx;
+  margin-right: 20rpx;
+  background-color: #fff;
+  border-radius: 3px;
+  line-height: 0;
+  text-align: left;
+  border: solid 1rpx rgb(200, 200, 200);
+  box-shadow: 2rpx 2rpx 5rpx 2rpx rgba(150, 150, 150, 0.363);
+  margin-bottom: 5rpx;
+}
+
+.colleague .imgbtn {
+  padding: 10rpx;
+  text-align: center;
+}
+
+.colleague .imgbtn image {
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.colleague .imgbtn text {
+  font-size: 25rpx;
+  display: block;
+}
+
+.colleague .btn:last-child {
+  margin-right: 5rpx;
+}
+
+.colleague .btn .title {
+  font-size: 25rpx;
+  height: 30rpx;
+  line-height: 25rpx;
+}
+
+.colleague .btn image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+.colleague .btn .info {
+  font-size: 22rpx;
+  color: #7c7a7a;
+  margin-top: 20rpx;
+  display: block;
+}
+
+.colleague navigator {
+  display: inline-block;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+.colleague navigator:last-child {
+  margin-right: 0px;
+}
+
+.colleague navigator image {
+  width: 100px;
+  height: 100px;
+}
+
+.colleague navigator text {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+.colleague navigator .pos {
+  font-size: 12px;
+  color: rgba(110, 105, 105, 0.705);
+  margin-top: 8px;
+}
+
+.itemtitle {
+  text-align: left;
+  width: 100%;
+  height: 50rpx;
+  display: inline-block;
+}
+
+.itemtitle .icon {
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
+
+.itemtitle text {
+  height: 50rpx;
+  line-height: 50rpx;
+  vertical-align: middle;
+  margin-left: 10rpx;
+}
+
+.itemtitle navigator {
+  float: right;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+
+.itembody {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  padding: 20rpx;
+  display: inline-block;
+  text-align: left;
+  border: solid 1rpx #e7e7e7;
+}
+
+.comtop {
+  display: inline-block;
+  width: 100%;
+  font-size: 0;
+}
+
+.comtop image {
+  width: 100rpx;
+  height: 100rpx;
+  float: left;
+  border-radius: 10rpx;
+}
+
+.comtop text {
+  line-height: 100rpx;
+  float: left;
+  font-size: 29rpx;
+  margin-left: 20rpx;
+}
+
+.comtop navigator, .comtop button {
+  float: right;
+  font-size: 25rpx;
+  border: solid 1px #53a349;
+  color: #53a349;
+  height: 70rpx;
+  line-height: 70rpx;
+  padding: 0 20rpx;
+  border-radius: 10rpx;
+  margin-top: 15rpx;
+}
+
+.comdesc {
+  width: 100%;
+  padding: 20rpx 0;
+  border-top: solid 2rpx #c6c6c6;
+  margin-top: 20rpx;
+}
+
+.comfile {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: solid 2rpx #e7e7e7;
+  margin-top: 20rpx;
+}
+
+.imgs, .imgs2 {
+  width: 100%;
+  margin-top: 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
+.imgs image {
+  float: left;
+  /* width: 32.33%;
+  margin-right: 1%;
+  margin-top: 7rpx; */
+  width: 200rpx;
+  height: 200rpx;
+  margin-right: 15rpx;
+  margin-bottom: 15rpx;
+}
+
+.imgs image:nth-child(3n) {
+  /* width: 33.33%; */
+  margin-right: 0;
+}
+
+.imgs image:nth-child(-n+3) {
+  margin-top: 0;
+}
+
+.imgs2 image {
+  float: left;
+  width: 300rpx;
+  height: 300rpx;
+  margin-right: 15rpx;
+}
+
+.imagePathBox {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.qrcodebody {
+  width: 600rpx;
+  height: 1000rpx;
+  position: relative;
+  top: 15%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background: #fff;
+}
+
+.qrcodeImg {
+  width: 560rpx;
+  height: 560rpx;
+  position: absolute;
+  top: 5%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.savaQrCode {
+  display: block;
+  width: 80%;
+  height: 80rpx;
+  padding: 0;
+  line-height: 80rpx;
+  text-align: center;
+  position: absolute;
+  bottom: 150rpx;
+  left: 10%;
+  background: #52a936;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+}
+
+.closeQrCode {
+  display: block;
+  width: 80%;
+  height: 80rpx;
+  padding: 0;
+  line-height: 80rpx;
+  text-align: center;
+  position: absolute;
+  bottom: 50rpx;
+  left: 10%;
+  background: #888887;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+}
+
+button[class="closeQrCode"]::after {
+  border: 0;
+}
+
+.bottomnav {
+  position: fixed;
+  left: 30rpx;
+  bottom: 50rpx;
+  font-size: 28rpx;
+  width: 110rpx;
+  line-height: 30rpx;
+  padding: 10rpx;
+  background-color: rgba(25, 197, 82, 0.5);
+  color: #fff;
+  border-radius: 10rpx;
+  text-align: center;
+}
+
+.profile {
+  width: 100%;
+  padding: 20rpx;
+  display: inline-block;
+  margin-top: 30rpx;
+}
+
+.profile .leftimg {
+  width: 70rpx;
+  height: 70rpx;
+  float: left;
+  border-radius: 10rpx;
+}
+
+.profile .rightinfo {
+  float: right;
+  width: 620rpx;
+  padding-left: 10rpx;
+}
+
+.profile .rightinfo .k {
+  margin-top: 10rpx;
+  background-color: #fff;
+  padding: 20rpx;
+  display: inline-block;
+  width: 100%;
+  border-radius: 8rpx;
+  position: relative;
+  border: solid 1rpx #e7e7e7;
+}
+
+.profile .rightinfo .k::after {
+  content: '';
+  background: #fff;
+  width: 15rpx;
+  height: 15rpx;
+  transform: rotate(45deg);
+  border-bottom: solid 1rpx #e7e7e7;
+  border-left: solid 1rpx #e7e7e7;
+  position: absolute;
+  top: 15rpx;
+  left: -9rpx;
+}
+
+.profile .rightinfo .desc {
+  line-height: 50rpx;
+}
+
+.profile .rightinfo .sharebtn {
+  float: left;
+  width: 49%;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  border: solid 2rpx #52a936;
+  background-color: #fff;
+  color: #52a936;
+}
+
+.profile .rightinfo .collectbtn {
+  float: right;
+  width: 49%;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  border: solid 2rpx #52a936;
+  background-color: #52a936;
+  color: #fff;
+}
+
+.profile .rightinfo .alink {
+  display: initial;
+  text-align: center;
+  font-size: 28rpx;
+  color: #52a936;
+  background-color: #fff;
+  padding: 0;
+  line-height: normal;
+}
+
+.backme {
+  position: fixed;
+  right: 30rpx;
+  bottom: 50rpx;
+  font-size: 28rpx;
+  width: 110rpx;
+  line-height: 30rpx;
+  padding: 10rpx;
+  background-color: rgba(25, 197, 82, 0.5);
+  color: #fff;
+  border-radius: 10rpx;
+  text-align: center;
+}

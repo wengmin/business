@@ -1,90 +1,93 @@
 {
-	"description": "项目配置文件",
-	"packOptions": {
-		"ignore": []
-	},
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"postcss": true,
-		"minified": true,
-		"newFeature": true,
-		"coverView": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
-	},
-	"compileType": "miniprogram",
-	"libVersion": "2.10.4",
-	"appid": "wxeede76283930bf20",
-	"projectname": "%E9%94%80%E6%93%8E%E5%90%8D%E7%89%87%E7%AE%A1%E7%90%86",
-	"debugOptions": {
-		"hidedInDevtools": []
-	},
-	"isGameTourist": false,
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"currentL": -1,
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": -1,
-			"list": [
-				{
-					"id": 0,
-					"name": "service index",
-					"pathName": "pages/service/index/index",
-					"query": "roomId=2",
-					"scene": null
-				},
-				{
-					"id": 2,
-					"name": "pages/company/post/post",
-					"pathName": "pages/company/post/post",
-					"query": "postId=1",
-					"scene": null
-				},
-				{
-					"id": 4,
-					"name": "staffBind",
-					"pathName": "pages/company/staffBind/staffBind",
-					"query": "companyId=1",
-					"scene": null
-				},
-				{
-					"id": 5,
-					"name": "pages/companyManage/index/index",
-					"pathName": "pages/companyManage/index/index",
-					"query": "companyId=3",
-					"scene": null
-				}
-			]
-		}
-	}
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": false,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "useMultiFrameRuntime": true,
+    "bundle": false,
+    "useApiHook": true,
+    "useApiHostProcess": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.14.1",
+  "appid": "wxeede76283930bf20",
+  "projectname": "%E9%94%80%E6%93%8E%E5%90%8D%E7%89%87%E7%AE%A1%E7%90%86",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "isGameTourist": false,
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/card/index2/index2",
+          "pathName": "pages/card/index2/index2",
+          "query": "companyId=1",
+          "scene": null
+        },
+        {
+          "name": "pages/card/index1/index1",
+          "pathName": "pages/card/index1/index1",
+          "query": "param=4~6CkgY",
+          "scene": null
+        },
+        {
+          "name": "pages/card/indexs/indexs",
+          "pathName": "pages/card/indexs/indexs",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/card/indexbak/indexbak",
+          "pathName": "pages/card/indexbak/indexbak",
+          "query": "companyId=1",
+          "scene": null
+        },
+        {
+          "name": "pages/card/adduser/adduser",
+          "pathName": "pages/card/adduser/adduser",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/file/edit/edit",
+          "pathName": "pages/file/edit/edit",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

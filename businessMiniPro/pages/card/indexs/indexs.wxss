@@ -1,0 +1,366 @@
+page {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.card_wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f2f2f6;
+}
+
+.card_wrap .card_item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background: #fff;
+  /* border: 2rpx solid #eee;
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 5, 1); */
+}
+
+.card_item:nth-child(1) {
+  z-index: 3;
+  /* transform: translateX(-50%) translateY(-50%); */
+}
+
+.card_item:nth-child(2) {
+  z-index: 2;
+  /* transform: translateX(-50%) translateY(-50%); */
+}
+
+.card_item:nth-child(3) {
+  z-index: 1;
+  /* transform: translateX(-50%) translateY(-50%); */
+}
+
+.card-container {
+  width: 100%;
+  height:100%;
+}
+
+.card {
+  position: relative;
+  max-height: 100%;
+}
+
+.card .top {
+  position: absolute;
+  top: 60rpx;
+  width: 100%;
+  height: 500rpx;
+  text-align: center;
+}
+
+.card .top .name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 50rpx;
+  line-height: 50rpx;
+  margin: 0 auto;
+  font-size: 50rpx;
+  writing-mode: vertical-lr;
+}
+
+.card .middle {
+  width: 100%;
+  text-align: center;
+  font-size: 50rpx;
+  position: absolute;
+  top: 580rpx;
+  margin: 0 auto;
+}
+
+.card .middle image {
+  width: 250rpx;
+  height: 250rpx;
+  border-radius: 10rpx;
+}
+
+.card .middle .name {
+  font-size: 30px;
+}
+
+.card .middle .position {
+  font-size: 16px;
+}
+
+.card .bottom {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  position: absolute;
+  bottom: 50rpx;
+  line-height: 20px;
+}
+.card .bottom .call{  
+  height: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.card .bottom .call image{  
+  width: 30rpx;
+  height: 30rpx;
+  float: left;
+}
+
+.card .bottom .call .info{  
+  line-height: 30rpx;
+  display: block;
+  float: left;
+  margin-left: 10rpx;
+}
+
+.card .btnarea {
+  width: 100%;
+  padding:0 50rpx;
+  margin-top: 30rpx;
+}
+
+.card .btnarea .btnleft {
+  width: 49%;
+  height: 80rpx;
+  line-height: 80rpx;
+  float: left;
+  font-size: 16px;
+  background: #52a936;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.card .btnarea .btnright {
+  width: 49%;
+  height: 80rpx;
+  line-height: 80rpx;
+  float: right;
+  font-size: 16px;
+}
+
+
+.com {
+  width: 100%;
+  padding: 50rpx;
+  padding-top: 200rpx;
+  text-align: left;
+}
+
+.com .name {
+  font-size: 50rpx;
+}
+
+.com .desc {
+  font-size: 32rpx;
+  text-indent: 32rpx;
+  margin-top: 50rpx;
+  line-height: 50rpx;
+}
+
+
+
+
+
+
+
+
+
+
+
+.banner {
+  width: 750rpx;
+  height: 360rpx;
+  /* height: 417rpx; */
+}
+
+.banner image {
+  width: 100%;
+  /* height: 417rpx; */
+  height: 360rpx;
+}
+
+.swiper-tab {
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 2rpx solid #da7c0c;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+.swiper-tab-list {
+  font-size: 30rpx;
+  display: inline-block;
+  padding: 0 15rpx;
+  color: #777;
+}
+
+.on {
+  color: #da7c0c;
+  border-bottom: 5rpx solid #da7c0c;
+}
+
+.swiper-box {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.swiper-box swiper-item {
+  text-align: center;
+}
+
+.good-grid {
+  width: 750rpx;
+}
+
+.good-grid .item {
+  float: left;
+  background: #fff;
+  width: 365rpx;
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-align: center;
+}
+
+.good-grid .item-b {
+  margin-left: 6.25rpx;
+}
+
+.good-grid .item .img {
+  margin-top: 20rpx;
+  width: 302rpx;
+  height: 302rpx;
+}
+
+.good-grid .item .name {
+  display: block;
+  width: 365.625rpx;
+  padding: 0 20rpx;
+  overflow: hidden;
+  /* height: 35rpx; */
+  margin: 11.5rpx 0 22rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.good-grid .item .price {
+  display: block;
+  width: 365.625rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #b4282d;
+}
+
+.good-grid .more-item {
+  height: 100%;
+  width: 100%;
+}
+
+.dzprice {
+  color: #b4282d;
+}
+
+.yjprice {
+  margin-left: 30rpx;
+  text-decoration: line-through;
+  color: #999;
+}
+
+
+
+
+.search {
+  height: 88rpx;
+  width: 100%;
+  padding: 0 30rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.search .input {
+  width: 710rpx;
+  height: 56rpx;
+  background: #ededed;
+  border-radius: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search .icon {
+  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png) center no-repeat;
+  background-size: 100%;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.search .txt {
+  height: 42rpx;
+  line-height: 42rpx;
+  color: #666;
+  padding-left: 10rpx;
+  font-size: 30rpx;
+}
+
+
+.cart {
+  position: fixed;
+  right: 3%;
+  bottom: 3%;
+  width: 100rpx;
+  height: 150rpx;
+  text-align: center;
+  z-index: 999
+}
+
+.cart image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.cart text {
+  margin-top: 10rpx;
+}
+
+.imgbg {
+  width: 100%;
+  position: relative;
+  height: 200rpx;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center center;
+}
+
+.imgbg .logo {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  position: absolute;
+  top: 70rpx;
+  left: 30rpx;
+}
+
+.imgbg .name {
+  width: auto;
+  position: absolute;
+  top: 70rpx;
+  left: 150rpx;
+  font-size: 36rpx;
+  color: #333;
+}

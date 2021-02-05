@@ -104,8 +104,11 @@ Page({
         url: '/pages/card/index/index?param=' + that.data.param
       })
     } else if (that.data.id == -5) {
-      wx.redirectTo({
-        url: '/pages/service/index/index?roomId=' + that.data.param
+      // wx.redirectTo({
+      //   url: '/pages/service/index/index?roomId=' + that.data.param
+      // })
+      wx.navigateBack({
+        delta: 3
       })
     } else if (that.data.id == -6) {
       wx.redirectTo({
@@ -119,8 +122,8 @@ Page({
     wx.hideLoading()
   },
   goUrl: function() {
-    wx.navigateTo({
-      url: '/pages/card/index/index',
+    wx.navigateBack({
+      delta: 3
     })
   },
   onHide: function() {

@@ -25,10 +25,26 @@ Page({
     fromTwo: false,
     fromThree: false,
     rcardname: '',
-    rcardava: ''
+    rcardava: '',
+    bgimgdata: [{
+      value: 1,
+      name: "石头纹",
+      url: "http://emiaoweb.com/business/statics/images/sbg.png",
+      checked: true
+    }, {
+      value: 2,
+      name: "大理石",
+      url: "http://emiaoweb.com/business/statics/images/dbg.png",
+      checked: false
+    }, {
+      value: 3,
+      name: "木纹",
+      url: "http://emiaoweb.com/business/statics/images/mbg.jpg",
+      checked: false
+    }]
   },
-  onShareAppMessage: function(res) {},
-  onLoad: function(options) {
+  onShareAppMessage: function (res) {},
+  onLoad: function (options) {
     var that = this
     if (options.name) {
       that.setData({
@@ -43,7 +59,7 @@ Page({
         icon: 'loading',
         duration: 2000
       });
-      setTimeout(function() {
+      setTimeout(function () {
         wx.navigateTo({
           url: '/pages/auth/login/login?id=-3&type='
         })
@@ -52,7 +68,7 @@ Page({
     } else {
       util.request(api.CardInfoByOpenID, {
         openid: wx.getStorageSync('token')
-      }).then(function(res) {
+      }).then(function (res) {
         if (res.errno === 0) {
           if (res.data) {
             that.setData({
@@ -192,7 +208,7 @@ Page({
     wx.showLoading({
       title: '提交中...',
       mask: true,
-      success: function() {
+      success: function () {
 
       }
     });
@@ -223,7 +239,7 @@ Page({
       city: user.city,
       county: user.county,
       telephone: user.telephone,
-    }, 'POST').then(function(res) {
+    }, 'POST').then(function (res) {
       if (res.errno === 0) {
         //wx.hideLoading();
         // wx.showToast({
@@ -236,7 +252,7 @@ Page({
           })
         } else {
           wx.redirectTo({
-            url: '/pages/card/index/index?param=',
+            url: '/pages/ucenter/index/index?param=',
           })
         }
       } else {
@@ -254,13 +270,13 @@ Page({
     })
   },
   //点击图片选择手机相册或者电脑本地图片
-  changePhoto: function(e) {
+  changePhoto: function (e) {
     var _this = this
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function(res) {
+      success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var tempFilePaths = res.tempFilePaths;
         wx.showLoading({
@@ -278,7 +294,7 @@ Page({
             //和服务器约定的token, 一般也可以放在header中
             'X-Nideshop-Token': wx.getStorageSync('token')
           },
-          success: function(res) {
+          success: function (res) {
             let datas = JSON.parse(res.data)
             //当调用uploadFile成功之后，再次调用后台修改的操作，这样才真正做了修改头像
             if (datas.errno === 0) {
@@ -299,21 +315,21 @@ Page({
             }
             wx.hideLoading()
           },
-          fail: function() {
+          fail: function () {
             wx.hideLoading()
           }
         })
       }
     })
   },
-  onReady: function() {},
-  onShow: function() {
+  onReady: function () {},
+  onShow: function () {
     // 页面显示
   },
-  onHide: function() {
+  onHide: function () {
     // 页面隐藏
   },
-  onUnload: function() {
+  onUnload: function () {
     // 页面关闭
   }
 })

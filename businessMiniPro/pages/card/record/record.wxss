@@ -34,7 +34,7 @@
 
 .itembody .info .comname{
   position: absolute;
-  top: 50rpx;
+  bottom: 0;
     /* top: 50%;
     transform: translateY(-50%); */
   vertical-align: middle;

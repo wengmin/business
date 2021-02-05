@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "销擎",
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "card-holder": "/component/card-holder/card-holder"
+  }
+}

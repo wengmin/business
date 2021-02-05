@@ -140,7 +140,7 @@ Component({
     // 返回事件
     back: function () {
       wx.redirectTo({
-        url: "/pages/card/index/index?param="
+        url: "/pages/card/index1/index1?param="
       })
       // //this.triggerEvent('back', { delta: this.data.delta });
       // var that = this
@@ -198,7 +198,7 @@ Component({
     home: function () {
       //this.triggerEvent('home', {});
       wx.redirectTo({
-        url: "/pages/card/index/index?param="
+        url: "/pages/ucenter/index/index?param="
       })
     },
     search: function () {

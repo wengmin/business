@@ -5,25 +5,18 @@
 
     <select id="queryByToUserId"  resultType="com.business.entity.CardRecordVo">
         select * from card_record
-        WHERE user_id=#{userId} and touser_id=#{touserId}
+        WHERE user_id=#{userId} and touser_id=#{touserId} order by create_time limit 1
     </select>
 
     <select id="queryList" resultType="com.business.entity.CardRecordVo">
-        select user_id,touser_id,create_time,
+        select user_id,touser_id,
         (select name from company_info where company_info.company_id=(select company_id from card_user where card_user.user_id=card_record.touser_id)) as touserComName,
         (select openid from member_user where member_user.user_id=card_record.touser_id) as openid,
         (select photo from card_user where card_user.user_id=card_record.touser_id) as touserAvatar,
         (select realname from card_user where card_user.user_id=card_record.touser_id) as touserName
         from card_record
         WHERE user_id=#{userId}
-        <choose>
-            <when test="sidx != null and sidx.trim() != ''">
-                order by ${sidx} ${order}
-            </when>
-            <otherwise>
-                order by create_time desc
-            </otherwise>
-        </choose>
+        group by touser_id
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>

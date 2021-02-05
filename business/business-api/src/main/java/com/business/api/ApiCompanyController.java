@@ -70,6 +70,7 @@ public class ApiCompanyController extends ApiBaseAction {
             }
             String logo = parameterJson.getString("logo");
             String name = parameterJson.getString("name");
+            String simpleName = parameterJson.getString("simpleName");
             String introduction = parameterJson.getString("introduction");
             String fileurl = parameterJson.getString("fileList");
             CompanyVo company = companyService.queryObject(entity.getCompanyId());
@@ -79,12 +80,14 @@ public class ApiCompanyController extends ApiBaseAction {
                 companyId = company.getCompanyId();
                 company.setLogo(logo != null ? logo.trim() : "");
                 company.setName(name != null ? name.trim() : "");
+                company.setSimpleName(simpleName != null ? simpleName.trim() : "");
                 company.setIntroduction(introduction != null ? introduction.trim() : "");
                 result = companyService.update(company);
             } else {
                 company = new CompanyVo();
                 company.setLogo(logo != null ? logo.trim() : "");
                 company.setName(name != null ? name.trim() : "");
+                company.setSimpleName(simpleName != null ? simpleName.trim() : "");
                 company.setIntroduction(introduction != null ? introduction.trim() : "");
                 result = companyService.save(company);
                 companyId = result;

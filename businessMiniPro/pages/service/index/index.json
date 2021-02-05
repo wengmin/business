@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "客房服务",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "date-time-picker": "/component/date-time-picker/date-time-picker"
-  }
-}

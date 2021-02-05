@@ -6,6 +6,7 @@
     <resultMap type="com.business.entity.CompanyVo" id="BaseResultMap">
         <result property="companyId" column="company_id"/>
         <result property="name" column="name"/>
+        <result property="simpleName" column="simple_name"/>
         <result property="address" column="address"/>
         <result property="phone" column="phone"/>
         <result property="logo" column="logo"/>
@@ -22,6 +23,7 @@
     <insert id="save" parameterType="com.business.entity.CompanyVo" useGeneratedKeys="true" keyProperty="companyId">
 		insert into company_info(
         `name`,
+        `simple_name`,
         `address`,
         `phone`,
         `logo`,
@@ -31,6 +33,7 @@
         `create_time`     )
 		values(
           #{name},
+          #{simpleName},
           #{address},
           #{phone},
           #{logo},
@@ -45,6 +48,9 @@
         <set>
             <if test="name != null">
                 `name` = #{name},
+            </if>
+            <if test="simpleName != null">
+                `simple_name` = #{simpleName},
             </if>
             <if test="address != null">
                 `address` = #{address},
@@ -76,6 +82,7 @@
         `id`,
         `company_id`,
         `fileurl`,
+        `name`,
         `create_time`
         from company_file
         WHERE 1=1
@@ -89,12 +96,14 @@
         insert into company_file(
         `company_id`,
         `fileurl`,
+        `name`,
         `create_time` )
         values
         <foreach collection="fileList" item="item" index="index" separator=",">
             (
             #{item.companyId},
             #{item.fileurl},
+            #{item.name},
             now()
             )
         </foreach>

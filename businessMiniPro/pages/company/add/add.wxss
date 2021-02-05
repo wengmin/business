@@ -125,21 +125,35 @@ page {
   border: solid 2rpx #52a936;
 }
 
+.filearea {
+  padding-right: 30rpx;
+  padding-bottom: 20rpx;
+}
 .filelist{
   width: 100%;
   position: relative;
+  border:solid 2rpx #ccc;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  padding: 20rpx;
 }
 
 .filelist image,.filelist video{
   width: 100%;
+  display: inline-block;
   padding: 0;
   margin: 0;
 }
 
+.filelist .text{
+  border-bottom: 1px solid #d9d9d9;
+  align-items: center;
+  padding: 20rpx;
+  padding-left: 0;
+}
+
 .filelist .delete{
-  position:absolute;
-  bottom: 0;
-  background: #acacacb0;
+  background: #52a936;
   color: #fff;
   width: 100%;
   text-align: center;
@@ -147,4 +161,5 @@ page {
   line-height: 70rpx;
   border-radius: 0;
   font-size: 30rpx;
+  margin-top: 20rpx;
 }

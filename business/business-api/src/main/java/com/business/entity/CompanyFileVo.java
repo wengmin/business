@@ -20,6 +20,8 @@ public class CompanyFileVo implements Serializable {
     private Integer companyId;
     //
     private String fileurl;
+    //
+    private String name;
     //0启用，1禁用，2删除
     private Integer status;
     //
@@ -64,6 +66,15 @@ public class CompanyFileVo implements Serializable {
     public String getFileurl() {
         return fileurl;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * 设置：0启用，1禁用，2删除
      */
