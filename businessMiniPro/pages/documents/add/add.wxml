@@ -1,0 +1,83 @@
+<view wx:if="{{fromOne}}" style="height:100vh">
+  <view class='order_process'>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_start'></view>
+        <view class="process_icon_action">1</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>选择文件夹</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line'></view>
+        <view class="process_icon">2</view>
+        <view class='process_line process_line_start'></view>
+      </view>
+      <text class='process_name'>选择文件</text>
+    </view>
+  </view>
+  <view class="add-form">
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>文件夹名称</view>
+      <view class='select_box'>
+        <view class='select' catchtap='selectTap'>
+          <text class='select_text'>{{folder.id==0?"请选择":folder.name}}</text>
+          <image class='select_img {{selectShow&&"select_img_rotate"}}' src='/static/images/go.png'
+            background-size="contain"></image>
+        </view>
+        <view class='option_box'
+          style='height:{{selectShow?((selectData.length*80)+80):0}}rpx;'>
+          <view class="new_box">
+            <input bindinput="bindinputValue" data-type="folderName" maxlength="15" placeholder="新建文件夹名称" />
+            <button bindtap="saveFolder">创建</button>
+          </view>
+          <text class='option' wx:for='{{selectData}}' wx:key='this' data-id='{{item.id}}' data-name='{{item.name}}'
+            catchtap='optionTap'>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="saveNext">下一步</button>
+  </view>
+</view>
+
+<view wx:if="{{fromTwo}}">
+  <view class='order_process'>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_start'></view>
+        <view class="process_icon_action">1</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>选择文件夹</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line'></view>
+        <view class="process_icon">2</view>
+        <view class='process_line process_line_start'></view>
+      </view>
+      <text class='process_name'>选择文件</text>
+    </view>
+  </view>
+  <view class="add-form">
+    <button class="change" bindtap="chooseMessageFile">选择文件</button>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>文件名称</view>
+      <input bindinput="bindinputValue" data-type="docName" maxlength="15" placeholder="文件名称" value="{{doc.name}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>文件简介</view>
+      <input bindinput="bindinputValue" data-type="docProfiles" maxlength="100" placeholder="文件简介" value="{{doc.profiles}}" />
+      <!-- <textarea bindinput="bindinputValue" data-type="profiles" maxlength="100" placeholder="文件简介" value="{{profiles}}" /> -->
+    </view>
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="saveDoc">保存</button>
+  </view>
+</view>

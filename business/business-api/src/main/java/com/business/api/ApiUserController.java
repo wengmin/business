@@ -42,7 +42,7 @@ public class ApiUserController extends ApiBaseAction {
     @GetMapping("detailByOpenId")
     public Object detailByOpenId(@RequestParam("openid") String openid) {
         Assert.isBlank(openid, "参数错误!");
-        UserVo entity = userService.queryByOpenId(openid);
+        UserVo entity = userService.queryByOpenIdXcx(openid);
         if (entity == null) {
             return toResponsFail("未注册用户");
         }

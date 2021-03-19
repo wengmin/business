@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "上传图片",
+  "enablePullDownRefresh": false,
+  "disableScroll":true,
+  "usingComponents": {
+  }
+}

@@ -1,0 +1,68 @@
+.container {
+  text-align: center
+}
+
+.newbtn {
+  width: 700rpx;
+  padding: 20rpx 30rpx;
+  font-size: 28rpx;
+  color: #52a936;
+  background: #fff;
+  border: solid 2rpx #52a936;
+  border-radius: 10rpx;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}
+
+.itembody {
+  width: 700rpx;
+  clear: both;
+  padding: 30rpx;
+  background-color: #fff;
+  display: inline-block;
+  margin-top: 20rpx;
+  border-radius: 10rpx;
+  border: solid 2rpx #f5f5f5;
+  position: relative;
+}
+
+.itembody .bgimg {
+  position: absolute;
+  width: 150rpx;
+  height: 150rpx;
+  right: 0;
+  bottom: 0;
+}
+
+.itembody .leftlogo {
+  float: left;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 10rpx;
+}
+
+.itembody .info {
+  position: absolute;
+  float: right;
+  width: 460rpx;
+  height: 150rpx;
+  text-align: left;
+  left: 210rpx;
+  z-index: 1;
+}
+
+.itembody .info .name {
+  font-size: 32rpx;
+}
+
+.itembody .info .desc {
+  margin-top: 20rpx;
+  font-size: 28rpx; 
+  color: #535252;
+  display: -webkit-box;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:2; /*设置超出两行进行隐藏*/
+}

@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Param;
  * @time 创建时间: 17:04
  */
 public interface ApiCardRecordMapper extends BaseDao<CardRecordVo> {
-    CardRecordVo queryByToUserId(@Param("userId") Integer userId, @Param("touserId") Integer touserId);
+    CardRecordVo queryByToUserId(@Param("cardId") Integer cardId, @Param("touserId") Integer touserId);
     void updateTime(Integer id);
 }

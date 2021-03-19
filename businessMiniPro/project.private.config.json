@@ -1,0 +1,54 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/card/index/index",
+          "pathName": "pages/card/index/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/upload/index",
+          "pathName": "pages/upload/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/card/indexbak/indexbak",
+          "pathName": "pages/card/indexbak/indexbak",
+          "query": "companyId=1",
+          "scene": null
+        },
+        {
+          "name": "pages/card/edit/edit",
+          "pathName": "pages/card/edit/edit",
+          "query": "",
+          "scene": 1011
+        },
+        {
+          "name": "pages/documents/list/list",
+          "pathName": "pages/documents/add/add",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/ucenter/index/index",
+          "pathName": "pages/ucenter/index/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

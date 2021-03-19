@@ -1,7 +1,6 @@
 package com.business.dao;
 
 import com.business.entity.UserVo;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author 创建人：Vsoft
@@ -11,11 +10,14 @@ import org.apache.ibatis.annotations.Param;
  * @time 创建时间: 18:10
  */
 public interface ApiUserMapper extends BaseDao<UserVo> {
-    UserVo queryByOpenId(@Param("openId") String openId);
+    UserVo queryByUnionId(String id);
+    UserVo queryByOpenIdGzh(String id);
+    UserVo queryByOpenIdXcx(String id);
+    UserVo queryByMobile(String id);
 
-    UserVo queryByMobile(@Param("mobile") String mobile);
+    int updateByOpenIdXcx(UserVo user);
 
-    String queryOpenidByUserId(Integer id);
+    int updateByOpenIdGzh(UserVo user);
 
-    int updateByOpenId(UserVo user);
+    int updateByUnionId(UserVo user);
 }

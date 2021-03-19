@@ -49,10 +49,10 @@ function formatNumber(n) {
 }
 
 /**
- * 封封微信的的request
+ * 封装微信的request
  */
 function request(url, data = {}, method = "GET", contentType = "application/json") {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     if (method == "POST") {
       wx.showLoading({
         title: '提交中...',
@@ -71,7 +71,7 @@ function request(url, data = {}, method = "GET", contentType = "application/json
         'Content-Type': contentType,
         'X-Nideshop-Token': wx.getStorageSync('token')
       },
-      success: function(res) {
+      success: function (res) {
         if (res.statusCode == 200) {
 
           if (res.data.errno == 401) {
@@ -79,7 +79,7 @@ function request(url, data = {}, method = "GET", contentType = "application/json
             wx.showModal({
               title: '',
               content: '请先登录',
-              success: function(res) {
+              success: function (res) {
                 if (res.confirm) {
                   wx.removeStorageSync("userInfo");
                   wx.removeStorageSync("token");
@@ -97,7 +97,60 @@ function request(url, data = {}, method = "GET", contentType = "application/json
         }
         wx.hideLoading();
       },
-      fail: function(err) {
+      fail: function (err) {
+        reject(err)
+        wx.hideLoading();
+      }
+    })
+  });
+}
+
+/**
+ * 封装微信的request
+ */
+function upload(url, filePath, name, formData = {}) {
+  return new Promise(function (resolve, reject) {
+    wx.showLoading({
+      title: '上传中...',
+    });
+
+    wx.uploadFile({
+      url: url,
+      filePath: filePath,
+      name: name,
+      formData: formData,
+      header: {
+        'Content-Type': "multipart/form-data",
+        'X-Nideshop-Token': wx.getStorageSync('token')
+      },
+      success(res) {
+        console.info(res);
+        let data = JSON.parse(res.data)
+        if (res.statusCode == 200) {
+          if (data.errno == 401) {
+            //需要登录后才可以操作
+            wx.showModal({
+              title: '',
+              content: '请先登录',
+              success: function (res) {
+                if (res.confirm) {
+                  wx.removeStorageSync("userInfo");
+                  wx.removeStorageSync("token");
+                  wx.redirectTo({
+                    url: '/pages/ucenter/index/index'
+                  });
+                }
+              }
+            });
+          } else {
+            resolve(data);
+          }
+        } else {
+          reject(res.errMsg);
+        }
+        wx.hideLoading();
+      },
+      fail: function (err) {
         reject(err)
         wx.hideLoading();
       }
@@ -118,12 +171,12 @@ function getQueryString(url, name) {
  * 检查微信会话是否过期
  */
 function checkSession() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     wx.checkSession({
-      success: function() {
+      success: function () {
         resolve(true);
       },
-      fail: function() {
+      fail: function () {
         reject(false);
       }
     })
@@ -134,9 +187,9 @@ function checkSession() {
  * 调用微信登录
  */
 function login() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     wx.login({
-      success: function(res) {
+      success: function (res) {
         if (res.code) {
           //登录远程服务器
           resolve(res);
@@ -144,7 +197,7 @@ function login() {
           reject(res);
         }
       },
-      fail: function(err) {
+      fail: function (err) {
         reject(err);
       }
     });
@@ -207,5 +260,6 @@ module.exports = {
   login,
   validatePhone,
   getQueryString,
-  accSub
+  accSub,
+  upload
 }

@@ -21,21 +21,4 @@ public interface ApiCompanyMapper extends BaseDao<CompanyVo> {
     Integer deleteFile(Integer id);
 
     Integer deleteFileByCompany(Integer id);
-
-    CompanyPostVo queryPost(Integer postId);
-
-    List<CompanyPostVo> queryPostList(@Param(value = "companyId") Integer companyId, @Param(value = "postId") Integer postId);
-
-    CompanyRoomVo queryRoom(Integer roomId);
-
-    List<CompanyServiceVo> queryServiceList(@Param(value = "companyId") Integer companyId, @Param(value = "serviceClass") String serviceClass);
-
-    List<CompanyServiceVo> queryServiceGroup(Integer companyId);
-
-
-    CompanyStaffVo queryStaffByKey(@Param(value = "companyId") Integer companyId, @Param(value = "name") String name, @Param(value = "mobile") String mobile);
-
-    CompanyStaffVo queryStaffByUserIdCompanyId(@Param(value = "companyId") Integer companyId, @Param(value = "userId") Integer userId);
-
-    int updateStaff(CompanyStaffVo companyStaff);
 }

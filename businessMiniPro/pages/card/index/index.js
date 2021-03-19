@@ -1,173 +1,151 @@
 const util = require('../../../utils/util.js');
 const api = require('../../../config/api.js');
 const user = require('../../../services/user.js');
-
-//获取应用实例
-const app = getApp()
+const QQMapWX = require('../../../lib/qqmap-wx-jssdk.js');
+var qqmapsdk;
 Page({
   data: {
-    param: "",
     loginOpenid: "",
+    currentTab: 0,
+    param: "",
     cards: [],
-    mycards: [],
-    maskHidden: false,
-    isNewUser: true,
     isZiji: false,
     isCollectBtn: false,
-    shareUserId: 0,
-    isComfileshowhide: false
+    maskHidden: false,
+    leftshow: false,
+    rightshow: true,
+    showhidebtn: false,
+    btnanimation1: null,
+
+    docList: [],
+    page: 1,
+    size: 10,
+    pages: 0,
+    nonedata: false,
+    moredata: false,
+
+    leftMenuWidth: 0,
+    leftMenuHeight: 0,
+    leftMenuTop: 0,
+    leftMenuLeft: 0,
+    ucheight: 0
   },
-  onLoad: function(options) {
+  onReady: function () {
+    let that = this;
+    // 胶囊位置信息
+    let res = wx.getMenuButtonBoundingClientRect();
+    wx.getSystemInfo({
+      success: function (re) {
+        that.setData({
+          leftMenuLeft: re.windowWidth - res.right,
+        })
+      },
+    })
+    that.setData({
+      leftMenuWidth: res.width,
+      leftMenuHeight: res.height,
+      leftMenuTop: res.top,
+      ucheight: res.height + res.top + 6,
+    })
+  },
+  onLoad: function (options) {
     wx.stopPullDownRefresh();
     let that = this;
     that.setData({
       loginOpenid: wx.getStorageSync('token')
     });
-    if (typeof(options) != "undefined") {
+    if (typeof (options) != "undefined") {
       if (options.scene) {
         let scene = '?' + decodeURIComponent(options.scene);
         that.setData({
           param: util.getQueryString(scene, 'param'),
         })
-      } else if (options.param != "undefined" && typeof(options.param) != "undefined") {
+      } else if (options.param != "undefined" && typeof (options.param) != "undefined") {
         that.setData({
           param: options.param,
         })
       }
     }
-    that.getOwnCardInfo();
-  },
-  onShow: function() {
-    // 页面显示
-    //this.getOwnCardInfo();
-  },
-  onReady: function() {
-    // 页面渲染完成
-  },
-  onHide: function() {
-    // 页面隐藏
-  },
-  onUnload: function() {
-    // 页面关闭
-  },
-  onPullDownRefresh: function() {
-    // 页面相关事件处理函数--监听用户下拉动作
-    this.onLoad(); //重新加载onLoad()
-  },
+    that.getCardInfo();
 
-  onShareAppMessage: function(res) {
-    if (res.from == 'button') {
-      if (res.target.dataset.sharetype == "mycard") {
-        console.log("share:" + this.data.mycards.param)
-        return {
-          title: "您好，我是" + this.data.mycards.realname + "，请惠存我的名片",
-          desc: '销擎名片管理',
-          path: '/pages/card/index/index?param=' + this.data.mycards.param,
-          imageUrl: '/static/images/card/p_card.jpg',
-          success: function(res) {
-            // 转发成功
-            console.log('转发成功')
-            //this.setInfo(res);
-          },
-          fail: function(res) {
-            // 转发失败
-            console.log('转发失败')
-          }
-        }
-      }
-    }
-    console.log("share:" + this.data.cards.param)
-    return {
-      title: "您好，我是" + this.data.cards.realname + "，请惠存我的名片",
-      desc: '销擎名片管理',
-      path: '/pages/card/index/index?param=' + this.data.cards.param,
-      success: function(res) {
-        // 转发成功
-        console.log('转发成功')
-      },
-      fail: function(res) {
-        // 转发失败
-        console.log('转发失败')
-      }
-    }
+    qqmapsdk = new QQMapWX({
+      key: '3QHBZ-TT4W2-LPIUI-CAGGZ-OK425-HCBBR'
+    });
   },
-  getOwnCardInfo: function() {
+  getOwnCardInfo: function () {
     let that = this;
-    if (that.data.loginOpenid) {
-      util.request(api.CardInfoByOpenID, {
-        openid: that.data.loginOpenid
-      }).then(function(res) {
-        if (res.errno === 0) {
-          if (res.data.realname) {
-            that.setData({
-              isNewUser: false,
-            });
-          }
-          if (res.data.qrCode) {
-            res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
-          }
-          that.setData({
-            mycards: res.data,
-          });
-          if (!that.data.param || that.data.param == res.data.param) {
-            that.setData({
-              param: res.data.param,
-              cards: res.data,
-              isZiji: true
-            });
-            wx.hideLoading();
-          } else {
-            that.getCardInfo()
-          }
-        } else {
-          console.log("that.data.loginOpenid:" + that.data.loginOpenid + "=>errno:" + res.errno + "=>errmsg:" + res.errmsg)
-          // if (res.errmsg == "未注册名片") {
-          //   wx.redirectTo({
-          //     url: '/pages/card/adduser/adduser',
-          //   })
-          // }
-          that.getCardInfo()
-        }
-      }).catch((err) => {
-        that.getCardInfo()
-        console.log("catch" + err)
-      });
-    } else {
-      that.getCardInfo()
-    }
-  },
-  getCardInfo: function() {
-    let that = this;
-    if (!that.data.param) {
-      that.setData({
-        param: '4~6CkgY',
-      })
-    }
-    util.request(api.CardInfoByParam, {
-      param: that.data.param
-    }).then(function(res) {
+    util.request(api.CardDefault, {}).then(function (res) {
       if (res.errno === 0) {
-        if (res.data.qrCode) {
-          res.data.qrCode = "https://emiaoweb.com/business/upload/" + res.data.qrCode;
+        if (!res.data.realname) {
+          wx.navigateTo({
+            url: '/pages/card/edit/edit'
+          })
         }
         that.setData({
           cards: res.data
         });
-        wx.hideLoading();
-        that.isCollect()
-        that.record()
+        that.getDocList(res.data.userId);
       } else {
-        util.showErrorToast(res.errmsg);
+        console.log("that.data.loginOpenid:" + that.data.loginOpenid + "=>errno:" + res.errno + "=>errmsg:" + res.errmsg)
+        wx.navigateTo({
+          url: '/pages/card/edit/edit'
+        })
       }
     }).catch((err) => {
-      wx.hideLoading();
-      wx.showModal({
-        title: "服务连接出错",
-        content: "请卸载小程序，稍后再访问"
-      });
+      console.log("catch" + err)
+      wx.navigateTo({
+        url: '/pages/card/edit/edit'
+      })
     });
   },
-  copyText: function(e) {
+  getCardInfo: function () {
+    let that = this;
+    if (that.data.param) {
+      util.request(api.CardInfoByParam, {
+        param: that.data.param
+      }).then(function (res) {
+        if (res.errno === 0) {
+          that.setData({
+            cards: res.data
+          });
+          that.getDocList(res.data.userId);
+          wx.hideLoading();
+        } else {
+          that.getOwnCardInfo();
+          util.showErrorToast(res.errmsg);
+        }
+      }).catch((err) => {
+        wx.hideLoading();
+        wx.showModal({
+          title: "服务连接出错",
+          content: "请卸载小程序，稍后再访问"
+        });
+      });
+    } else {
+      if (that.data.loginOpenid) {
+        that.getOwnCardInfo();
+      } else {
+        wx.navigateTo({
+          url: '/pages/card/edit/edit'
+        })
+      }
+    }
+  },
+  onShareAppMessage: function (res) {
+    return {
+      title: "您好，我是" + this.data.cards.realname + "，请惠存我的名片",
+      desc: '销擎名片管理',
+      path: '/pages/card/index/index?param=' + this.data.cards.param,
+      imageUrl: this.data.cards.photo ? this.data.cards.photo : '/static/images/card/p_card.jpg',
+      success: (res) => {
+        util.request(api.SaveShare, {}, 'POST', 'application/x-www-form-urlencoded').then(function (ress) {});
+      },
+      fail: (res) => {
+        console.log("转发失败", res);
+      }
+    }
+  },
+  copyText: function (e) {
     wx.setClipboardData({
       data: e.currentTarget.dataset.text,
       success() {
@@ -186,12 +164,12 @@ Page({
       }
     })
   },
-  callPhone: function(e) {
+  callPhone: function (e) {
     wx.makePhoneCall({
       phoneNumber: e.currentTarget.dataset.text
     })
   },
-  addPhone: function() {
+  addPhone: function () {
     let that = this;
     // 添加到手机通讯录
     wx.addPhoneContact({
@@ -206,7 +184,7 @@ Page({
       email: that.data.cards.email,
     })
   },
-  showQrCode: function(e) {
+  showQrCode: function (e) {
     let that = this;
     if (that.data.cards.qrCode) {
       this.setData({
@@ -218,7 +196,7 @@ Page({
       })
       util.request(api.CreateCardQrCode, {
         param: that.data.param
-      }).then(function(res) {
+      }).then(function (res) {
         if (res.errno === 0) {
           if (res.data) {
             that.setData({
@@ -235,7 +213,7 @@ Page({
     let that = this
     wx.downloadFile({
       url: that.data.cards.qrCode,
-      success: function(res) {
+      success: function (res) {
         if (res.statusCode === 200) {
           let img = res.tempFilePath;
           wx.saveImageToPhotosAlbum({
@@ -260,13 +238,12 @@ Page({
       }
     });
   },
-  //关闭
-  closeQrCode: function() {
+  closeQrCode: function () {
     this.setData({
       maskHidden: false
     })
   },
-  collect: function() {
+  collect: function () {
     let that = this;
     if (!that.data.loginOpenid) {
       wx.showToast({
@@ -274,7 +251,7 @@ Page({
         icon: 'loading',
         duration: 2000
       });
-      setTimeout(function() {
+      setTimeout(function () {
         wx.navigateTo({
           url: '/pages/auth/login/login?id=-1&type='
         })
@@ -284,7 +261,7 @@ Page({
       //if (!that.data.isCollectBtn) {
       util.request(api.CardSaveCollect, {
         param: that.data.param
-      }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {
+      }, 'POST', 'application/x-www-form-urlencoded').then(function (res) {
         if (res.errno === 0) {
           if (that.data.isCollectBtn) {
             that.setData({
@@ -305,20 +282,14 @@ Page({
           util.showErrorToast(res.errmsg);
         }
       });
-      // }
-      //  else {
-      //   wx.showToast({
-      //     title: '已收藏'
-      //   });
-      // }
     }
   },
-  isCollect: function() {
+  isCollect: function () {
     let that = this;
     if (that.data.loginOpenid) {
       util.request(api.CardIsCollect, {
         param: that.data.param
-      }).then(function(res) {
+      }).then(function (res) {
         if (res.errno === 0) {
           if (res.data > 0) {
             that.setData({
@@ -329,40 +300,23 @@ Page({
       });
     }
   },
-  record: function() {
+  record: function () {
     let that = this;
-    if (that.data.loginOpenid) {
+    if (wx.getStorageSync('token')) {
       util.request(api.CardSaveRecord, {
         param: that.data.param
-      }, 'POST', 'application/x-www-form-urlencoded').then(function(res) {});
-    }
-  },
-  backMeCard: function() {
-    this.setData({
-      param: ''
-    })
-    this.getOwnCardInfo()
-  },
-  comfileshowhide: function() {
-    if (this.data.isComfileshowhide) {
-      this.setData({
-        isComfileshowhide: false
-      })
-    } else {
-      this.setData({
-        isComfileshowhide: true
-      })
+      }, 'POST', 'application/x-www-form-urlencoded').then(function (res) {});
     }
   },
   //预览图片
-  topicPreview: function(e) {
+  topicPreview: function (e) {
     var that = this;
     var url = e.currentTarget.dataset.url;
     if (!url) {
       return false;
     }
     var images = new Array();
-    if (typeof(e.currentTarget.dataset.type) != "undefined") {
+    if (typeof (e.currentTarget.dataset.type) != "undefined") {
       var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
       for (var i = 0; i < that.data.cards.company.fileList.length; i++) {
         var str = that.data.cards.company.fileList[i].fileurl
@@ -378,5 +332,182 @@ Page({
       current: url, // 当前显示图片的http链接
       urls: images // 需要预览的图片http链接列表
     })
-  }
+  },
+  navigate() {
+    wx.showLoading({
+      title: '获取中',
+    })
+    var addres = this.data.cards.company.province + this.data.cards.company.city + this.data.cards.company.county + this.data.cards.company.address;
+    if (!addres) {
+      wx.showToast({
+        title: "未填写地址",
+        icon: 'loading',
+        duration: 2000
+      });
+      return;
+    }
+    qqmapsdk.geocoder({
+      address: addres,
+      success: function (res) {
+        console.log(res);
+        let location = res.result.location
+        //使用微信内置地图查看标记点位置，并进行导航
+        wx.openLocation({
+          type: 'gcj02', // 返回可以用于wx.openLocation的经纬度 
+          latitude: location.lat,
+          longitude: location.lng,
+          scale: 18
+        })
+      },
+      fail: function (res) {
+        console.log(res);
+        wx.showToast({
+          title: "地址转换失败",
+          icon: 'loading',
+          duration: 2000
+        });
+      },
+      complete: function (res) {
+        wx.hideLoading()
+      }
+    });
+  },
+  showbtn: function () {
+    let that = this;
+    if (that.data.showhidebtn) {
+      that.setData({
+        showhidebtn: false,
+        btnanimation1: that.slideupshow(that, 0, 0, 'down')
+      })
+    } else {
+      that.setData({
+        showhidebtn: true,
+        btnanimation1: that.slideupshow(that, 1, 0, 'up')
+      })
+    }
+  },
+  /**
+   * 动画实现
+   * @method animationShow
+   * @param {that} 当前卡片
+   * @param {opacity} 透明度
+   * @param {delay} 延迟
+   * @param {isUp} 移动方向
+   */
+  slideupshow: function (that, opacity, delay, isUp) {
+    let animation = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease',
+      delay: delay
+    });
+    if (isUp == 'down') {
+      animation.translateX(0).translateY('180%').opacity(opacity).step()
+    } else if (isUp == 'up') {
+      animation.translateX(0).translateY(0).opacity(opacity).step()
+    } else {
+      animation.translateY(0).opacity(opacity).step()
+    }
+    let params = ''
+    params = animation.export()
+    return params
+  },
+  /**
+   * 点击tab切换
+   * @param {*} e 
+   */
+  itemChange: function (e) {
+    if (this.data.currentTab === e.target.dataset.current) {
+      return false;
+    } else {
+      this.setData({
+        currentTab: e.target.dataset.current
+      })
+    }
+  },
+  /**
+   * 滑动切换tab
+   * @param {*} e 
+   */
+  indexChange: function (e) {
+    if(e.detail.current==0){
+      this.setData({
+        leftshow: false,
+        rightshow: true,
+      });
+    }else{
+      this.setData({
+        leftshow: true,
+        rightshow: false,
+      });
+    }
+    this.setData({
+      currentTab: e.detail.current,
+    });
+  },
+  /**
+   * 获取文档列表
+   */
+  getDocList: function (userId) {
+    let that = this;
+    util.request(api.documentsListByUser, {
+      page: that.data.page,
+      size: that.data.size,
+      userId: userId
+    }).then(function (res) {
+      if (res.errno === 0) {
+        var resdate = that.data.docList.concat(res.data.list);
+        that.setData({
+          docList: resdate,
+          pages: res.data.totalPage
+        })
+        // if (that.data.docList.length > 0) {
+        //   wx.createSelectorQuery().select('.itembody').boundingClientRect(function (re) {
+        //     that.setData({
+        //       widHeight: (re.height + 13) * that.data.docList.length + "px"
+        //     })
+        //   }).exec();
+        // }
+        if (resdate.length == 0) {
+          that.setData({
+            nonedata: false,
+            moredata: false
+          })
+        } else {
+          if (res.data.currPage === res.data.totalPage) {
+            that.setData({
+              nonedata: true,
+              moredata: false
+            })
+          } else {
+            that.setData({
+              nonedata: false,
+              moredata: true
+            })
+          }
+        }
+      }
+    });
+  },
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  pullDownRefresh: function () {
+    this.data.docList = [];
+    this.setData({
+      page: 1
+    });
+    this.getDocList(this.data.cards.userId);
+  },
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  reachBottom: function () {
+    var that = this;
+    if (that.data.page < that.data.pages) {
+      that.setData({
+        page: that.data.page + 1
+      });
+      that.getDocList(this.data.cards.userId);
+    }
+  },
 })

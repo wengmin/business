@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>wow_book</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/wowbook.css" type="text/css" />
+    <script src="js/wowbook.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/wowbookmin.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        // if(window.screen.width < 800){
+        //     console.log('shouji');
+        //     window.location.href= 'index_m.html'
+        // }else if(window.screen.width >= 800){
+        //     console.log('pc');
+        // }
+    </script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .wrap{
+            position: relative;
+            top: 50%;
+            margin-top: -320px;
+        }
+        .tipWrap{
+            width: 64px;
+            height: 85px;
+            position: absolute;
+            bottom: -45px;
+            right: 214px;
+            z-index: 6666666666666;
+            cursor: pointer;
+        }
+        .tip,.tipGif{
+            overflow: hidden;
+            position: absolute;
+            z-index: 6666666666666;
+        }
+        .tip{
+            width: 50px;
+            height: 50px;
+            top: 32px;
+            left: 8px;
+        }
+        .tipGif{
+            top: 0px;
+            width: 64px;
+            height: 64px;
+            background-image: url(image/gif.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position-x: 0px;
+
+        }
+
+        .tip img,.tipGif img{
+            width: 100%;
+        }
+        #mybook{
+            margin: 0 auto;
+            position: relative;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="mybook">
+    </div>
+</div>
+
+<script type="text/javascript">
+    var pageNum = 3       //一共多少张图片
+    var imageBookPath = "image/demos"; //图片存放路径
+
+    $('#mybook').wowBook({
+        container: true,
+        containerHeight: 500,
+        containerWidth: 300,
+        startPage: 0, //开始显示的页数
+        centeredWhenClosed: true, //如果为true，则书籍在关闭时将居中（显示第一张或最后一本书的封面）。
+        forceBasicPage: true, //如果为true，则仅使用基本的“页面翻转”效果。此选项将覆盖与“页面翻转”相关的所有其他配置选项
+        turnPageDuration: 800, //翻页需要多长时间（以毫秒为单位）。请记住，当centeredWhenClosed为true时，打开或关闭书籍时翻页速度会更快
+        //hardcovers: true,
+        //numberedPages: [1, -2],
+        updateBrowserURL: false,
+        onShowPage: function(e, c) {
+            // console.log(c);
+            $(".tipWrap").css('display','none')
+        },
+        flipSound: 0,
+        // -------2----------
+        pageCount: pageNum,
+        images: imageBookPath + "/{{xxx}}.jpg",
+        // ,lightbox : "#book1-trigger"
+        // ,lightboxClass : "lightbox-images"+( imageBook=="1" ? "1" : "2" )
+        // ,style: "wowbook-cs-white"
+        // ,toolbar : "lastLeft, left, right, lastRight, zoomin, zoomout, slideshow, flipsound, fullscreen, thumbnails"
+        // ,thumbnailsPosition : 'bottom'  //缩略图位置
+        // ,thumbnailScale: 0.12           //用于生成缩略图的比例因子。
+        // ,thumbnailsSprite: imageBookPath+"/thumbnails_sprite_0.12.jpg"
+
+        // ,responsiveHandleWidth: 50
+
+        // ,onFullscreenError: fullscreenErrorHandler
+    });
+    $(".wowbook-handle").click(function(){
+        $(".tipWrap").css('display','none')
+    })
+    $("#mybook").append('<div class="tipWrap"><div class="tip"><img src="image/cursor.png"></div><div class="tipGif"><!-- <img src="image/gif.png" > --></div></div>')
+    let y = 0
+    setInterval(function(){
+        $(".tipGif").css({
+            "backgroundPosition-y": y + 'px'
+        })
+        if(y == -1280){
+            y = 0
+        }else{
+            y-=64
+        }
+    },50)
+    var book = $.wowBook("#mybook");
+    $(".tipWrap").click(function(){
+        console.log(1);
+        $(".tipWrap").css('display','none')
+        book.gotoPage(1);
+    })
+</script>
+</body>
+</html>

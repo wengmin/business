@@ -1,23 +1,19 @@
 {
   "pages": [
-    "pages/file/edit/edit",
     "pages/card/index/index",
     "pages/card/collect/collect",
     "pages/card/record/record",
-    "pages/card/adduser/adduser",
     "pages/auth/login/login",
     "pages/index/index",
     "pages/ucenter/index/index",
     "pages/ucenter/feedback/feedback",
-    "pages/pay/pay/pay",
-    "pages/pay/result/result",
     "pages/company/add/add",
-    "pages/card/indexs/indexs",
-    "pages/card/index1/index1",
     "pages/company/index/index",
-    "pages/card/index2/index2",
-    "pages/card/indexbak/indexbak",
-    "pages/file/reader/reader"
+    "pages/card/edit/edit",
+    "pages/documents/add/add",
+    "pages/upload/index",
+    "pages/documents/list/list",
+    "pages/documents/reader/reader"
   ],
   "window": {
     "backgroundTextStyle": "dark",

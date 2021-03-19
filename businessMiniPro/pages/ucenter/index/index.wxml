@@ -1,28 +1,41 @@
-<view class="container" wx:if="{{isshow}}">
-  <back-index back="{{true}}" home="{{true}}" title="名片夹" bindback="handlerGobackClick" bindhome="handlerGohomeClick">
-  </back-index>
-  <view url="/pages/card/adduser/adduser" class="userinfo">
-    <view>
-      <image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}"
-        background-size="cover"></image>
-    </view>
+<view class="container">
+  <back-index back="{{true}}" home="{{true}}" title="名片夹"></back-index>
+  <view class="userinfo">
+      <open-data type="userAvatarUrl" class="userinfo-avatar"></open-data>
     <view class='marleft'>
-      <navigator wx:if="{{isNewUser}}" hover-class="none" class="gonav" url="/pages/card/adduser/adduser">
-        <view>一分钟创建我的名片</view>
-        <image src="/static/images/go.png"></image>
-      </navigator>
-      <button wx:if="{{!isNewUser}}" class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
-        <view class="userinfo-nickname">
-          <text
-            style='font-size:20px;font-weight:bold;'>{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
-        </view>
-      </button>
+      <view class="userinfo-nickname">
+        <open-data type="userNickName" style='font-size:20px;font-weight:bold;'></open-data>
+      </view>
     </view>
   </view>
-  <view class="rightbtn" wx:if="{{!isNewUser}}">
-    <button open-type="share">转发我的名片</button>
-    <navigator hover-class="none" url="/pages/card/index2/index2?param=">打开我的名片</navigator>
-    <navigator hover-class="none" url="/pages/card/adduser/adduser">修改我的名片</navigator>
+
+  <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
+  <view class="user-menu">
+    <view class='menu_tit'>
+      <text class='menu_top'>我的名片</text>
+    </view>
+    <block wx:if="{{cardList.length>0}}">
+      <view class="cardlist">
+        <view class="card" wx:for="{{cardList}}" wx:key="index">
+          <image src='{{!item.photo ? "/static/images/card/w_card.jpg" : item.photo}}' mode="aspectFit"></image>
+          <view class="right">
+            <text>{{item.realname}}</text>
+            <text>{{item.position}}</text>
+            <text>{{item.companyName}}</text>
+            <view class="btn" wx:if="{{!isNewUser}}">
+              <button open-type="share" data-param="{{item.param}}" data-realname="{{item.realname}}">转发</button>
+              <navigator hover-class="none" url="/pages/card/index/index?param={{item.param}}">打开</navigator>
+              <navigator hover-class="none" url="/pages/card/edit/edit?cardId={{item.cardId}}">修改</navigator>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <navigator hover-class="none" class="addcardbtn" url="/pages/card/edit/edit">
+        <image src="/static/images/add.png"></image><text>新增</text>
+      </navigator>
+    </block>
   </view>
 
   <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
@@ -30,7 +43,7 @@
     <view class='menu_tit'>
       <text class='menu_top'>我的服务</text>
     </view>
-    <view class="item">
+    <!-- <view class="item">
       <navigator url="/pages/card/collect/collect" class="a">
         <image src="/static/images/icon/collect.png" class="icon"></image>
         <text class="txt">我收藏的名片</text>
@@ -41,6 +54,12 @@
         <image src="/static/images/icon/record.png" class="icon"></image>
         <text class="txt">我浏览的名片</text>
       </navigator>
+    </view> -->
+    <view class="item">
+      <navigator url="/pages/documents/list/list" class="a">
+        <image src="/static/images/documents/icon.png" class="icon"></image>
+        <text class="txt">文档</text>
+      </navigator>
     </view>
     <view class="item">
       <navigator url="/pages/ucenter/feedback/feedback" class="a">
@@ -48,12 +67,12 @@
         <text class="txt">意见反馈</text>
       </navigator>
     </view>
-    <view class="item">
+    <!-- <view class="item">
       <navigator url="/pages/company/add/add" class="a">
         <image src="/static/images/company.png" class="icon"></image>
         <text class="txt">我的企业</text>
       </navigator>
-    </view>
+    </view> -->
   </view>
 
   <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
@@ -63,29 +82,27 @@
     </view>
     <view class="item">
       <view class="a">
-        <text class="icon">{{recordCount}}</text>
+        <text class="icon">{{recordCount|0}}</text>
         <text class="txt">访问量</text>
       </view>
     </view>
     <view class="item">
       <view class="a">
-        <text class="icon">{{recordTodayCount}}</text>
+        <text class="icon">{{recordTodayCount|0}}</text>
         <text class="txt">今日访问量</text>
       </view>
     </view>
     <view class="item">
       <view class="a">
-        <text class="icon">{{shareCount}}</text>
+        <text class="icon">{{shareCount|0}}</text>
         <text class="txt">发名片</text>
       </view>
     </view>
     <view class="item">
       <view class="a">
-        <text class="icon">{{collectCount}}</text>
+        <text class="icon">{{collectCount|0}}</text>
         <text class="txt">被收藏</text>
       </view>
     </view>
   </view>
-  <!-- <view class="logout" bindtap="exitLogin">退出登录</view> -->
 </view>
-<view class="bottomtext">销擎，您的销售增长引擎</view>

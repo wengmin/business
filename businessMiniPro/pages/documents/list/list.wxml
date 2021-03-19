@@ -1,0 +1,12 @@
+<view class="container">
+  <navigator class="newbtn" hover-class="none" url="/pages/documents/add/add">新建</navigator>
+  <navigator url="/pages/documents/reader/reader?id={{item.id}}&name={{item.name}}&profiles={{item.profiles}}" class="itembody" wx:for="{{list}}"
+    wx:key="*this">
+    <image class="leftlogo" src="/static/images/documents/documents.png"></image>
+    <view class="info">
+      <view class="name">{{item.name}}</view>
+      <view class="desc">{{item.profiles}}</view>
+    </view>
+    <image class="bgimg" src="/static/images/documents/bg.png"></image>
+  </navigator>
+</view>

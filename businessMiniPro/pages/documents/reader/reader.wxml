@@ -1,0 +1,7 @@
+<!-- <web-view src="https://emiaoweb.com/business/statics/turn/index.html?id={{id}}"></web-view> -->
+<view class="f">
+  <view class="title">{{doc.name}}</view>
+  <view class="desc">{{doc.profiles}}</view>
+</view>
+<image wx:for="{{doc.pageList}}" wx:key="*this" src="{{item.url}}" mode="widthFix" bindtap="topicPreview"
+  data-url='{{item.url}}'></image>

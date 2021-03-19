@@ -24,6 +24,7 @@ public class CardRecordVo implements Serializable {
 
     private Integer recordId;
     private Integer userId;
+    private Integer cardId;
     private String userName;
 
     private String openid;
@@ -104,5 +105,13 @@ public class CardRecordVo implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Integer cardId) {
+        this.cardId = cardId;
     }
 }

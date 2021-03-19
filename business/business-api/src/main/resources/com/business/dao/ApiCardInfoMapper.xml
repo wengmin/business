@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiCardInfoMapper">
+
+    <resultMap type="com.business.entity.CardInfoVo" id="BaseResultMap">
+        <result property="cardId" column="card_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="companyName"/>
+        <result property="mobile" column="mobile"/>
+        <result property="openidXcx" column="openid_xcx"/>
+        <result property="openidGzh" column="openid_gzh"/>
+        <result property="realname" column="realname"/>
+        <result property="photo" column="photo"/>
+        <result property="photoRemark" column="photo_remark"/>
+        <result property="position" column="position"/>
+        <result property="wechat" column="wechat"/>
+        <result property="email" column="email"/>
+        <result property="profile" column="profile"/>
+        <result property="qrCode" column="qr_code"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="queryDefault" resultMap="BaseResultMap">
+        select
+        c.*,u.openid_xcx,u.openid_gzh,u.unionid
+        from card_info c
+        left join
+        user_account u
+        on
+        c.user_id=u.user_id
+        left join
+        company_info e
+        on
+        c.company_id=e.company_id
+        where u.user_id = #{value}
+        limit 1
+    </select>
+
+    <select id="queryObject" resultMap="BaseResultMap">
+        select
+        c.*,u.openid_xcx,u.openid_gzh,u.unionid
+        from card_info c
+        left join
+        user_account u
+        on
+        c.user_id=u.user_id
+        left join
+        company_info e
+        on
+        c.company_id=e.company_id
+        where card_id = #{value}
+    </select>
+
+    <select id="queryByUserId" resultMap="BaseResultMap">
+        select
+        c.*,u.openid_xcx,u.openid_gzh,u.unionid,e.name as companyName
+        from card_info c
+        left join
+        user_account u
+        on
+        c.user_id=u.user_id
+        left join
+        company_info e
+        on
+        c.company_id=e.company_id where u.user_id = #{value}
+    </select>
+
+    <insert id="save" parameterType="com.business.entity.CardInfoVo">
+		insert into card_info(
+          `user_id`,
+          `company_id`,
+          `realname`,
+          `mobile`,
+          `photo`,
+          `photo_remark`,
+          `position`,
+          `wechat`,
+          `email`,
+          `profile`,
+          `qr_code`,
+          `create_time`)
+		values(
+          #{userId},
+          #{companyId},
+          #{realname},
+          #{mobile},
+          #{photo},
+          #{photoRemark},
+          #{position},
+          #{wechat},
+          #{email},
+          #{profile},
+          #{qrCode},
+          now())
+	</insert>
+
+    <update id="update" parameterType="com.business.entity.CardInfoVo">
+        update card_info
+        <set>
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
+            <if test="companyId != null">
+                `company_id` = #{companyId},
+            </if>
+            <if test="realname != null">
+                `realname` = #{realname},
+            </if>
+            <if test="mobile != null">
+                `mobile` = #{mobile},
+            </if>
+            <if test="photo != null">
+                `photo` = #{photo},
+            </if>
+            <if test="photoRemark != null">
+                `photo_remark` = #{photoRemark},
+            </if>
+            <if test="position != null">
+                `position` = #{position},
+            </if>
+            <if test="wechat != null">
+                `wechat` = #{wechat},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="profile != null">
+                `profile` = #{profile},
+            </if>
+            <if test="qrCode != null">
+                `qr_code` = #{qrCode},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime}
+            </if>
+        </set>
+        where card_id = #{cardId}
+    </update>
+
+    <delete id="delete">
+        delete from card_info where card_id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from card_info where card_id in
+        <foreach item="cardId" collection="array" open="(" separator="," close=")">
+            #{cardId}
+        </foreach>
+    </delete>
+
+    <select id="collectCount" resultType="int">
+        select count(*) from card_collect where touser_id=#{touserId}
+    </select>
+
+    <select id="recordCount" resultType="int">
+        select sum(c) from (select count(*) as c from card_record where touser_id=#{touserId} group by date(create_time),user_id) as a
+    </select>
+
+    <select id="recordTodayCount" resultType="int">
+        select sum(c) from (SELECT count(*) as c FROM card_record WHERE touser_id=#{touserId} and date(create_time) = curdate() group by date(create_time),user_id) as a
+    </select>
+
+    <select id="shareCount" resultType="int">
+        SELECT count(*) FROM analysis_share WHERE user_id=#{userId}
+    </select>
+</mapper>

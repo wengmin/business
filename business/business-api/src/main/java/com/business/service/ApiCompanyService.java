@@ -1,11 +1,11 @@
 package com.business.service;
 
 import com.business.dao.ApiCompanyMapper;
-import com.business.entity.*;
+import com.business.entity.CompanyFileVo;
+import com.business.entity.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,39 +50,4 @@ public class ApiCompanyService {
     }
 
 
-    public CompanyPostVo queryPost(Integer postId) {
-        return companyDao.queryPost(postId);
-    }
-
-    public List<CompanyPostVo> queryPostList(Integer companyId, Integer postId) {
-        return companyDao.queryPostList(companyId, postId);
-    }
-
-
-    public CompanyRoomVo queryRoom(Integer roomId) {
-        return companyDao.queryRoom(roomId);
-    }
-
-
-    public List<CompanyServiceVo> queryServiceList(Integer companyId, String serviceClass) {
-        return companyDao.queryServiceList(companyId, serviceClass);
-    }
-
-    public List<CompanyServiceVo> queryServiceGroup(Integer companyId) {
-        return companyDao.queryServiceGroup(companyId);
-    }
-
-
-    public CompanyStaffVo queryStaffByKey(Integer companyId, String name, String mobile) {
-        return companyDao.queryStaffByKey(companyId, name, mobile);
-    }
-
-    public CompanyStaffVo queryStaffByUserIdCompanyId(Integer companyId, Integer userId) {
-        return companyDao.queryStaffByUserIdCompanyId(companyId, userId);
-    }
-
-    public int updateStaff(CompanyStaffVo companyStaff) {
-        companyStaff.setUpdateTime(new Date());
-        return companyDao.updateStaff(companyStaff);
-    }
 }

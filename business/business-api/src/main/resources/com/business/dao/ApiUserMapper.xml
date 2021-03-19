@@ -5,64 +5,95 @@
 
 	<resultMap type="com.business.entity.UserVo" id="BaseResultMap">
 		<result property="userId" column="user_id"/>
-		<result property="openid" column="openid"/>
 		<result property="mobile" column="mobile"/>
+		<result property="unionid" column="unionid"/>
+		<result property="openidGzh" column="openid_gzh"/>
+		<result property="openidXcx" column="openid_xcx"/>
 		<result property="nickname" column="nickname"/>
-		<result property="avatar" column="avatar"/>
-		<result property="gender" column="gender"/>
-		<result property="country" column="country"/>
+		<result property="sex" column="sex"/>
 		<result property="province" column="province"/>
 		<result property="city" column="city"/>
+		<result property="country" column="country"/>
+		<result property="language" column="language"/>
+		<result property="headimgurl" column="headimgurl"/>
+		<result property="subscribe" column="subscribe"/>
+		<result property="subscribeTime" column="subscribe_time"/>
+		<result property="subscribeScene" column="subscribe_scene"/>
+		<result property="remark" column="remark"/>
+		<result property="groupid" column="groupid"/>
+		<result property="tagidList" column="tagid_list"/>
+		<result property="qrScene" column="qr_scene"/>
+		<result property="qrSceneStr" column="qr_scene_str"/>
 		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
 	</resultMap>
 
 	<sql id="Base_Column_List">
 	    `user_id`,
-	    `openid`,
 	    `mobile`,
+	    `unionid`,
+	    `openid_gzh`,
+	    `openid_xcx`,
 	    `nickname`,
-	    `avatar`,
-	    `gender`,
-	    `country`,
+	    `sex`,
 	    `province`,
 	    `city`,
-	    `create_time`
+	    `country`,
+	    `language`,
+	    `headimgurl`,
+	    `subscribe`,
+	    `subscribe_time`,
+	    `subscribe_scene`,
+	    `remark`,
+	    `groupid`,
+	    `tagid_list`,
+	    `qr_scene`,
+	    `qr_scene_str`,
+	    `create_time`,
+	    `update_time`
   	</sql>
-
-	<select id="queryByOpenId" resultMap="BaseResultMap">
+	<select id="queryByUnionId" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from member_user
-		where 1 = 1
-		<if test="openId != null">
-			and `openid` = #{openId}
-		</if>
+		from user_account
+		where unionid = #{value}
+	</select>
+
+	<select id="queryByOpenIdGzh" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user_account
+		where `openid_gzh` = #{value}
+	</select>
+
+	<select id="queryByOpenIdXcx" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user_account
+		where `openid_xcx` = #{value}
 	</select>
 
 	<select id="queryByMobile" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from member_user
-		where 1 = 1
-		<if test="mobile != null">
-			and `mobile` = #{mobile}
-		</if>
+		from user_account
+		where `mobile` = #{value}
 	</select>
 
 	<select id="queryObject" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from member_user
+		from user_account
 		where user_id = #{value}
 	</select>
 
 	<select id="queryList" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
-		from member_user
+		from user_account
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="nickname != null and nickname.trim() != ''">
+			AND nickname LIKE concat('%',#{nickname},'%')
 		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -78,60 +109,78 @@
 	</select>
 
 	<select id="queryTotal" resultType="int">
-		select count(*) from member_user
+		select count(*) from user_account
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
 	</select>
 
-	<select id="queryOpenidByUserId" resultType="string">
-		select openid from member_user where user_id = #{value}
-	</select>
-
 	<insert id="save" parameterType="com.business.entity.UserVo" useGeneratedKeys="true" keyProperty="userId">
-		insert into member_user(
-	    `openid`,
+		insert into user_account(
 	    `mobile`,
+	    `unionid`,
+	    `openid_gzh`,
+	    `openid_xcx`,
 	    `nickname`,
-	    `avatar`,
-	    `gender`,
-	    `country`,
+	    `sex`,
 	    `province`,
 	    `city`,
+	    `country`,
+	    `language`,
+	    `headimgurl`,
+	    `subscribe`,
+	    `subscribe_time`,
+	    `subscribe_scene`,
+	    `remark`,
+	    `groupid`,
+	    `tagid_list`,
+	    `qr_scene`,
+	    `qr_scene_str`,
 	    `create_time`)
 		values(
-	    #{openid},
 	    #{mobile},
+	    #{unionid},
+	    #{openidGzh},
+	    #{openidXcx},
 	    #{nickname},
-	    #{avatar},
-	    #{gender},
-	    #{country},
+	    #{sex},
 	    #{province},
 	    #{city},
+	    #{country},
+	    #{language},
+	    #{headimgurl},
+	    #{subscribe},
+	    #{subscribeTime},
+	    #{subscribeScene},
+	    #{remark},
+	    #{groupid},
+	    #{tagidList},
+	    #{qrScene},
+	    #{qrSceneStr},
         now())
 	</insert>
 
 	<update id="update" parameterType="com.business.entity.UserVo">
-		update member_user
+		update user_account
 		<set>
-			<if test="openid != null">
-				`openid` = #{openid},
-			</if>
 			<if test="mobile != null">
 				`mobile` = #{mobile},
+			</if>
+			<if test="unionid != null">
+				`unionid` = #{unionid},
+			</if>
+			<if test="openidGzh != null">
+				`openid_gzh` = #{openidGzh},
+			</if>
+			<if test="openidXcx != null">
+				`openid_xcx` = #{openidXcx},
 			</if>
 			<if test="nickname != null">
 				`nickname` = #{nickname},
 			</if>
-			<if test="avatar != null">
-				`avatar` = #{avatar},
-			</if>
-			<if test="gender != null">
-				`gender` = #{gender},
-			</if>
-			<if test="country != null">
-				`country` = #{country},
+			<if test="sex != null">
+				`sex` = #{sex},
 			</if>
 			<if test="province != null">
 				`province` = #{province},
@@ -139,30 +188,63 @@
 			<if test="city != null">
 				`city` = #{city},
 			</if>
-			<if test="createTime != null">
-				`create_time` = #{createTime}
+			<if test="country != null">
+				`country` = #{country},
+			</if>
+			<if test="language != null">
+				`language` = #{language},
+			</if>
+			<if test="headimgurl != null">
+				`headimgurl` = #{headimgurl},
+			</if>
+			<if test="subscribe != null">
+				`subscribe` = #{subscribe},
+			</if>
+			<if test="subscribeTime != null">
+				`subscribe_time` = #{subscribeTime},
+			</if>
+			<if test="subscribeScene != null">
+				`subscribe_scene` = #{subscribeScene},
+			</if>
+			<if test="remark != null">
+				`remark` = #{remark},
+			</if>
+			<if test="groupid != null">
+				`groupid` = #{groupid},
+			</if>
+			<if test="tagidList != null">
+				`tagid_list` = #{tagidList},
+			</if>
+			<if test="qrScene != null">
+				`qr_scene` = #{qrScene},
+			</if>
+			<if test="qrSceneStr != null">
+				`qr_scene_str` = #{qrSceneStr},
+			</if>
+			<if test="updateTime != null">
+				`update_time` = #{updateTime}
 			</if>
 		</set>
 		where user_id = #{userId}
 	</update>
 
-	<update id="updateByOpenId" parameterType="com.business.entity.UserVo">
-		update member_user
+	<update id="updateByOpenIdXcx" parameterType="com.business.entity.UserVo">
+		update user_account
 		<set>
 			<if test="mobile != null">
 				`mobile` = #{mobile},
 			</if>
+			<if test="unionid != null">
+				`unionid` = #{unionid},
+			</if>
+			<if test="openidGzh != null">
+				`openid_gzh` = #{openidGzh},
+			</if>
 			<if test="nickname != null">
 				`nickname` = #{nickname},
 			</if>
-			<if test="avatar != null">
-				`avatar` = #{avatar},
-			</if>
-			<if test="gender != null">
-				`gender` = #{gender},
-			</if>
-			<if test="country != null">
-				`country` = #{country},
+			<if test="sex != null">
+				`sex` = #{sex},
 			</if>
 			<if test="province != null">
 				`province` = #{province},
@@ -170,21 +252,171 @@
 			<if test="city != null">
 				`city` = #{city},
 			</if>
-			<if test="createTime != null">
-				`create_time` = #{createTime}
+			<if test="country != null">
+				`country` = #{country},
+			</if>
+			<if test="language != null">
+				`language` = #{language},
+			</if>
+			<if test="headimgurl != null">
+				`headimgurl` = #{headimgurl},
+			</if>
+			<if test="subscribe != null">
+				`subscribe` = #{subscribe},
+			</if>
+			<if test="subscribeTime != null">
+				`subscribe_time` = #{subscribeTime},
+			</if>
+			<if test="subscribeScene != null">
+				`subscribe_scene` = #{subscribeScene},
+			</if>
+			<if test="remark != null">
+				`remark` = #{remark},
+			</if>
+			<if test="groupid != null">
+				`groupid` = #{groupid},
+			</if>
+			<if test="tagidList != null">
+				`tagid_list` = #{tagidList},
+			</if>
+			<if test="qrScene != null">
+				`qr_scene` = #{qrScene},
+			</if>
+			<if test="qrSceneStr != null">
+				`qr_scene_str` = #{qrSceneStr},
+			</if>
+			<if test="updateTime != null">
+				`update_time` = #{updateTime}
 			</if>
 		</set>
-		where openid = #{openid}
+		where openid_xcx = #{openidXcx}
 	</update>
 
-	<delete id="delete">
-		delete from member_user where user_id = #{value}
-	</delete>
+	<update id="updateByOpenIdGzh" parameterType="com.business.entity.UserVo">
+		update user_account
+		<set>
+			<if test="mobile != null">
+				`mobile` = #{mobile},
+			</if>
+			<if test="unionid != null">
+				`unionid` = #{unionid},
+			</if>
+			<if test="openidXcx != null">
+				`openid_xcx` = #{openidXcx},
+			</if>
+			<if test="nickname != null">
+				`nickname` = #{nickname},
+			</if>
+			<if test="sex != null">
+				`sex` = #{sex},
+			</if>
+			<if test="province != null">
+				`province` = #{province},
+			</if>
+			<if test="city != null">
+				`city` = #{city},
+			</if>
+			<if test="country != null">
+				`country` = #{country},
+			</if>
+			<if test="language != null">
+				`language` = #{language},
+			</if>
+			<if test="headimgurl != null">
+				`headimgurl` = #{headimgurl},
+			</if>
+			<if test="subscribe != null">
+				`subscribe` = #{subscribe},
+			</if>
+			<if test="subscribeTime != null">
+				`subscribe_time` = #{subscribeTime},
+			</if>
+			<if test="subscribeScene != null">
+				`subscribe_scene` = #{subscribeScene},
+			</if>
+			<if test="remark != null">
+				`remark` = #{remark},
+			</if>
+			<if test="groupid != null">
+				`groupid` = #{groupid},
+			</if>
+			<if test="tagidList != null">
+				`tagid_list` = #{tagidList},
+			</if>
+			<if test="qrScene != null">
+				`qr_scene` = #{qrScene},
+			</if>
+			<if test="qrSceneStr != null">
+				`qr_scene_str` = #{qrSceneStr},
+			</if>
+			<if test="updateTime != null">
+				`update_time` = #{updateTime}
+			</if>
+		</set>
+		where openid_gzh = #{openidGzh}
+	</update>
 
-	<delete id="deleteBatch">
-		delete from member_user where user_id in
-		<foreach item="userId" collection="array" open="(" separator="," close=")">
-			#{userId}
-		</foreach>
-	</delete>
+	<update id="updateByUnionId" parameterType="com.business.entity.UserVo">
+		update user_account
+		<set>
+			<if test="mobile != null">
+				`mobile` = #{mobile},
+			</if>
+			<if test="openidGzh != null">
+				`openid_gzh` = #{openidGzh},
+			</if>
+			<if test="openidXcx != null">
+				`openid_xcx` = #{openidXcx},
+			</if>
+			<if test="nickname != null">
+				`nickname` = #{nickname},
+			</if>
+			<if test="sex != null">
+				`sex` = #{sex},
+			</if>
+			<if test="province != null">
+				`province` = #{province},
+			</if>
+			<if test="city != null">
+				`city` = #{city},
+			</if>
+			<if test="country != null">
+				`country` = #{country},
+			</if>
+			<if test="language != null">
+				`language` = #{language},
+			</if>
+			<if test="headimgurl != null">
+				`headimgurl` = #{headimgurl},
+			</if>
+			<if test="subscribe != null">
+				`subscribe` = #{subscribe},
+			</if>
+			<if test="subscribeTime != null">
+				`subscribe_time` = #{subscribeTime},
+			</if>
+			<if test="subscribeScene != null">
+				`subscribe_scene` = #{subscribeScene},
+			</if>
+			<if test="remark != null">
+				`remark` = #{remark},
+			</if>
+			<if test="groupid != null">
+				`groupid` = #{groupid},
+			</if>
+			<if test="tagidList != null">
+				`tagid_list` = #{tagidList},
+			</if>
+			<if test="qrScene != null">
+				`qr_scene` = #{qrScene},
+			</if>
+			<if test="qrSceneStr != null">
+				`qr_scene_str` = #{qrSceneStr},
+			</if>
+			<if test="updateTime != null">
+				`update_time` = #{updateTime}
+			</if>
+		</set>
+		where unionid = #{unionid}
+	</update>
 </mapper>

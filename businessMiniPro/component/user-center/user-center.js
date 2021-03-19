@@ -11,7 +11,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    index: "/pages/ucenter/index/index",   // 首页
+    index: "/pages/ucenter/index/index", // 首页
     headimg: ""
   },
 
@@ -41,7 +41,7 @@ Component({
       // 胶囊位置信息
       let res = wx.getMenuButtonBoundingClientRect();
       that.setData({
-        ucheight: res.height + res.top+6,
+        ucheight: res.height + res.top + 6,
         leftMenuWidth: that.data.windowWidth - res.width - 2 * (that.data.windowWidth - res.right),
         leftMenuHeight: res.height,
         menuButtonWidth: res.width,
@@ -51,7 +51,9 @@ Component({
       })
       wx.getUserInfo({
         success: function (res) {
-          that.setData({ headimg: res.userInfo.avatarUrl})
+          that.setData({
+            headimg: res.userInfo.avatarUrl
+          })
         }
       })
     }

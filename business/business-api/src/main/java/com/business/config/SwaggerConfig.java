@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(this.apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.platform.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.business.api"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 "小程序接口文档",
                 "1.0",
                 "urn:tos",
-                "platform",
+                "business",
                 "Apache 2.0",
                 "http://www.apache.org/licenses/LICENSE-2.0");
         return info;

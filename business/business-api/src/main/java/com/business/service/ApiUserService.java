@@ -5,6 +5,8 @@ import com.business.entity.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @author 创建人：Vsoft
  * @version 版本号：V1.0
@@ -18,19 +20,7 @@ public class ApiUserService {
     @Autowired
     private ApiUserMapper userDao;
 
-    public UserVo queryByOpenId(String openId) {
-        return userDao.queryByOpenId(openId);
-    }
-
-    public UserVo queryByMobile(String mobile) {
-        return userDao.queryByMobile(mobile);
-    }
-
-    public String queryOpenidByUserId(Integer id) {
-        return userDao.queryOpenidByUserId(id);
-    }
-
-    public UserVo queryObject(Integer id) {
+    public UserVo queryObject(Long id) {
         return userDao.queryObject(id);
     }
 
@@ -42,8 +32,45 @@ public class ApiUserService {
         userDao.update(user);
     }
 
-    public void updateByOpenId(UserVo user) {
-        userDao.updateByOpenId(user);
+    public void saveEdit(UserVo userVo) {
+        if (userDao.queryByUnionId(userVo.getUnionid()) != null) {
+            userDao.updateByUnionId(userVo);
+        } else if (userDao.queryByOpenIdGzh(userVo.getOpenidGzh()) != null) {
+            userDao.updateByOpenIdGzh(userVo);
+        } else if (userDao.queryByOpenIdGzh(userVo.getOpenidXcx()) != null) {
+            userDao.updateByOpenIdXcx(userVo);
+        } else {
+            userVo.setCreateTime(new Date());
+            userDao.save(userVo);
+        }
+    }
+
+    public UserVo queryByUnionId(String unionId) {
+        return userDao.queryByUnionId(unionId);
+    }
+
+    public UserVo queryByOpenIdGzh(String openId) {
+        return userDao.queryByOpenIdGzh(openId);
+    }
+
+    public UserVo queryByOpenIdXcx(String openId) {
+        return userDao.queryByOpenIdXcx(openId);
+    }
+
+    public UserVo queryByMobile(String openId) {
+        return userDao.queryByMobile(openId);
+    }
+
+    public void updateByOpenIdXcx(UserVo user) {
+        userDao.updateByOpenIdXcx(user);
+    }
+
+    public void updateByOpenIdGzh(UserVo user) {
+        userDao.updateByOpenIdGzh(user);
+    }
+
+    public void updateByUnionId(UserVo user) {
+        userDao.updateByUnionId(user);
     }
 
 }

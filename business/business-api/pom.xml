@@ -72,30 +72,55 @@
             <artifactId>javase</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>18.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-cells</artifactId>
+            <version>8.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose.slides</artifactId>
+            <version>15.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose.pdf</artifactId>
+            <version>19.1</version>
+        </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.aspose</groupId>-->
-            <!--<artifactId>aspose-words</artifactId>-->
-            <!--<version>18.8</version>-->
+        <!--<groupId>com.aspose</groupId>-->
+        <!--<artifactId>aspose-words</artifactId>-->
+        <!--<version>18.8</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.aspose</groupId>-->
-            <!--<artifactId>aspose-words</artifactId>-->
-            <!--<version>18.8</version>-->
-            <!--<scope>system</scope>-->
-            <!--<systemPath>${basedir}/libs/aspose-words-18.8.jar</systemPath>-->
+        <!--<groupId>com.aspose</groupId>-->
+        <!--<artifactId>aspose-words</artifactId>-->
+        <!--<version>18.8</version>-->
+        <!--<scope>system</scope>-->
+        <!--<systemPath>${basedir}/libs/aspose-words-18.8.jar</systemPath>-->
         <!--</dependency>-->
     </dependencies>
 
     <!--<build>-->
-        <!--<resources>-->
-            <!--<resource>-->
-                <!--<directory>lib</directory>-->
-                <!--<targetPath>/BOOT-INF/lib/</targetPath>-->
-                <!--<includes>-->
-                    <!--<include>**/*.jar</include>-->
-                <!--</includes>-->
-            <!--</resource>-->
-        <!--</resources>-->
+    <!--<resources>-->
+    <!--<resource>-->
+    <!--<directory>lib</directory>-->
+    <!--<targetPath>/BOOT-INF/lib/</targetPath>-->
+    <!--<includes>-->
+    <!--<include>**/*.jar</include>-->
+    <!--</includes>-->
+    <!--</resource>-->
+    <!--</resources>-->
     <!--</build>-->
 
 </project>

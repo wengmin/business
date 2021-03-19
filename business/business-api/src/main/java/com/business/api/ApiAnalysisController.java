@@ -30,7 +30,7 @@ public class ApiAnalysisController extends ApiBaseAction {
     @PostMapping("saveShare")
     public Object saveShare(@LoginUser UserVo loginUser) {
         AnalysisShareVo vo = new AnalysisShareVo();
-        vo.setUserId(loginUser.getUserId());
+        vo.setUserId(loginUser.getUserId().intValue());
         shareService.save(vo);
         return toResponsSuccess("记录用户分享成功");
     }

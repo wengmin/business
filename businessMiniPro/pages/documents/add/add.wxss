@@ -1,0 +1,245 @@
+.order_process {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 20rpx;
+  background-color: #fff;
+}
+
+.process_wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+}
+
+.process {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.process_icon {
+  width: 55rpx;
+  height: 55rpx;
+  text-align: center;
+  line-height: 50rpx;
+  background: #959695;
+  color: #fff;
+  border-radius: 55rpx;
+  border: 5rpx solid #d9d9d9;
+}
+
+.process_line {
+  background: #eff3f6;
+  flex: 1;
+  height: 5rpx;
+}
+
+.process_icon_action {
+  width: 55rpx;
+  height: 55rpx;
+  text-align: center;
+  line-height: 50rpx;
+  background: #52a936;
+  color: #fff;
+  border-radius: 55rpx;
+  border: 5rpx solid #d9d9d9;
+}
+
+.process_line {
+  background: #eff3f6;
+  flex: 1;
+  height: 5rpx;
+}
+
+.process_line_start {
+  background: #fff;
+}
+
+.process_line_end {
+  background: #52a936;
+}
+
+.process_name {
+  font-size: 26rpx;
+  margin-top: 10rpx;
+}
+
+
+.add-form {
+  width: 100%;
+  z-index: 1;
+  padding: 0 20rpx;
+  font-size: 0;
+  border-bottom: 1px solid #d9d9d9;
+  background: #fff;
+  padding-top: 20rpx;
+}
+
+.change {
+  width: 100%;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background: #52a936;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-item {
+  border: 1px solid #d9d9d9;
+  border-radius: 10rpx;
+  display: inline-block;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.form-item .ttext {
+  float: left;
+  display: block;
+  width: 200rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+.form-item .ttext text {
+  color: red;
+  line-height: 60rpx;
+  margin-right: 10rpx;
+}
+
+.form-item textarea {
+  float: left;
+  width: 450rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: left;
+}
+
+.form-item input {
+  float: left;
+  width: 450rpx;
+  height: 60rpx;
+  display: block;
+  text-align: left;
+}
+
+.btns {
+  overflow: hidden;
+  display: flex;
+  height: 130rpx;
+  width: 100%;
+  padding-top: 30rpx;
+  background: #f5f5f5;
+}
+
+.next,
+.save {
+  width: 710rpx;
+  margin: 0 auto;
+  display: block;
+  height: 90rpx;
+  text-align: center;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #52a936;
+  background: #fff;
+  border: solid 2rpx #52a936;
+  border-radius: 10rpx;
+}
+
+
+.select_box {
+  float: left;
+  width: 460rpx;
+  height: 60rpx;
+  position: relative;
+}
+
+.select_box .select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+}
+
+.select_box .select .select_text {
+  color: #777777;
+  line-height: 28rpx;
+  flex: 1;
+}
+
+.select_box .select .select_img {
+  width: 20rpx;
+  height: 30rpx;
+  display: block;
+  transform: rotate(90deg);
+  transition: transform 0.3s;
+}
+
+.select_box .select .select_img_rotate {
+  transform: rotate(-90deg);
+}
+
+.select_box .option_box {
+  position: absolute;
+  top: calc(100% - 1px);
+  width: 100%;
+  height: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: #fff;
+  transition: height 0.3s;
+  border-left: 1px solid #efefef;
+  border-right: 1px solid #efefef;
+  z-index: 999;
+}
+
+.select_box .option_box .option {
+  display: block;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-top: 1px solid #efefef;
+  padding: 0 10rpx;
+}
+
+.select_box .option_box .option:last-child {
+  border-bottom: 1px solid #efefef;
+}
+
+.select_box .option_box .new_box {
+  display: block;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-top: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
+  display: flex;
+  align-items: center;
+  padding: 0 10rpx;
+}
+
+.select_box .option_box .new_box input {
+  float: left;
+  width: 80%;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.select_box .option_box .new_box button {
+  float: right;
+  width: 20%;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 28rpx;
+  background: #52a936;
+  color: #ffffff;
+  padding: 0;
+}

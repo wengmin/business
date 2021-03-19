@@ -16,18 +16,22 @@
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": false,
     "userConfirmedUseCompilerModuleSwitch": false,
-    "useMultiFrameRuntime": true,
-    "bundle": false,
-    "useApiHook": true,
-    "useApiHostProcess": false
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.14.1",
@@ -52,20 +56,14 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/card/index2/index2",
-          "pathName": "pages/card/index2/index2",
-          "query": "companyId=1",
+          "name": "pages/card/index/index",
+          "pathName": "pages/card/index/index",
+          "query": "",
           "scene": null
         },
         {
-          "name": "pages/card/index1/index1",
-          "pathName": "pages/card/index1/index1",
-          "query": "param=4~6CkgY",
-          "scene": null
-        },
-        {
-          "name": "pages/card/indexs/indexs",
-          "pathName": "pages/card/indexs/indexs",
+          "name": "pages/upload/index",
+          "pathName": "pages/upload/index",
           "query": "",
           "scene": null
         },
@@ -76,14 +74,20 @@
           "scene": null
         },
         {
-          "name": "pages/card/adduser/adduser",
-          "pathName": "pages/card/adduser/adduser",
+          "name": "pages/card/edit/edit",
+          "pathName": "pages/card/edit/edit",
+          "query": "",
+          "scene": 1011
+        },
+        {
+          "name": "pages/documents/list/list",
+          "pathName": "pages/documents/list/list",
           "query": "",
           "scene": null
         },
         {
-          "name": "pages/file/edit/edit",
-          "pathName": "pages/file/edit/edit",
+          "name": "pages/ucenter/index/index",
+          "pathName": "pages/ucenter/index/index",
           "query": "",
           "scene": null
         }

@@ -49,7 +49,7 @@
 				/upload/**=anon
 				/h5/**=anon
 				/api/**=anon
-				/api/**=noSessionCreation
+				<!--/api/**=noSessionCreation-->
 				/login.html=anon
 				/sys/login=anon
 				/captcha.jpg=anon

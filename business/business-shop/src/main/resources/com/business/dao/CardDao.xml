@@ -83,7 +83,7 @@
         </if>
     </select>
 
-    <insert id="save" parameterType="com.business.entity.CardUserVo">
+    <insert id="save" parameterType="com.business.entity.CardInfoVo">
 		insert into card_user(
           `user_id`,
           `company_id`,

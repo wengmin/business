@@ -40,8 +40,8 @@ public class ApiCardRecordService {
         recordDao.deleteBatch(ids);
     }
 
-    public CardRecordVo queryByToUserId(Integer userId, Integer touserId){
-        return recordDao.queryByToUserId(userId, touserId);
+    public CardRecordVo queryByToUserId(Integer cardId, Integer touserId){
+        return recordDao.queryByToUserId(cardId, touserId);
     }
 
     public void updateTime(Integer id) {

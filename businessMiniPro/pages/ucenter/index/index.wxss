@@ -27,15 +27,6 @@ page {
   position: relative;
 }
 
-button {
-  padding-left: 0;
-}
-
-.userbutton {
-  background: #fff;
-  width: 100%;
-}
-
 .userinfo-avatar {
   width: 160rpx;
   height: 160rpx;
@@ -54,154 +45,6 @@ button {
   text-align: left;
 }
 
-.userinfo-mobile {
-  height: 50rpx;
-  margin-top: 20rpx;
-  text-align: left;
-}
-
-.userinfo-mobile .a {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.userinfo-mobile .txt {
-  height: 50rpx;
-  line-height: 40rpx;
-  font-size: 30rpx;
-  color: #b4282d;
-  float: left;
-  background: none;
-}
-
-.userinfo-mobile .txt.tj_col {
-  color: #333;
-  margin-left: 30rpx;
-}
-
-/* 我的订单 */
-
-.my_order {
-  width: 100%;
-  background: #fff;
-  height: 50px;
-  line-height: 50px;
-  border-bottom: 1px solid #f5f5f5;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
-}
-
-.cont {
-  margin: 0 20rpx;
-}
-
-.ordergo {
-  display: inline-block;
-  height: 26rpx;
-  width: 16rpx;
-  padding-top: 3rpx;
-}
-
-.orderxz {
-  display: inline-block;
-  height: 40rpx;
-  width: 40rpx;
-  margin-left: 30rpx;
-  vertical-align: middle;
-}
-
-.l {
-  float: left;
-}
-
-.r {
-  float: right;
-}
-
-.order_detai {
-  clear: both;
-  width: 100%;
-}
-
-.order_detai .li {
-  float: left;
-  width: 25%;
-  height: 160rpx;
-  text-align: center;
-}
-
-.order_detai .li .a {
-  clear: both;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-}
-
-.order_detai .icon {
-  margin: 0 auto;
-  display: block;
-  height: 52.803rpx;
-  width: 52.803rpx;
-  margin-bottom: 5rpx;
-}
-
-.order_detai .txt {
-  display: block;
-  height: 50rpx;
-  line-height: 50rpx;
-  width: 100%;
-  font-size: 24rpx;
-  color: #b4282d;
-}
-
-.profile-info {
-  width: 100%;
-  height: 280rpx;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 30.25rpx;
-  background: #333;
-}
-
-.profile-info .avatar {
-  height: 148rpx;
-  width: 148rpx;
-  border-radius: 50%;
-}
-
-.profile-info .info {
-  flex: 1;
-  height: 85rpx;
-  padding-left: 31.25rpx;
-}
-
-.profile-info .name {
-  display: block;
-  height: 45rpx;
-  line-height: 45rpx;
-  color: #fff;
-  font-size: 37.5rpx;
-  margin-bottom: 10rpx;
-}
-
-.profile-info .level {
-  display: block;
-  height: 30rpx;
-  line-height: 30rpx;
-  margin-bottom: 10rpx;
-  color: #7f7f7f;
-  font-size: 30rpx;
-}
-
 .user-menu {
   width: 100%;
   height: auto;
@@ -213,7 +56,7 @@ button {
   height: 100rpx;
   line-height: 100rpx;
   width: 100%;
-  border: 1rpx solid #f5f5f5;
+  border-bottom: 1rpx solid #e9e3e3;
 }
 
 .user-menu .menu_top {
@@ -245,87 +88,13 @@ button {
   border-bottom: none;
 }
 
-.user-menu .icon, .userinfo-mobile .icon {
+.user-menu .icon,
+.userinfo-mobile .icon {
   margin: 0 auto;
   display: block;
   height: 52.803rpx;
   width: 52.803rpx;
   margin-bottom: 16rpx;
-}
-
-.user-menu .icon.fyq {
-  background: url(http://webcharpic.xfshequ.com/icon/fyq.png) 0 0 no-repeat;
-  background-size: 100%;
-}
-
-.user-menu .icon.coupon {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_yhj.png) 0 0 no-repeat;
-  background-size: 100%;
-}
-
-.user-menu .icon.sc {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_sc.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.address {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_dz.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.security {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_zj.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.kefu {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_kf.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.help {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_bz.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.feedback {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_fk.png) 0 0 no-repeat;
-  background-size: 52.803rpx;
-}
-
-.userinfo-mobile .icon.phone {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_sj.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.order_detai .icon.dfk {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_dfk.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.order_detai .icon.dfh {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_dfh.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.order_detai .icon.dsh {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_dsh.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.order_detai .icon.tk {
-  background: url(http://webcharpic.xfshequ.com/icon/icon_tk.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.fs {
-  background: url(http://webcharpic.xfshequ.com/icon/fs.png) no-repeat;
-  background-size: 52.803rpx;
-}
-
-.user-menu .icon.tj {
-  background: url(http://webcharpic.xfshequ.com/icon/tj.png) no-repeat;
-  background-size: 52.803rpx;
 }
 
 .user-menu .txt {
@@ -336,43 +105,61 @@ button {
   color: #333;
 }
 
-.logout {
-  margin-top: 20rpx;
-  height: 101rpx;
+.cardlist {
+  padding: 30rpx;
+}
+
+.cardlist .card {
+  clear: both;
   width: 100%;
-  line-height: 101rpx;
-  text-align: center;
-  background: #fff;
-  color: #333;
-  font-size: 30rpx;
+  height: 240rpx;
+  padding: 20rpx;
+  border: solid 1px #cccccc;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
 }
 
-.service {
-  position: static;
-  background-color: transparent;
-  color: transparent;
-  margin: 0;
-  padding: 0;
-  border: none;
-  text-align: left;
-  line-height: normal;
-  display: inline;
+.cardlist .card:last-child {
+  margin-bottom: 0;
 }
 
-.rightbtn {
+.cardlist .card image {
+  float: left;
+  width: 200rpx;
+  height: 200rpx;
+  border: solid 1px #cccccc;
+}
+
+.cardlist .card .right {
+  float: left;
+  width: 400rpx;
+  height: 200rpx;
+  margin-left: 20rpx;
+  position: relative;
+}
+
+.cardlist .card .right text {
+  display: block;
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}
+
+.cardlist .card .btn {
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  text-align: center;
-  height: 80rpx;
-  background: #fff;
+  clear: both;
+  padding-top: 10rpx;
 }
 
-.rightbtn button, .rightbtn navigator {
+.cardlist .card .btn button,
+.cardlist .card .btn navigator {
   float: left;
   width: 30%;
-  margin-left: 2.5%;
+  margin-right: 2.5%;
   padding: 0;
-  height: 60rpx;
-  line-height: 60rpx;
+  height: 50rpx;
+  line-height: 50rpx;
   text-align: center;
   background: #fff;
   font-size: 26rpx;
@@ -381,19 +168,15 @@ button {
   border-radius: 10rpx;
 }
 
-.gonav {
-  width: 90%;
-  line-height: 35rpx;
-  padding: 10rpx 0;
+.addcardbtn {
+  text-align: center;
 }
 
-.gonav view {
-  float: left;
-  line-height: 60rpx;
+.addcardbtn image {
+  width: 300rpx;
+  height: 300rpx;
 }
 
-.gonav image {
-  float: right;
-  width: 30rpx;
-  height: 60rpx;
+.addcardbtn text {
+  display: block;
 }

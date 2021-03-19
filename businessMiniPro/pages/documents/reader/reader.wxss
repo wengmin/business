@@ -1,0 +1,15 @@
+.f{
+  padding: 30rpx;
+}
+.title{
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.desc{
+  font-size: 28rpx;
+  color: #535252;
+  margin-top: 30rpx;
+}
+image{
+  width: 100%;
+}

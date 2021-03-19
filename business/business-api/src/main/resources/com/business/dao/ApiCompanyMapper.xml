@@ -7,6 +7,9 @@
         <result property="companyId" column="company_id"/>
         <result property="name" column="name"/>
         <result property="simpleName" column="simple_name"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="county" column="county"/>
         <result property="address" column="address"/>
         <result property="phone" column="phone"/>
         <result property="logo" column="logo"/>
@@ -24,6 +27,9 @@
 		insert into company_info(
         `name`,
         `simple_name`,
+        `province`,
+	    `city`,
+	    `county`,
         `address`,
         `phone`,
         `logo`,
@@ -34,6 +40,9 @@
 		values(
           #{name},
           #{simpleName},
+          #{province},
+          #{city},
+          #{county},
           #{address},
           #{phone},
           #{logo},
@@ -51,6 +60,15 @@
             </if>
             <if test="simpleName != null">
                 `simple_name` = #{simpleName},
+            </if>
+            <if test="province != null">
+                `province` = #{province},
+            </if>
+            <if test="city != null">
+                `city` = #{city},
+            </if>
+            <if test="county != null">
+                `county` = #{county},
             </if>
             <if test="address != null">
                 `address` = #{address},
@@ -116,156 +134,4 @@
     <delete id="deleteFileByCompany">
 		delete from company_file where company_id = #{value}
 	</delete>
-
-
-    <select id="queryPost" resultType="com.business.entity.CompanyPostVo">
-        select
-        `post_id`,
-        `company_id`,
-        `photo`,
-        `name`,
-        `position`,
-        `mobile`,
-        `telephone`,
-        `wechat`,
-        `email`,
-        `profile`,
-        `qr_code`,
-        `status`,
-        `create_time`,
-        `update_time`
-        from company_post
-        WHERE status=0 and post_id = #{value}
-    </select>
-    <select id="queryPostList" resultType="com.business.entity.CompanyPostVo">
-        select
-        `post_id`,
-        `company_id`,
-        `photo`,
-        `name`,
-        `position`,
-        `mobile`,
-        `telephone`,
-        `wechat`,
-        `email`,
-        `profile`,
-        `qr_code`,
-        `status`,
-        `create_time`,
-        `update_time`
-        from company_post
-        WHERE status=0
-        <if test="companyId != null and companyId != '0'">
-            AND company_id = #{companyId}
-        </if>
-        <if test="postId != null and postId != '0'">
-            AND post_id != #{postId}
-        </if>
-        order by create_time desc
-    </select>
-
-
-    <select id="queryRoom" resultType="com.business.entity.CompanyRoomVo">
-        select
-	    `room_id`,
-	    `company_id`,
-	    (select phone from company_info where company_info.company_id=company_room.company_id) as servicePhone,
-	    `name`,
-	    `tung`,
-	    `floor`,
-	    `wifiname`,
-	    `wifipass`,
-	    `wifimac`,
-	    `qrcode`
-        from company_room
-        WHERE status=0 and room_id = #{value}
-    </select>
-
-
-    <resultMap type="com.business.entity.CompanyServiceVo" id="ServiceMap">
-        <id property="companyId" column="company_id"/>
-        <id property="serviceClass" column="service_class"/>
-        <!-- 描述集合属性 -->
-        <collection property="listServiceTag" ofType="String">
-            <result property="serviceTag" column="service_tag"/>
-        </collection>
-    </resultMap>
-    <select id="queryServiceGroup" resultMap="ServiceMap">
-        select
-        company_service.company_id,
-        company_service.service_class,
-        company_service.service_tag
-        from company_service
-        left join company_info on company_service.company_id=company_info.company_id
-        WHERE company_service.status=0 and company_service.company_id = #{value}
-    </select>
-    <select id="queryServiceList" resultType="com.business.entity.CompanyServiceVo">
-        select
-        `service_id`,
-        `company_id`,
-        `service_class`,
-        `service_tag`
-        from company_service
-        WHERE status=0 and company_id = #{value}
-        <if test="serviceClass != null and serviceClass != '0'">
-            AND service_class != #{serviceClass}
-        </if>
-    </select>
-
-
-    <select id="queryStaffByUserIdCompanyId" resultType="com.business.entity.CompanyStaffVo">
-        select
-	    `staff_id`,
-	    `company_id`,
-	    `name`,
-	    `mobile`,
-	    `post`,
-	    `user_id`,
-	    `status`,
-	    `create_time`,
-	    `update_time`
-        from company_staff
-        where company_id = #{companyId} and user_id = #{userId}
-    </select>
-    <select id="queryStaffByKey" resultType="com.business.entity.CompanyStaffVo">
-        select
-	    `staff_id`,
-	    `company_id`,
-	    `name`,
-	    `mobile`,
-	    `post`,
-	    `user_id`,
-	    `status`,
-	    `create_time`,
-	    `update_time`
-        from company_staff
-        where name = #{name} and  mobile = #{mobile} and  company_id = #{companyId}
-    </select>
-    <update id="updateStaff" parameterType="com.business.entity.CompanyStaffVo">
-        update company_staff
-        <set>
-            <if test="companyId != null">
-                `company_id` = #{companyId},
-            </if>
-            <if test="name != null">
-                `name` = #{name},
-            </if>
-            <if test="mobile != null">
-                `mobile` = #{mobile},
-            </if>
-            <if test="post != null">
-                `post` = #{post},
-            </if>
-            <if test="userId != null">
-                `user_id` = #{userId},
-            </if>
-            <if test="status != null">
-                `status` = #{status},
-            </if>
-            <if test="updateTime != null">
-                `update_time` = #{updateTime}
-            </if>
-        </set>
-        where staff_id = #{staffId}
-    </update>
 </mapper>

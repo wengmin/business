@@ -1,9 +1,9 @@
 .inputright {
-  float: right;
-  width: 500rpx;
+  float: left;
+  width: 450rpx;
   height: 60rpx;
   display: block;
-  text-align: right;
+  text-align: left;
 }
 
 .region-select {

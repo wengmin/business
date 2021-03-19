@@ -25,6 +25,11 @@ public class J2CacheUtils {
      * 系统AccessToken
      */
     public static String SYSTEM_ACCESS_TOKEN = "BUSINESS_SYSTEM_ACCESS_TOKEN";
+
+    /**
+     * GZH AccessToken
+     */
+    public static String GZH_ACCESS_TOKEN = "BUSINESS_GZH_ACCESS_TOKEN";
     /**
      * 系统缓存
      */

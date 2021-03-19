@@ -122,7 +122,7 @@
     <navigator hover-class="none" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser">免费创建名片</navigator>
     <!-- <navigator hover-class="none" wx:if="{{!isNewUser}}" url="/pages/card/index/index?param=">返回我的名片</navigator> -->
   </block>
-  <view>销擎，您的销售增长引擎</view>
+  <view>销擎，让营销更简单</view>
 </view>
 <view style="height:100rpx;"></view>
 <wxs module="fileType">

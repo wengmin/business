@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!--user-scalable=no禁止用户的操作-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title></title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="js/layer_mobile/layer.js"></script>
+    <script type="text/javascript" src="js/modernizr.2.5.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+    <style>
+        body {
+            height: 100%;
+            background-image: url("../images/mbg.jpg");
+            background-size: 100%;
+        }
+
+        .flipbook-viewport {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .flipbook div {
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        .mulu {
+            position: absolute;
+            z-index: 999;
+            padding: 5px 15px;
+            bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            right: 10px;
+            display: none;
+        }
+
+        .mulu .pindex {
+            float: left;
+            color: #333;
+        }
+
+        .mulu .fenge {
+            float: left;
+        }
+
+        .mulu .pcount {
+            float: left;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="flipbook-viewport">
+    <div class="container">
+        <div class="flipbook">
+        </div>
+    </div>
+    <div class="mulu">
+        <div class="pindex"></div>
+        <div class="fenge">/</div>
+        <div class="pcount"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function loadData() {
+        layer.open({
+            content: '加载中', skin: 'msg'
+        });
+        var urlPrefix = "https://emiaoweb.com/business/api"; // "http://localhost:8060/api";//;
+        $.ajax({
+            url: urlPrefix + "/documents/detail",
+            dataType: "json",
+            data: {documentsId: getQueryString("id")},
+            type: "GET",
+            xhrFields: {
+                withCredentials: true // 这里设置了withCredentials
+            },
+            success: function (res) {
+                if (res.errno == 0) {
+                    var data = res.data;
+                    for (var i = 0; i < data.pageList.length; i++) {
+                        layer.open({
+                            content: "加载到" + Math.round(i / data.pageList.length * 10000) / 100 + "%", skin: 'msg'
+                        });
+                        $("<div>").css("background-image", "url(" + data.pageList[i].url + ")").appendTo($(".flipbook"))
+                        //     .click(function () {
+                        //     if ($('.flipbook').turn('zoom')!=1){
+                        //         $('.flipbook').turn('zoom', 1, 500);
+                        //     } else{
+                        //         $('.flipbook').turn('zoom', 2, 500);
+                        //     }
+                        // });
+                    }
+                    layer.open({
+                        content: "加载完", skin: 'msg'
+                    });
+                    $(".mulu").show()
+                    $(".pindex").html("1")
+                    $(".pcount").html(data.pageList.length)
+                    loadApp()
+                    layer.closeAll()
+                    $('.flipbook').click(function (e) {
+                        var pos = {
+                            x: e.pageX - $(this).offset().left,
+                            y: e.pageY - $(this).offset().top
+                        };
+                        $('.flipbook').turn('zoom', pos);
+                    });
+                }
+            },
+            error: function () {
+                layer.open({
+                    content: '此页面发生未知异常,请联系管理员', skin: 'msg', time: 3
+                });
+            }
+        });
+    }
+
+    function loadApp() {
+        var w = $(window).width() - 50;
+        var h = $(window).height() - 50;
+        $('.flipboox').width(w).height(h);
+        $('.flipbook-viewport').width(w).height(h);
+        $(window).resize(function () {  //调整浏览器大小执行
+            w = $(window).width();
+            h = $(window).height();
+            //$('.flipboox').width(w).height(h);
+            $('.flipbook-viewport').width(w).height(h);
+        });
+        $('.flipbook').turn({
+            acceleration: true,
+            width: w,
+            height: h,
+            elevation: 50,
+            display: 'single',
+            gradients: true,
+            autoCenter: true,
+            when: {
+                turning: function (event, page, view) {
+                    $(".pindex").html(page)
+                },
+                // turned: function (event, page, view) {
+                //     if (page == parseInt($(".pcount").html())) {
+                //         layer.alert("已经是最后一页", {icon: 5});
+                //     }
+                // },
+                zooming: function (event, newZoomValue, currentZoomValue) {
+                    alert("New zoom: " + currentZoomValue);
+                }
+            }
+        });
+    }
+
+    yepnope({
+        test: Modernizr.csstransforms,
+        yep: ['js/turn.js'],
+        complete: loadData
+    });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    }
+</script>
+</body>
+</html>

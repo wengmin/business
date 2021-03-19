@@ -1,141 +1,153 @@
-<view class="container">
-  <card-holder title="{{cards.realname}}"></card-holder>
-  <view class="cardsbg">
-    <view class="cards_zyz">
-      <view class="left">
-        <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill" bindtap="topicPreview" data-url='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'></image>
+<view class="pagebg">
+  <navigator class="menu"
+    style="width:{{leftMenuWidth}}px;height:{{leftMenuHeight}}px;left:{{leftMenuLeft}}px;top:{{leftMenuTop}}px;"
+    url="/pages/ucenter/index/index" hover-class="none">
+    <open-data type="userAvatarUrl" class="userinfo-avatar"
+      style="width:{{leftMenuHeight-4}}px;height:{{leftMenuHeight-4}}px;"></open-data>
+    <view class="text">个人中心</view>
+  </navigator>
+  <view wx:if="{{leftshow}}" class="u-arrow-left">
+    <view class="pre-wrap-left">
+      <view class="pre-box1">
+        <view class="pre1"></view>
       </view>
-      <view class="right">
-        <view class="comname fontover">{{cards.company.name}}</view>
-        <view class="infobg">
-          <view class="name fontover">{{cards.realname}}</view>
-          <view class="position fontover">{{cards.position}}</view>
-        </view>
-        <view class="iconitems mobile" wx:if="{{cards.mobile}}">{{cards.mobile}} </view>
-        <view class="iconitems email" wx:if="{{cards.email}}">{{cards.email}}</view>
-        <view class="iconitems address" wx:if="{{cards.address}}">{{cards.province+cards.city+cards.county+cards.address}}</view>
-      </view>
-    </view>
-    <view class="navbody">
-      <button class="navleft" open-type="share" data-sharetype="card">
-        转发名片
-      </button>
-      <button class="navright" bindtap="addPhone">
-        存到手机通讯录
-      </button>
-    </view>
-    <view class="colleague">
-      <button class="imgbtn" bindtap='showQrCode'>
-        <image src="/static/images/qrcode.png"></image>
-      </button>
-      <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji&&!isCollectBtn}}">
-        <image src="/static/images/shou_no.png"></image>
-      </button>
-      <button class="btn" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
-        <view class="title">
-          <image src="/static/images/icon/phonecall.png"></image>拨打电话
-        </view>
-        <text class="info">{{cards.mobile}}</text>
-      </button>
-      <button class="btn" bindtap='copyText' data-text="{{cards.wechat}}" wx:if="{{cards.wechat}}">
-        <view class="title">
-          <image src="/static/images/icon/wechat.png"></image>加我微信
-        </view>
-        <text class="info">{{cards.wechat}}</text>
-      </button>
-      <button class="btn" bindtap='copyText' data-text="{{cards.email}}" wx:if="{{cards.email}}">
-        <view class="title">
-          <image src="/static/images/icon/email.png"></image>邮箱
-        </view>
-        <text class="info">{{cards.email}}</text>
-      </button>
-      <button class="btn" bindtap='copyText' data-text="{{cards.address}}" wx:if="{{cards.address}}">
-        <view class="title">
-          <image src="/static/images/icon/region.png"></image>地址
-        </view>
-        <text class="info">{{cards.address}}</text>
-      </button>
-      <button class="btn" bindtap='callPhone' data-text="{{cards.telephone}}" wx:if="{{cards.telephone}}">
-        <view class="title">
-          <image src="/static/images/detail_kefu.png"></image>固定电话
-        </view>
-        <text class="info">{{cards.telephone}}</text>
-      </button>
-    </view>
-  </view>
-  <view class="profile">
-    <image src='{{cards.avatar}}' class="leftimg"></image>
-    <view class="rightinfo">
-      <view class="name">{{cards.realname}}</view>
-      <view class="k">
-        <text class="desc">{{cards.profile?cards.profile:" 欢迎来到我的名片 "}}</text>
-      </view>
-      <view class="k">
-        <view class="desc">在您方便的时候，也请给我一张您的名片，谢谢！
-          <block wx:if="{{loginOpenid}}">
-            <button class="alink" wx:if="{{!isNewUser}}" open-type="share" data-sharetype="mycard">（点击回递名片）</button>
-            <navigator class="alink" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser?name={{cards.realname}}&ava={{cards.avatar}}">（点击回递名片）</navigator>
-          </block>
-          <block wx:else>
-            <navigator class="alink" url="/pages/auth/login/login?id=-4&param={{param}}">（点击回递名片）</navigator>
-          </block>
-        </view>
+      <view class="pre-box2">
+        <view class="pre2"></view>
       </view>
     </view>
   </view>
-</view>
-<view style="padding:20rpx;"  wx:if="{{cards.company.introduction}}">
-  <view class="itemtitle">
-    <image src="/static/images/icon/business.png" class="icon"></image>
-    <text>我的企业</text>
-  </view>
-  <view class="itembody">
-    <view class="comtop">
-      <image src="{{cards.company.logo}}" data-url='{{cards.company.logo}}' bindtap="topicPreview"></image>
-      <text>{{cards.company.name}}</text>
-      <button bindtap="comfileshowhide">{{isComfileshowhide?"关闭介绍":"打开介绍"}}</button>
-      <!-- <navigator hover-class="none" url="/pages/company/index/index" open-type="reLaunch">进入官网</navigator> -->
+  <view wx:if="{{rightshow}}" class="u-arrow-right">
+    <view class="pre-wrap-right">
+      <view class="pre-box3">
+        <view class="pre3"></view>
+      </view>
+      <view class="pre-box4">
+        <view class="pre4"></view>
+      </view>
     </view>
-    <view wx:if="{{isComfileshowhide}}" class="comdesc">{{cards.company.introduction}}</view>
   </view>
-  <view wx:if="{{isComfileshowhide}}" wx:for="{{cards.company.fileList}}" wx:key="key">
-    <block wx:if='{{fileType.getType(item.fileurl)=="video"}}'>
-      <video src="{{item.fileurl}}" class="comfile"></video>
-    </block>
-    <block wx:else>
-      <image src="{{item.fileurl}}" class="comfile" mode="widthFix" bindtap="topicPreview" data-type="Multiple" data-url='{{item.fileurl}}'></image>
-    </block>
-  </view>
+  <!-- <view class="swiper-nav" style="top:{{top}}px;left:{{left}}px">
+    <view class="item {{currentTab==0 ? 'on' : ''}}" style="margin-right:{{left}}px" data-current="0"
+      bindtap="itemChange">
+      <image src="/static/images/icon_zkh.png" data-current="0"></image>
+      <text data-current="0">名片</text>
+    </view>
+    <view class="item {{currentTab==1 ? 'on' : ''}}" style="margin-right:{{left}}px" data-current="1"
+      bindtap="itemChange">
+      <image src="/static/images/allorder.png" data-current="1"></image>
+      <text data-current="1">产品目录</text>
+    </view>
+    <view class="item {{currentTab==2 ? 'on' : ''}}" style="margin-right:{{left}}px" data-current="2"
+      bindtap="itemChange">
+      <image src="/static/images/icon_home.png" data-current="2"></image>
+      <text data-current="2">官网</text>
+    </view>
+  </view> -->
+  <!-- <view class="dian">
+    <view class="{{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="itemChange">
+    </view>
+    <view class="{{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="itemChange">
+    </view>
+  </view> -->
+  <swiper current="{{currentTab}}" class="swiper" duration="300" bindchange="indexChange">
+    <swiper-item class="box">
+      <view class="card">
+        <image class="topimage" src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'
+          mode="aspectFill" bindtap="topicPreview" data-url='{{cards.photo}}'>
+        </image>
+        <view class="imgremark" wx:if="{{cards.photoRemark}}">{{cards.photoRemark}}</view>
+        <view class="middle">
+          <view class="name">{{cards.realname}}</view>
+          <view class="text">{{cards.position}}</view>
+          <!-- <view class="right">
+          <text>{{cards.position}}</text>
+          <text>{{cards.company.name}}</text>
+        </view> -->
+        </view>
+        <view class="bottom">
+          <view class="item" wx:if="{{cards.mobile}}">
+            <text class="key">手机：</text>
+            <text class="value">{{cards.mobile}}</text>
+          </view>
+          <view class="item" wx:if="{{cards.email}}">
+            <text class="key">邮箱：</text>
+            <text class="value">{{cards.email}}</text>
+          </view>
+          <view class="item" wx:if="{{cards.company.address}}">
+            <text class="key">地址：</text>
+            <text
+              class="value">{{cards.company.province+cards.company.city+cards.company.county+cards.company.address}}</text>
+          </view>
+          <view class="comname" wx:if="{{cards.company.name}}">{{cards.company.name}}</view>
+        </view>
+      </view>
+
+      <view class="btnarea">
+        <view class="btn">
+          <image src="/static/images/card/w_txl.png" bindtap="addPhone"></image>
+        </view>
+        <view class="btn">
+          <image src="/static/images/card/w_call.png" bindtap='callPhone' data-text="{{cards.mobile}}">
+          </image>
+        </view>
+        <view class="btn">
+          <image src="/static/images/card/w_dw.png" bindtap='navigate'></image>
+        </view>
+        <view class="btn">
+          <image src="/static/images/card/more.png" bindtap='showbtn'></image>
+        </view>
+      </view>
+      <view class="imagePathBox" wx:if="{{showhidebtn}}" bindtap='showbtn'></view>
+      <view class="hidebtn" animation="{{btnanimation1}}">
+        <view class="hidebtnarea">
+          <view class="btn" bindtap='copyText' data-text="{{cards.wechat}}">
+            <image src="/static/images/card/f_wechat.png"></image>
+            <text>加微信</text>
+          </view>
+          <view class="btn" bindtap='callPhone' data-text="{{cards.mobile}}">
+            <image src="/static/images/card/f_call.png"></image>
+            <text>打电话</text>
+          </view>
+          <view class="btn" bindtap='navigate'>
+            <image src="/static/images/card/f_map.png"></image>
+            <text>打开地图</text>
+          </view>
+          <view class="btn" bindtap='addPhone'>
+            <image src="/static/images/card/f_txl.png"></image>
+            <text>保存通讯录</text>
+          </view>
+          <view class="line"></view>
+          <navigator class="fontbtn" url="/pages/card/edit/edit" hover-class="none">
+            <text>销擎名片，免费创建</text>
+            <image src="/static/images/card/icon_right.png"></image>
+          </navigator>
+        </view>
+        <button class="cleanbtn" bindtap="showbtn">取消</button>
+      </view>
+      <!-- <navigator class="home" url="/pages/ucenter/index/index" hover-class="none">
+        <image src="/static/images/icon_home.png"></image>
+      </navigator> -->
+    </swiper-item>
+    <swiper-item>
+      <view style="height:{{ucheight}}px;clear:both"></view>
+      <scroll-view scroll-y="true" class="list" style='height:calc(100vh - {{ucheight*2}}px)' bindscroll=""
+        bindscrolltolower="reachBottom">
+        <block wx:if="{{docList.length>0}}">
+          <navigator url="/pages/documents/reader/reader?id={{item.id}}" class="itembody" wx:for="{{docList}}"
+            wx:key="*this">
+            <image class="leftlogo" src="/static/images/documents/documents.png"></image>
+            <view class="info">
+              <view class="name">{{item.name}}</view>
+              <view class="desc">{{item.profiles}}</view>
+            </view>
+            <image class="bgimg" src="/static/images/documents/bg.png"></image>
+          </navigator>
+          <view style="height:1px;clear:both"></view>
+        </block>
+        <block wx:else>
+          <view class="nonedate">暂无产品目录</view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+  </swiper>
 </view>
-<view class='imagePathBox' hidden="{{maskHidden == false}}">
-  <view class="qrcodebody">
-    <image src="{{cards.qrCode}}" class='qrcodeImg'></image>
-    <button class='savaQrCode' bindtap='saveQRCode'>保存到手机</button>
-    <button class='closeQrCode' bindtap='closeQrCode'>关闭</button>
-  </view>
-</view>
-<view class="bottomtext">
-  <block wx:if="{{isZiji}}">
-    <navigator hover-class="none" url="/pages/card/adduser/adduser">{{isNewUser?"免费创建名片":"修改我的名片"}}</navigator>
-  </block>
-  <block wx:else>
-    <navigator hover-class="none" wx:if="{{isNewUser}}" url="/pages/card/adduser/adduser">免费创建名片</navigator>
-    <!-- <navigator hover-class="none" wx:if="{{!isNewUser}}" url="/pages/card/index/index?param=">返回我的名片</navigator> -->
-  </block>
-  <view>销擎，您的销售增长引擎</view>
-</view>
-<view style="height:100rpx;"></view>
-<wxs module="fileType">
-  function getType(str) {
-    var type = (str.substring(str.lastIndexOf(".") + 1, str.length)).toLowerCase();
-    var imagearr = ["jpg", "bmp", "gif", "png", "jpeg"];
-    var videoarr = ["mp4"];
-    if (imagearr.indexOf(type) > -1)
-      return "image";
-    else if (videoarr.indexOf(type) > -1)
-      return "video";
-    else
-      return "image"
-  }
-  module.exports.getType = getType;
-</wxs>

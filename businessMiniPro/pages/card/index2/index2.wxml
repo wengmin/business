@@ -1,120 +1,61 @@
 <view class='main'>
-  <view class="box b1" animation="{{animationMain}}" bindtouchstart='touchstart' bindtouchend="touchend" data-id="1"
-    style='display:{{outpage==0?"flex":"none"}}'>
-    <view class="card">
-      <image class="topimage" src='{{cards.photo}}' mode="aspectFit" bindtap="topicPreview" data-url='{{cards.photo}}'>
-      </image>
-      <view class="middle">
-        <view class="name">{{cards.realname}}</view>
-        <view class="right">
-          <text>{{cards.position}}</text>
-          <text>{{cards.company.simpleName}}</text>
-        </view>
-      </view>
-      <view class="bottom">
-        <view class="item" wx:if="{{cards.mobile}}">
-          <text class="key">手机：</text>
-          <text class="value">{{cards.mobile}}</text>
-        </view>
-        <view class="item" wx:if="{{cards.email}}">
-          <text class="key">邮箱：</text>
-          <text class="value">{{cards.email}}</text>
-        </view>
-        <view class="item" wx:if="{{cards.address}}">
-          <text class="key">地址：</text>
-          <text class="value">{{cards.province+cards.city+cards.county+cards.address}}</text>
-        </view>
-        <view class="comname">{{cards.company.name}}</view>
-      </view>
+  <view class="box b1 card" animation="{{animationMain}}" bindtouchstart='touchstart' bindtouchend="touchend"
+    data-id="1" style='display:{{outpage==0?"block":"none"}}'>
+    <view class="top">
+      <image src='{{!cards.company.logo ? "/static/images/icon/company.png" : cards.company.logo}}'></image>
+      <view class="name">{{cards.company.name}}</view>
     </view>
-    <view class="btnarea">
-      <view class="btn">
-        <image src="/static/images/cardicon/w_txl.png" bindtap="addPhone"></image>
+    <view class="middle">
+      <view class="name">
+        <view class="liner"></view>
+        <text>{{cards.realname}}</text>
       </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/w_call.png" bindtap='callPhone' data-text="{{cards.mobile}}">
-        </image>
-      </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/w_dw.png" bindtap='navigate'></image>
-      </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/more.png" bindtap='showbtn'></image>
-      </view>
+      <view class="position">{{cards.position}}</view>
+      <image src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFill"
+        bindtap="topicPreview" data-url='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}'></image>
     </view>
-    <view class="imagePathBox" wx:if="{{showhidebtn}}" bindtap='showbtn'></view>
-    <view class="hidebtn" animation="{{btnanimation1}}">
-      <view class="hidebtnarea">
-        <view class="btn" bindtap='copyText' data-text="{{cards.wechat}}">
-          <image src="/static/images/cardicon/b_wechat.png"></image>
-          <text>加微信</text>
+    <view class="bottom">
+      <view style="padding-left: 60rpx;">
+        <view class="call" bindtap='callPhone' data-text="{{cards.mobile}}" wx:if="{{cards.mobile}}">
+          <image src="/static/images/icon/phonecall.png"></image>
+          <text class="info">{{cards.mobile}}</text>
         </view>
-        <view class="btn" bindtap='callPhone' data-text="{{cards.mobile}}">
-          <image src="/static/images/cardicon/b_call.png"></image>
-          <text>打电话</text>
+        <view class="call" bindtap='copyText' data-text="{{cards.wechat}}" wx:if="{{cards.wechat}}">
+          <image src="/static/images/icon/wechat.png"></image>
+          <text class="info">{{cards.wechat}}</text>
         </view>
-        <view class="btn" bindtap='navigate'>
-          <image src="/static/images/cardicon/b_dw.png"></image>
-          <text>打开地图</text>
+        <view class="call" bindtap='copyText' data-text="{{cards.email}}" wx:if="{{cards.email}}">
+          <image src="/static/images/icon/email.png"></image>
+          <text class="info">{{cards.email}}</text>
         </view>
-        <view class="line"></view>
-        <view class="btn" bindtap='copyText' data-text="{{cards.wechat}}">
-          <image src="/static/images/cardicon/b_txl.png"></image>
-          <text>保存通讯录</text>
+        <view class="call" bindtap='copyText' data-text="{{cards.address}}" wx:if="{{cards.address}}">
+          <image src="/static/images/icon/region.png"></image>
+          <text class="info">{{cards.province+cards.city+cards.county+cards.address}}</text>
         </view>
       </view>
-      <button class="cleanbtn" bindtap="showbtn">取消</button>
+      <view class="btnarea">
+        <navigator class="imgbtn" url="/pages/ucenter/index/index">
+          <image src="/static/images/ic_menu_choice_nor.png"></image>
+        </navigator>
+        <button class="imgbtn" bindtap="collect" wx:if="{{!isZiji&&!isCollectBtn}}">
+          <image src="/static/images/shou_no.png"></image>
+        </button>
+        <button class="imgbtn" bindtap='showQrCode'>
+          <image src="/static/images/qrcode.png"></image>
+        </button>
+        <button class="imgbtn" bindtap="addPhone">
+          <image src="/static/images/txl.png"></image>
+        </button>
+      </view>
     </view>
   </view>
   <view class="box b2" animation="{{animationBack}}" bindtouchstart='touchstart' bindtouchend="touchend" data-id="2">
-    <view class="card">
-      <image class="topimage" src='{{!cards.photo ? "/static/images/card/w_card.jpg" : cards.photo}}' mode="aspectFit"
-        bindtap="topicPreview" data-url='{{cards.photo}}'>
-      </image>
-      <view class="middle">
-        <view class="name">{{cards.realname}}</view>
-        <view class="right">
-          <text>{{cards.position}}</text>
-          <text>{{cards.company.simpleName}}</text>
-        </view>
-      </view>
-      <view class="bottom">
-        <view class="item" wx:if="{{cards.mobile}}">
-          <text class="key">手机：</text>
-          <text class="value">{{cards.mobile}}</text>
-        </view>
-        <view class="item" wx:if="{{cards.email}}">
-          <text class="key">邮箱：</text>
-          <text class="value">{{cards.email}}</text>
-        </view>
-        <view class="item" wx:if="{{cards.address}}">
-          <text class="key">地址：</text>
-          <text class="value">{{cards.province+cards.city+cards.county+cards.address}}</text>
-        </view>
-        <view class="comname">{{cards.company.name}}</view>
-      </view>
-    </view>
-    <view class="btnarea">
-      <view class="btn">
-        <image src="/static/images/cardicon/w_txl.png" bindtap="addPhone"></image>
-      </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/w_call.png" bindtap='callPhone' data-text="{{cards.mobile}}">
-        </image>
-      </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/w_dw.png" bindtap='navigate'></image>
-      </view>
-      <view class="btn">
-        <image src="/static/images/cardicon/more.png" bindtap='showbtn'></image>
-      </view>
-    </view>
-    <!-- <scroll-view scroll-y="true" style="height:100vh">
+    <scroll-view scroll-y="true" style="height:100vh">
       <view class="com">
         <view class="name">{{cards.company.name}}</view>
         <view class="desc">{{cards.company.introduction}}</view>
       </view>
-    </scroll-view> -->
+    </scroll-view>
   </view>
   <view class="box b3" animation="{{animationMain}}" bindtouchstart='touchstart' bindtouchend="touchend" data-id="3"
     style='display:{{outpage==1?"block":"none"}}'>
@@ -146,26 +87,9 @@
     </scroll-view>
   </view>
 </view>
-<!-- <view wx:if="{{leftshow}}" class="u-arrow-left">
-  <view class="pre-wrap-left">
-    <view class="pre-box1">
-      <view class="pre1"></view>
-    </view>
-    <view class="pre-box2">
-      <view class="pre2"></view>
-    </view>
-  </view>
-</view> -->
-<view wx:if="{{rightshow}}" class="u-arrow-right">
-  <view class="pre-wrap-right">
-    <view class="pre-box3">
-      <view class="pre3"></view>
-    </view>
-    <view class="pre-box4">
-      <view class="pre4"></view>
-    </view>
-  </view>
-</view>
+<image wx:if="{{leftshow}}" src="/static/images/left.png" class="lefticon"></image>
+<image wx:if="{{rightshow}}" src="/static/images/right.png" class="righticon"></image>
+
 <view class='imagePathBox' hidden="{{maskHidden == false}}">
   <view class="qrcodebody">
     <image src="{{cards.qrCode}}" class='qrcodeImg'></image>

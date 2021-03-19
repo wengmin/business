@@ -1,0 +1,224 @@
+<!--pages/user/user.wxml-->
+<view wx:if="{{tip}}">
+  <view wx:if="{{rcardname}}">
+    <view class="profile">
+      <image src='{{rcardava}}' class="leftimg"></image>
+      <view class="rightinfo">
+        <view class="name">{{rcardname}}</view>
+        <view class="k">
+          <view class="desc">您还未创建名片。</view>
+          <view class="desc">麻烦您花一分钟时间，快速创建您的名片，然后再转发您的名片给我，谢谢！</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="tis" wx:else>
+    <!-- <view class="desc">花一分钟时间，快速创建您个人的小程序名片，让您的客户和合作伙伴都能便捷获取、保存和使用您的名片，大幅提升您的商务机会。</view> -->
+    <view class="desc">需要您授权登录，作为您的个人名片账号。</view>
+  </view>
+  <button class="next" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+</view>
+
+
+
+<view class="add-user" wx:if="{{fromOne}}">
+  <view class='order_process'>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_start'></view>
+        <view class="process_icon_action">1</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>人员信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line'></view>
+        <view class="process_icon">2</view>
+        <view class='process_line'></view>
+      </view>
+      <text class='process_name'>公司信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line'></view>
+        <view class="process_icon">3</view>
+        <view class='process_line process_line_start'></view>
+      </view>
+      <text class='process_name'>图片设置</text>
+    </view>
+  </view>
+  <view class="add-form">
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>姓名</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="realname" maxlength="12" placeholder="请输入姓名"
+        value="{{user.realname}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>职位</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="position" maxlength="12" placeholder="职位"
+        value="{{user.position}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>手机号码</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="mobile" value="{{user.mobile}}" maxlength="15"
+        type="number" placeholder="请输入手机号码" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">电子邮箱</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="email" maxlength="20" value="{{user.email}}"
+        placeholder="请输入电子邮箱" />
+    </view>
+    <!-- <view class="form-item">
+      <view class="ttext">微信号</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="wechat" maxlength="12" value="{{user.wechat}}"
+        placeholder="请输入微信号" />
+    </view> -->
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="nextOne">下一步</button>
+  </view>
+</view>
+
+
+
+<view class="add-user" wx:if="{{fromTwo}}">
+  <view class='order_process'>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_start'></view>
+        <view class="process_icon_action">1</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>人员信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_end'></view>
+        <view class="process_icon_action">2</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>公司信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line'></view>
+        <view class="process_icon">3</view>
+        <view class='process_line process_line_start'></view>
+      </view>
+      <text class='process_name'>图片设置</text>
+    </view>
+  </view>
+  <view class="add-form">
+    <view class="form-item">
+      <view class="ttext">
+        <text class="m">*</text>公司名称</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="companyname" maxlength="50" placeholder="公司名称"
+        value="{{user.companyName}}" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">企业客服电话</view>
+      <input class="inputright" bindinput="bindinputValue" maxlength="20" data-type="telephone"
+        value="{{user.telephone}}" placeholder="请输入企业客服电话" />
+    </view>
+    <view class="form-item">
+      <view class="ttext">省市区</view>
+      <region bind:queding="onRegionClick" province='{{user.province}}' city='{{user.city}}' county='{{user.county}}'>
+      </region>
+    </view>
+    <view class="form-item">
+      <view class="ttext">详细地址</view>
+      <input class="inputright" bindinput="bindinputValue" data-type="address" maxlength="50" value="{{user.address}}"
+        placeholder="详细地址, 如街道、楼盘号等" />
+    </view>
+  </view>
+  <view class="btns">
+    <button class="next" bindtap="nextTwo">下一步</button>
+  </view>
+</view>
+
+
+
+<view class="add-user" wx:if="{{fromThree}}">
+  <view class='order_process'>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_start'></view>
+        <view class="process_icon_action">1</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>人员信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_end'></view>
+        <view class="process_icon_action">2</view>
+        <view class='process_line process_line_end'></view>
+      </view>
+      <text class='process_name'>公司信息</text>
+    </view>
+    <view class='process_wrap'>
+      <view class='process'>
+        <view class='process_line process_line_end'></view>
+        <view class="process_icon_action">3</view>
+        <view class='process_line process_line_start'></view>
+      </view>
+      <text class='process_name'>图片设置</text>
+    </view>
+  </view>
+  <view class="add-form">
+    <view class="form-item" bindtap="changePhoto">
+      <view style="width:100%;text-align:center;clear:both">
+        <image class="img" src='{{user.photo?user.photo:"/static/images/card/w_card.jpg"}}' mode="aspectFill"></image>
+      </view>
+      <view class="imgtext" wx:if="{{!user.photo}}">点击上传照片</view>
+      <view class="imgtext" wx:if="{{user.photo}}">更换名片图片</view>
+      <view class="remark">说明“名片图片可以设置为企业LOGO、个人头像或者其他相关图片”。</view>
+    </view>
+    <view class="form-item">
+      <view class="ttext">图片口号</view>
+      <input class="inputright" bindinput="bindinputValue" maxlength="20" data-type="imgremark"
+        value="{{user.imgremark}}" placeholder="显示于图片下方" />
+    </view>
+    <!-- <view class="form-item">
+      <view class="ttext">选择背景</view>
+      <radio-group class='radio_group' bindchange="radioChange">
+        <view class="item" wx:for-items="{{bgimgdata}}" wx:key="num">
+          <image class="img" src='{{item.url}}' mode="aspectFill"></image>
+          <radio value="{{item.value}}" checked="{{item.checked}}">{{item.name}}</radio>
+        </view>
+      </radio-group>
+    </view> -->
+    <!-- <view class="form-item">
+      <view class="ttext">上传名片</view>
+      <view style="text-align:center;">
+        <image class="img" src='{{user.photo?user.photo:"/static/images/card/w_card.jpg"}}' mode="aspectFill"></image>
+        <radio value="1" checked="false" style="margin-top:20rpx">是否显示自己的名片</radio>
+      </view>
+    </view> -->
+    <!-- <view class="form-item">
+      <textarea class="input_n" maxlength="1000" bindinput="bindinputValue" data-type="profile" placeholder="请输入名片设置，不输入默认显示：欢迎来到我的名片" value="{{user.profile}}" />
+    </view> -->
+  </view>
+  <view class="btns">
+    <button class="save" bindtap="saveUser">保存</button>
+    <!-- <button class="save" bindtap="saveUser" wx:if="{{type==0}}">保存</button>
+    <button class="save" open-type="share" wx:if="{{type==1}}">保存并分享</button> -->
+  </view>
+</view>
+
+<view wx:if="{{lastpage}}">
+  <view class="tis">
+    <image class="successIcon" src="/static/images/icon_xz_g.png"></image>
+    <view class="desc">您已完成名片创建，请点击预览您的名片。</view>
+    <view class="desc">您可以点击左上角“名片夹”进入名片夹，管理您自己的和别人的名片。</view>
+  </view>
+  <view class="btnarea">
+    <button class="left" bindtap="lastpageBtn">预览我的名片</button>
+    <navigator class="right" url="/pages/ucenter/index/index">进入名片夹</navigator>
+  </view>
+</view>
+<view class="bottomtext">销擎，让营销更简单</view>

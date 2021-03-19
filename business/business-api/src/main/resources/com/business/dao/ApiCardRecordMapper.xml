@@ -5,7 +5,7 @@
 
     <select id="queryByToUserId"  resultType="com.business.entity.CardRecordVo">
         select * from card_record
-        WHERE user_id=#{userId} and touser_id=#{touserId} order by create_time limit 1
+        WHERE card_id=#{cardId} and touser_id=#{touserId} order by create_time limit 1
     </select>
 
     <select id="queryList" resultType="com.business.entity.CardRecordVo">

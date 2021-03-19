@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.business.dao.ApiDocumentsMapper">
+
+    <select id="queryObject" resultType="com.business.entity.DocumentsVo">
+        select
+	    `id`,
+	    `folder_id`,
+	    `cover`,
+	    `name`,
+	    `profiles`,
+	    `is_open`,
+	    `password`,
+	    `user_id`,
+	    `create_time`,
+	    `update_time`
+        from documents
+        where id = #{value}
+    </select>
+    <select id="queryList" resultType="com.business.entity.DocumentsVo">
+        select
+        `id`,
+        `folder_id`,
+        `cover`,
+        `name`,
+        `profiles`,
+        `is_open`,
+        `password`,
+        `user_id`,
+        `create_time`,
+        `update_time`
+        from documents
+        WHERE user_id=#{userId}
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="queryTotal" resultType="int">
+        select count(*) from documents
+        WHERE user_id=#{userId}
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+    <insert id="save" parameterType="com.business.entity.DocumentsVo" useGeneratedKeys="true" keyProperty="id">
+		insert into documents(
+          `folder_id`,
+          `cover`,
+          `name`,
+          `profiles`,
+          `is_open`,
+          `password`,
+          `user_id`,
+          `create_time`,
+	      `update_time`        )
+		values(
+          #{folderId},
+          #{cover},
+          #{name},
+          #{profiles},
+          #{isOpen},
+          #{password},
+          #{userId},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+    <update id="update" parameterType="com.business.entity.DocumentsVo">
+        update documents
+        <set>
+            <if test="folderId != null">
+                `folder_id` = #{folderId},
+            </if>
+            <if test="cover != null">
+                `cover` = #{cover},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="profiles != null">
+                `profiles` = #{profiles},
+            </if>
+            <if test="isOpen != null">
+                `is_open` = #{isOpen},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from documents
+        where id = #{value}
+    </delete>
+
+
+    <select id="queryFolderList" resultType="com.business.entity.DocumentsFolderVo">
+        select
+	    `folder_id`,
+	    `name`,
+        `is_open`,
+        `password`,
+        `user_id`,
+        `sort_value`,
+        `create_time`,
+	    `update_time`
+        from documents_folder
+        WHERE user_id=#{userId} order by sort_value asc
+    </select>
+    <insert id="saveFolder" parameterType="com.business.entity.DocumentsFolderVo" useGeneratedKeys="true"
+            keyProperty="folderId">
+		insert into documents_folder(
+	    `name`,
+        `is_open`,
+        `password`,
+        `user_id`,
+        `sort_value`,
+        `create_time`,
+	    `update_time`        )
+		values(
+          #{name},
+          #{isOpen},
+          #{password},
+          #{userId},
+          #{sortValue},
+          #{createTime},
+          #{updateTime}         )
+	</insert>
+    <delete id="deleteFolder">
+        delete from documents_folder
+        where folder_id = #{folderId} and user_id = #{userId}
+    </delete>
+
+
+    <select id="queryPageList" resultType="com.business.entity.DocumentsPageVo">
+        select
+	    `page_id`,
+	    `documents_id`,
+        `name`,
+        `url`,
+        `sort_value`,
+        `create_time`
+        from documents_page
+        where documents_id = #{value} order by sort_value asc
+    </select>
+    <insert id="savePage" parameterType="com.business.entity.DocumentsPageVo">
+		insert into documents_page(
+          `documents_id`,
+          `name`,
+          `url`,
+          `sort_value`,
+          `create_time`        )
+		values(
+          #{documentsId},
+          #{name},
+          #{url},
+          #{sortValue},
+          #{createTime}         )
+	</insert>
+    <delete id="deletePageByDocumentsId">
+        delete from documents_page
+        where documents_id = #{value}
+    </delete>
+
+
+    <insert id="saveView" parameterType="com.business.entity.DocumentsViewVo">
+		insert into documents_view(
+          `documents_id`,
+          `page_id`,
+          `view_time`,
+          `user_id`,
+          `create_time`        )
+		values(
+          #{documentsId},
+          #{pageId},
+          #{viewTime},
+          #{userId},
+          #{createTime}         )
+	</insert>
+    <delete id="deleteViewByDocumentsId">
+        delete from documents_view
+        where documents_id = #{value}
+    </delete>
+
+    <resultMap id="BaseResultMap" type="com.business.entity.DocumentsFolderVo">
+        <collection property="docList" ofType="com.business.entity.DocumentsVo">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <!--<collection property="pageList" ofType="com.business.entity.DocumentsPageVo">-->
+            <!--<id column="page_id" property="pageId" />-->
+            <!--<result column="url" property="url" />-->
+            <!--</collection>-->
+        </collection>
+    </resultMap>
+
+    <select id="queryFolderDocList" resultMap="BaseResultMap">
+        select
+        `d.id`,
+        `d.folder_id`,
+        `d.cover`,
+        `d.name`,
+        `d.profiles`,
+        `d.is_open`,
+        `d.password`,
+        `d.user_id`,
+        `d.create_time`,
+        `d.update_time`,
+        `f.folder_id`,
+        `f.name`,
+        `f.is_open`,
+        `f.password`,
+        `f.user_id`,
+        `f.create_time`,
+        `f.update_time`,
+        `f.sort_value`
+        from documents d
+        left join documents_folder f ON f.folder_id = d.folder_id
+        WHERE d.user_id=#{userId} and f.user_id=#{userId} order by f.sort_value asc
+    </select>
+</mapper>

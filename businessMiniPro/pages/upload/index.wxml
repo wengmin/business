@@ -1,0 +1,13 @@
+<import src="/lib/we-cropper/we-cropper.wxml" />
+<view class="cropper-wrapper">
+  <template is="we-cropper" data="{{...cropperOpt}}" />
+  <view class="cropper-buttons" style="color: {{cropperOpt.boundStyle.color}}">
+    <view class="upload btn" bindtap="uploadTap" wx:if="{{isshowuploadbtn}}">
+      上传
+    </view>
+    <view class="getCropperImage btn" style="background-color: {{cropperOpt.boundStyle.color}};"
+      bindtap="getCropperImage">
+      使用
+    </view>
+  </view>
+</view>

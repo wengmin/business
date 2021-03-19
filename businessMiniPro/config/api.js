@@ -1,20 +1,23 @@
 //var NewApiRootUrl = 'https://emiaoweb.com/business/api/';
 var NewApiRootUrl = 'http://127.0.0.1:8060/api/';
 module.exports = {
-  FeedbackAdd: NewApiRootUrl + 'feedback/save',  //意见反馈
-  RegionList: NewApiRootUrl + 'region/list',  //获取区域列表
   AuthLoginByWeixin: NewApiRootUrl + 'auth/login_by_weixin', //微信登录
   AuthLoginBySilence: NewApiRootUrl + 'auth/loginBySilence', //微信登录(无感知)
+  FeedbackAdd: NewApiRootUrl + 'feedback/save', //意见反馈
+  RegionList: NewApiRootUrl + 'region/list', //获取区域列表
   Upload: NewApiRootUrl + 'upload/image',
-  UploadFile: NewApiRootUrl + 'upload/file',
+  UploadDocuments: NewApiRootUrl + 'upload/documents',
   MacrosByType: NewApiRootUrl + 'macro/queryMacrosByValue',
 
-  CardInfoByParam: NewApiRootUrl + 'card/cardUserByParam',
-  CardInfoByOpenID: NewApiRootUrl + 'card/cardUserByOpenId', 
+  //CardInfoByOpenID: NewApiRootUrl + 'card/cardUserByOpenId',   
   CreateCardQrCode: NewApiRootUrl + 'card/createQrCode',
-  CardUserSave: NewApiRootUrl + 'card/saveCardUser',
 
-  UserDetailByOpenID: NewApiRootUrl + 'user/detailByOpenId',
+  CardInfoByParam: NewApiRootUrl + 'card/detailByParam',
+
+  myCardList: NewApiRootUrl + 'card/myCardList',
+  CardDetail: NewApiRootUrl + 'card/detail',
+  CardDefault: NewApiRootUrl + 'card/detailByLogin', //cardDefault
+  CardSave: NewApiRootUrl + 'card/save',
 
   CardListRecord: NewApiRootUrl + 'card/listRecord',
   CardSaveRecord: NewApiRootUrl + 'card/saveRecord',
@@ -30,4 +33,12 @@ module.exports = {
   CompanySave: NewApiRootUrl + 'company/save',
 
   SaveShare: NewApiRootUrl + 'analysis/saveShare',
+
+  documentsList: NewApiRootUrl + 'documents/list',
+  documentsListByUser: NewApiRootUrl + 'documents/listByUser',
+  documentsDetail: NewApiRootUrl + 'documents/detail',
+  documentsFolderDocList: NewApiRootUrl + 'documents/folderDocList',
+  documentsFolderList: NewApiRootUrl + 'documents/folderList',
+  documentsFolderSave: NewApiRootUrl + 'documents/folderSave',
+  documentsFolderDelete: NewApiRootUrl + 'documents/folderDelete',
 };

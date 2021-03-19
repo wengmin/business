@@ -78,9 +78,16 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 //}
                 ////设置userId到request里，后续根据userId，获取用户信息
                 //request.setAttribute(LOGIN_USER_KEY, mlsUser);
+            } else if (openId.startsWith("wechat_gzh_")) {//公众号身份
+                openId = openId.replaceAll("wechat_gzh_", "");
+                UserVo userVo = userService.queryByOpenIdGzh(openId);
+                if (userVo == null && annotation == null) {
+                    throw new ApiRRException("请先登录", 401);
+                }
+                //设置userId到request里，后续根据userId，获取用户信息
+                request.setAttribute(LOGIN_USER_KEY, userVo);
             } else {
-                //UserVo userVo = userService.queryByOpenId(openId);
-                UserVo userVo = userService.queryByOpenId(openId);
+                UserVo userVo = userService.queryByOpenIdXcx(openId);
                 if (userVo == null && annotation == null) {
                     throw new ApiRRException("请先登录", 401);
                 }

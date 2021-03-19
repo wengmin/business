@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "编辑名片",
+  "component": true,
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "region": "/component/select-region/select-region",
+    "back-index": "/component/back-index/back-index"
+  }
+}

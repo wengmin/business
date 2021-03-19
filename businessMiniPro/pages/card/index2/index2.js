@@ -1,8 +1,6 @@
 const util = require('../../../utils/util.js');
 const api = require('../../../config/api.js');
 const user = require('../../../services/user.js');
-const QQMapWX = require('../../../lib/qqmap-wx-jssdk.js');
-var qqmapsdk;
 Page({
   data: {
     outpage: 0,
@@ -17,9 +15,7 @@ Page({
     isCollectBtn: false,
     maskHidden: false,
     leftshow: false,
-    rightshow: true,
-    showhidebtn: false,
-    btnanimation1: null,
+    rightshow: true
   },
   touchstart(e) {
     this.setData({
@@ -33,11 +29,11 @@ Page({
     let endX = e.changedTouches[0].clientX;
 
     that.animation_main = wx.createAnimation({
-      duration: 500,
+      duration: 1000,
       timingFunction: 'linear'
     })
     that.animation_back = wx.createAnimation({
-      duration: 500,
+      duration: 1000,
       timingFunction: 'linear'
     })
 
@@ -51,12 +47,7 @@ Page({
         nowpage: id + 1,
       })
       if (that.data.nowpage == 3) {
-        setTimeout(function () {
-          that.setData({
-            outpage: 1,
-          })
-        }, 250)
-        that.animation_main.rotateY(0).step()
+        that.animation_main.rotateY(-360).step()
         that.animation_back.rotateY(-180).step()
         that.setData({
           animationMain: that.animation_main.export(),
@@ -70,6 +61,27 @@ Page({
           animationBack: that.animation_back.export(),
         })
       }
+
+      // 移动完成后
+      setTimeout(function () {
+        if (that.data.nowpage == 2) {
+          that.setData({
+            outpage: 1,
+            leftshow:true,
+            rightshow:true
+          })
+        }else if(that.data.nowpage==3){
+          that.setData({
+            leftshow:true,
+            rightshow:false
+          })
+        }else{
+          that.setData({
+            leftshow:false,
+            rightshow:true
+          })
+        }
+      }, 1000)
     }
 
 
@@ -79,14 +91,11 @@ Page({
         return;
       };
       if (that.data.nowpage == 3) {
-        setTimeout(function () {
-          that.setData({
-            outpage: 0,
-          })
-        }, 500)
         that.animation_main.rotateY(-180).step()
         that.animation_back.rotateY(0).step()
         that.setData({
+          leftshow:true,
+          rightshow:true,
           animationMain: that.animation_main.export(),
           animationBack: that.animation_back.export(),
         })
@@ -95,19 +104,21 @@ Page({
           outpage: 0,
         })
         setTimeout(function () {
-          that.animation_main.rotateY(0).step()
-          that.animation_back.rotateY(180).step()
-          that.setData({
-            animationMain: that.animation_main.export(),
-            animationBack: that.animation_back.export(),
-          })
-        }, 100)
+        that.animation_main.rotateY(0).step()
+        that.animation_back.rotateY(180).step()
+        that.setData({
+          leftshow:false,
+          rightshow:true,
+          animationMain: that.animation_main.export(),
+          animationBack: that.animation_back.export(),
+        })
+      }, 100)
       } else {
         setTimeout(function () {
           that.setData({
             outpage: 0,
           })
-        }, 500)
+        }, 1000)
         that.animation_main.rotateY(0).step()
         that.animation_back.rotateY(180).step()
         that.setData({
@@ -119,26 +130,6 @@ Page({
         nowpage: id - 1,
       })
     }
-
-    // 移动完成后
-    setTimeout(function () {
-      if (that.data.nowpage == 3) {
-        that.setData({
-          leftshow: true,
-          rightshow: false
-        })
-      } else if (that.data.nowpage == 2) {
-        that.setData({
-          leftshow: true,
-          rightshow: true
-        })
-      } else {
-        that.setData({
-          leftshow: false,
-          rightshow: true
-        })
-      }
-    }, 500)
   },
 
 
@@ -171,10 +162,6 @@ Page({
       }
     }
     that.getCardInfo();
-
-    qqmapsdk = new QQMapWX({
-      key: '3QHBZ-TT4W2-LPIUI-CAGGZ-OK425-HCBBR'
-    });
   },
   getOwnCardInfo: function () {
     let that = this;
@@ -246,7 +233,6 @@ Page({
     }
   },
   copyText: function (e) {
-    let that = this
     wx.setClipboardData({
       data: e.currentTarget.dataset.text,
       success() {
@@ -415,83 +401,5 @@ Page({
         param: that.data.param
       }, 'POST', 'application/x-www-form-urlencoded').then(function (res) {});
     }
-  },
-  navigate() {
-    wx.showLoading({
-      title: '获取中',
-    })
-    var addres = this.data.cards.province + this.data.cards.city + this.data.cards.county + this.data.cards.address;
-    if (!addres) {
-      wx.showToast({
-        title: "地址为空转换失败",
-        icon: 'loading',
-        duration: 2000
-      });
-      return;
-    }
-    qqmapsdk.geocoder({
-      address: addres,
-      success: function (res) {
-        console.log(res);
-        let location = res.result.location
-        //使用微信内置地图查看标记点位置，并进行导航
-        wx.openLocation({
-          type: 'gcj02', // 返回可以用于wx.openLocation的经纬度 
-          latitude: location.lat,
-          longitude: location.lng,
-          scale: 18
-        })
-      },
-      fail: function (res) {
-        console.log(res);
-        wx.showToast({
-          title: "地址转换失败",
-          icon: 'loading',
-          duration: 2000
-        });
-      },
-      complete: function (res) {
-        wx.hideLoading()
-      }
-    });
-  },
-  showbtn: function () {
-    let that = this;
-    if (that.data.showhidebtn) {
-      that.setData({
-        showhidebtn: false,
-        btnanimation1: that.slideupshow(that, 0, 0, 'down')
-      })
-    } else {
-      that.setData({
-        showhidebtn: true,
-        btnanimation1: that.slideupshow(that, 1, 0, 'up')
-      })
-    }
-  },
-  /**
-   * 动画实现
-   * @method animationShow
-   * @param {that} 当前卡片
-   * @param {opacity} 透明度
-   * @param {delay} 延迟
-   * @param {isUp} 移动方向
-   */
-  slideupshow: function (that, opacity, delay, isUp) {
-    let animation = wx.createAnimation({
-      duration: 300,
-      timingFunction: 'ease',
-      delay: delay
-    });
-    if (isUp == 'down') {
-      animation.translateX(0).translateY('180%').opacity(opacity).step()
-    } else if (isUp == 'up') {
-      animation.translateX(0).translateY(0).opacity(opacity).step()
-    } else {
-      animation.translateY(0).opacity(opacity).step()
-    }
-    let params = ''
-    params = animation.export()
-    return params
   },
 })

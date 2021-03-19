@@ -85,7 +85,6 @@ public class TokenService {
     
     public String getAccessToken() {
     	String access_token = null;
-    	
     	boolean flag = RedisUtils.exists(J2CacheUtils.SYSTEM_ACCESS_TOKEN);
     	if(flag == true) {
     		access_token = RedisUtils.get(J2CacheUtils.SYSTEM_ACCESS_TOKEN).toString();
@@ -93,16 +92,30 @@ public class TokenService {
         		return access_token;
         	}
     	}
-    	
-    	
     	//获取access_token
         String requestUrl = ApiUserUtils.getAccessToken();
         String res = restTemplate.getForObject(requestUrl, String.class);
         JSONObject sessionData = JSON.parseObject(res);
         access_token=sessionData.getString("access_token");
-        
         RedisUtils.set(J2CacheUtils.SYSTEM_ACCESS_TOKEN, access_token, EXPIRE2);
         return access_token;
-        
+    }
+
+    public String getGzhAccessToken() {
+        String access_token = null;
+        boolean flag = RedisUtils.exists(J2CacheUtils.GZH_ACCESS_TOKEN);
+        if(flag == true) {
+            access_token = RedisUtils.get(J2CacheUtils.GZH_ACCESS_TOKEN).toString();
+            if(StringUtils.isNotBlank(access_token)) {
+                return access_token;
+            }
+        }
+        //获取access_token
+        String requestUrl = ApiUserUtils.getGzhAccessToken();
+        String res = restTemplate.getForObject(requestUrl, String.class);
+        JSONObject sessionData = JSON.parseObject(res);
+        access_token=sessionData.getString("access_token");
+        RedisUtils.set(J2CacheUtils.GZH_ACCESS_TOKEN, access_token, EXPIRE2);
+        return access_token;
     }
 }
