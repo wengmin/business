@@ -6,8 +6,7 @@
       <button>再想想</button>
     </navigator>
     <view class="login_confirm">
-      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 同意 </button>
-      <button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 同意 </button>
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 同意 </button>
     </view>
   </view>
 </view>

@@ -5,7 +5,9 @@
     <!-- <view class="desc">花一分钟时间，快速创建您个人的小程序名片，让您的客户和合作伙伴都能便捷获取、保存和使用您的名片，大幅提升您的商务机会。</view> -->
     <view class="desc">需要您授权登录，作为您的个人名片账号。</view>
   </view>
-  <auth-login></auth-login>
+  <view style="padding:20rpx">
+    <auth-login bind:successLogin="successLogin"></auth-login>
+  </view>
   <!-- <button class="next" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button> -->
 </view>
 

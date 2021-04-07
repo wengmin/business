@@ -170,13 +170,10 @@ page {
 
 .addcardbtn {
   text-align: center;
+  padding: 30rpx 0;
 }
 
 .addcardbtn image {
-  width: 300rpx;
-  height: 300rpx;
-}
-
-.addcardbtn text {
-  display: block;
+  width: 200rpx;
+  height: 200rpx;
 }

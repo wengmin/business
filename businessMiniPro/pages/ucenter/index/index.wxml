@@ -33,7 +33,7 @@
     </block>
     <block wx:else>
       <navigator hover-class="none" class="addcardbtn" url="/pages/card/edit/edit">
-        <image src="/static/images/add.png"></image><text>新增</text>
+        <image src="/static/images/add.png"></image>
       </navigator>
     </block>
   </view>

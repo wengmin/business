@@ -5,7 +5,6 @@ AuthLoginAuto:NewApiRootUrl + 'auth/loginAuto', //微信登录
 
 
   AuthLoginByWeixin: NewApiRootUrl + 'auth/login_by_weixin', //微信登录
-  AuthLoginBySilence: NewApiRootUrl + 'auth/loginBySilence', //微信登录(无感知)
   FeedbackAdd: NewApiRootUrl + 'feedback/save', //意见反馈
   RegionList: NewApiRootUrl + 'region/list', //获取区域列表
   Upload: NewApiRootUrl + 'upload/image',

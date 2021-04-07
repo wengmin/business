@@ -140,7 +140,32 @@ Page({
       "cardInfo.county": e.detail.county_name
     });
   },
-  tipbtn() {
+  successLogin(e){
+    let that = this;
+    console.log('组件传递的内容:', e)
+    util.request(api.CardDefault, {}).then(function (res) {
+      if (res.errno === 0) {
+        if (res.data) {
+          that.setData({
+            cardInfo: res.data,
+            "cardInfo.companyName": res.data.company.name,
+            "cardInfo.phone": res.data.company.phone,
+            "cardInfo.province": res.data.company.province,
+            "cardInfo.city": res.data.company.city,
+            "cardInfo.county": res.data.company.county,
+            "cardInfo.address": res.data.company.address,
+          });
+        }
+        if (res.data.realname) {
+          that.setData({
+            isFirst: false,
+            tip: false,
+            fromOne: true
+          })
+        }
+        wx.hideLoading();
+      }
+    });
     this.setData({
       fromOne: true,
       tip: false
@@ -266,73 +291,6 @@ Page({
         })
       }
     })
-  },
-  bindGetUserInfo(e) {
-    let that = this
-    if (e.detail.userInfo) {
-      //用户按了允许授权按钮
-      user.loginByWeixin(e.detail).then(res => {
-        let userInfo = wx.getStorageSync('userInfo');
-        app.globalData.userInfo = userInfo.userInfo;
-        app.globalData.token = res.data.openid;
-        util.request(api.CardDefault, {}).then(function (res) {
-          if (res.errno === 0) {
-            if (res.data) {
-              that.setData({
-                cardInfo: res.data,
-                "cardInfo.companyName": res.data.company.name,
-                "cardInfo.phone": res.data.company.phone,
-                "cardInfo.province": res.data.company.province,
-                "cardInfo.city": res.data.company.city,
-                "cardInfo.county": res.data.company.county,
-                "cardInfo.address": res.data.company.address,
-              });
-            }
-            if (res.data.realname) {
-              that.setData({
-                isFirst: false,
-                tip: false,
-                fromOne: true
-              })
-            }
-            wx.hideLoading();
-          }
-        });
-        this.setData({
-          fromOne: true,
-          tip: false
-        })
-      }).catch((err) => {
-        console.log(err)
-      });
-    } else {
-      //用户按了拒绝按钮
-      wx.showModal({
-        title: '警告通知',
-        content: '您点击了拒绝授权,将无法正常显示个人信息,点击确定重新获取授权。',
-        success: function (res) {
-          if (res.confirm) {
-            wx.openSetting({
-              success: (res) => {
-                if (res.authSetting["scope.userInfo"]) { ////如果用户重新同意了授权登录
-                  user.loginByWeixin(e.detail).then(res => {
-                    let userInfo = wx.getStorageSync('userInfo');
-                    app.globalData.userInfo = userInfo.userInfo;
-                    app.globalData.token = res.data.openid;
-                    this.setData({
-                      fromOne: true,
-                      tip: false
-                    })
-                  }).catch((err) => {
-                    console.log(err)
-                  });
-                }
-              }
-            })
-          }
-        }
-      });
-    }
   },
   onReady: function () {},
   onShow: function () {

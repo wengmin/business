@@ -1,5 +1,4 @@
 var app = getApp();
-var util = require('../../utils/util.js');
 var user = require('../../services/user.js');
 
 // component/register/register.js
@@ -10,7 +9,7 @@ Component({
   properties: {
     canIUseGetUserProfile: {
       type: Boolean,
-      value: false
+      value: true
     },
     buttonText: {
       type: String,
@@ -34,15 +33,26 @@ Component({
    */
   methods: {
     getUserProfile(e) {
+      let that = this
       // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
       // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
       wx.getUserProfile({
         desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
         success: (res) => {
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
+          var userInfo = res.userInfo;
+          userInfo.encryptedData = res.encryptedData;
+          userInfo.iv = res.iv;
+          user.loginByWeixin(userInfo).then(res => {
+            let userInfo = wx.getStorageSync('userInfo');
+            app.globalData.userInfo = userInfo;
+            app.globalData.token = res.data.openid;
+
+            //传递到page
+            this.triggerEvent('successLogin', userInfo)
+
+          }).catch((err) => {
+            console.log(err)
+          });
         },
         fail: (res) => {
           console.log("getUserProfile=>fail:" + res.errMsg)
@@ -57,19 +67,14 @@ Component({
       let that = this
       let token = wx.getStorageSync('token');
       if (token) {
-        that.setFid()
         return false;
       } else {
         if (e.detail.userInfo) {
           //用户按了允许授权按钮
           user.loginByWeixin(e.detail).then(res => {
             let userInfo = wx.getStorageSync('userInfo');
-            that.setData({
-              userInfo: userInfo.userInfo
-            });
             app.globalData.userInfo = userInfo.userInfo;
             app.globalData.token = res.data.openid;
-            that.setFid()
           }).catch((err) => {
             console.log(err)
           });

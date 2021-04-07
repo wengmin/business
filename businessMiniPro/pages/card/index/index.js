@@ -116,14 +116,15 @@ Page({
           content: "请卸载小程序，稍后再访问"
         });
       });
-    } else {
-      if (that.data.loginOpenid) {
-        that.getOwnCardInfo();
-      } else {
-        wx.navigateTo({
-          url: '/pages/card/edit/edit'
-        })
-      }
+    } else {      
+      that.getOwnCardInfo();
+      // if (that.data.loginOpenid) {
+      //   that.getOwnCardInfo();
+      // } else {
+      //   wx.navigateTo({
+      //     url: '/pages/card/edit/edit'
+      //   })
+      // }
     }
   },
   onShareAppMessage: function (res) {

@@ -43,11 +43,6 @@ Page({
           });
         }
       })
-    } else {
-      wx.redirectTo({
-        url: '/pages/auth/login/login?id=-2'
-      })
-      wx.removeStorageSync('userInfo');
     }
     this.setData({
       userInfo: app.globalData.userInfo
