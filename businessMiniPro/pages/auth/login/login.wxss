@@ -1,57 +1,37 @@
-page{
-  background: #fff;
-}
-
-.container{
-  background: #ffffff;
-}
-.cont{
-  width: 710rpx;
-  margin: 0 auto;
-}
-.selinfo{
-  height: 120rpx;
+.login_main {
+  margin-top: 30%;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
-.selinfo .sel{
-  height: 60rpx;
-  width: 60rpx;
+
+.login_main .login_title {
+  font-size: 36rpx;
 }
-.selinfo label{
-  width: 650rpx;
+
+.login_main .login_prompt {
+  font-size: 26rpx;
   color: #666;
-  margin-left: 20rpx;
+  margin: 40rpx 0;
 }
-.tit{
-  font-size: 30px;
-  color: #000000;
-  margin-bottom: 30rpx;
+
+.login_main .login_select_wrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
-.bottom-btn{
-  margin-top: 500rpx;
+
+.login_main .login_select_wrap .login_cancle button {
+  background-color: #95afc0;
+  color: #fff;
+  width: 300rpx;
+  margin: 20rpx;
 }
-.bottom-btn button{
-  width: 350rpx;
-  height: 80rpx;
-  line-height: 80rpx;
-  text-align: center;
-  color: #ffffff;
-  background: #E96900;
-  margin: 0 auto;
-}
-.bottom-new{
-  margin-top: 30rpx;
-}
-.bottom-new button{
-  width: 350rpx;
-  height: 80rpx;
-  line-height: 80rpx;
-  text-align: center;
-  background: none;
-  margin: 0 auto;
-  border: 1px solid #999;
-  color: #333;
+
+.login_main .login_select_wrap .login_confirm button {
+  background-color: #eb4d4b;
+  color: #fff;
+  width: 300rpx;
+  margin: 20rpx;
 }

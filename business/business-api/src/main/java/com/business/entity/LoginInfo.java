@@ -3,9 +3,7 @@ package com.business.entity;
 /**
  * 首次登录对象
  */
-public class LoginInfo {
-	private String encryptedData;
-	private String iv;
+public class LoginInfo  {
     private String code;
     private String avatarUrl;
     private int gender;
@@ -15,32 +13,14 @@ public class LoginInfo {
     private String province;
     private String country;
 	private int promoterId;
-	private Long companyId;	//商户id
-
-	public Long getCompanyId() {
-		return companyId;
+	private Long merchantId;	//商户id
+	
+	public Long getMerchantId() {
+		return merchantId;
 	}
-
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setMerchantId(Long merchantId) {
+		this.merchantId = merchantId;
 	}
-
-	public String getEncryptedData() {
-		return encryptedData;
-	}
-
-	public void setEncryptedData(String encryptedData) {
-		this.encryptedData = encryptedData;
-	}
-
-	public String getIv() {
-		return iv;
-	}
-
-	public void setIv(String iv) {
-		this.iv = iv;
-	}
-
 	public String getCode() {
 		return code;
 	}

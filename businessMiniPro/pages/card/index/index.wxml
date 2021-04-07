@@ -130,18 +130,28 @@
     </swiper-item>
     <swiper-item>
       <view style="height:{{ucheight}}px;clear:both"></view>
-      <scroll-view scroll-y="true" class="list" style='height:calc(100vh - {{ucheight*2}}px)' bindscroll=""
-        bindscrolltolower="reachBottom">
-        <block wx:if="{{docList.length>0}}">
-          <navigator url="/pages/documents/reader/reader?id={{item.id}}" class="itembody" wx:for="{{docList}}"
-            wx:key="*this">
-            <image class="leftlogo" src="/static/images/documents/documents.png"></image>
-            <view class="info">
-              <view class="name">{{item.name}}</view>
-              <view class="desc">{{item.profiles}}</view>
+      <scroll-view scroll-y="true" class="folder" style='height:calc(100vh - {{ucheight+30}}px)'>
+        <block wx:if="{{folderDocList.length>0}}">
+          <view wx:for="{{folderDocList}}" wx:key="*this">
+            <view class="item_title" catchtap='showhide' data-index="{{index}}">
+              <view class="iconbox">
+                <image class='icon {{item.show&&"icon_rotate"}}' src='/static/images/go.png'></image>
+              </view>
+              <view class="title">{{item.name}}</view>
+              <view class="right">{{item.docList.length}}</view>
             </view>
-            <image class="bgimg" src="/static/images/documents/bg.png"></image>
-          </navigator>
+            <view class="list" wx:if="{{item.docList.length>0&&item.show}}">
+              <navigator url="/pages/documents/reader/reader?id={{doc.id}}" class="itembody" wx:for="{{item.docList}}"
+                wx:key="*this" wx:for-item="doc">
+                <image class="leftlogo" src="/static/images/documents/documents.png"></image>
+                <view class="info">
+                  <view class="name">{{doc.name}}</view>
+                  <view class="desc">{{doc.profiles}}</view>
+                </view>
+                <image class="bgimg" src="/static/images/documents/bg.png"></image>
+              </navigator>
+            </view>
+          </view>
           <view style="height:1px;clear:both"></view>
         </block>
         <block wx:else>

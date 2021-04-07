@@ -86,10 +86,11 @@ public class ApiDocumentsController extends ApiBaseAction {
      * 获取文件夹列表
      */
     @ApiOperation(value = "获取文件夹列表", response = Map.class)
+    @IgnoreAuth
     @GetMapping("folderDocList")
-    public Object folderDocList(@LoginUser UserVo loginUser) {
+    public Object folderDocList(Integer userId) {
         Map params = new HashMap();
-        params.put("userId", loginUser.getUserId());
+        params.put("userId", userId);
         List<DocumentsFolderVo> list = documentsService.queryFolderDocList(params);
         return toResponsSuccess(list);
     }
@@ -114,6 +115,10 @@ public class ApiDocumentsController extends ApiBaseAction {
     public Object folderSave(@LoginUser UserVo loginUser) {
         JSONObject json = super.getJsonRequest();
         if (null != json) {
+            int count = documentsService.hasFolderName(json.getString("name"));
+            if (count > 0) {
+                return super.toResponsFail("文件夹已存在");
+            }
             DocumentsFolderVo vo = new DocumentsFolderVo();
             vo.setUserId(loginUser.getUserId().intValue());
             vo.setName(json.getString("name"));

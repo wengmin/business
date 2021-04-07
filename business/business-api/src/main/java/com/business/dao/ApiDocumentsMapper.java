@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public interface ApiDocumentsMapper extends BaseDao<DocumentsVo> {
 
+    Integer hasFolderName(String name);
+
     List<DocumentsFolderVo> queryFolderList(Map<String, Object> map);
 
     void saveFolder(DocumentsFolderVo vo);

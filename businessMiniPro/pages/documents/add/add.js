@@ -67,7 +67,7 @@ Page({
   saveFolder: function () {
     let that = this;
     util.request(api.documentsFolderSave, {
-      name: that.data.folderName,
+      name: that.data.folder.name,
       isOpen: 0,
       sortValue: 0,
     }, 'POST').then(function (res) {
@@ -75,7 +75,7 @@ Page({
         var obj = that.data.selectData;
         obj.push({
           id: res.data,
-          name: that.data.folderName
+          name: that.data.folder.name
         })
         that.setData({
           selectData: obj

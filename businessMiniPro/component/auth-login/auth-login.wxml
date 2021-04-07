@@ -1,0 +1,2 @@
+<button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile" class="btn {{className}}">{{buttonText}}</button>
+<button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="btn {{className}}">{{buttonText}}</button>

@@ -69,6 +69,42 @@ public class ApiAuthController extends ApiBaseAction {
         return R.ok(map);
     }
 
+
+    /**
+     * 自动登录接口
+     */
+    @IgnoreAuth
+    @GetMapping("loginAuto")
+    @ApiOperation(value = "自动登录接口")
+    public Object loginAuto(String code) {
+        String requestUrl = ApiUserUtils.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
+        logger.info("》》》组合token为：" + requestUrl);
+        String res = restTemplate.getForObject(requestUrl, String.class);
+        logger.info("loginByMiniPro json==" + res);
+        JSONObject sessionData = JSON.parseObject(res);
+        String openid = sessionData.getString("openid");
+        String unionid = sessionData.getString("unionid");
+        String session_key = sessionData.getString("session_key");//会话密钥
+
+        UserVo user = userService.queryByUnionId(unionid);
+        if (user != null) {
+            user = userService.queryByOpenIdXcx(openid);
+        } else {
+            user = new UserVo();
+            user.setOpenidXcx(openid);
+            user.setUnionid(unionid);
+            userService.saveEdit(user);
+        }
+
+        Map<String, Object> resultObj = new HashMap<String, Object>();
+        resultObj.put("unionid", unionid);
+        resultObj.put("openid", openid);
+        resultObj.put("user", user);
+        resultObj.put("sessionKey", session_key);
+        return toResponsSuccess(resultObj);
+    }
+
+
     /**
      * 登录
      */
@@ -86,15 +122,6 @@ public class ApiAuthController extends ApiBaseAction {
         String unionid = sessionData.getString("unionid");
         logger.info("》》》promoterId：" + loginInfo.getPromoterId());
         String session_key = sessionData.getString("session_key");//不知道啥用。
-
-        if (StringUtils.isNullOrEmpty(unionid)) {
-            try {
-                JSONObject object = wechatService.analysis(session_key, loginInfo.getEncryptedData(), loginInfo.getIv());
-                unionid = object.getString("unionId");
-            } catch (Exception e) {
-                logger.error("loginByWeixin==>analysis:" + e.getMessage());
-            }
-        }
 
         if (null == sessionData || StringUtils.isNullOrEmpty(openid) || StringUtils.isNullOrEmpty(unionid)) {
             logger.info("loginByWeixin.登录失败，sessionData=》" + sessionData + "，openid=》" + openid + "，unionid=》" + unionid);

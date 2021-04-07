@@ -1,6 +1,9 @@
 //var NewApiRootUrl = 'https://emiaoweb.com/business/api/';
 var NewApiRootUrl = 'http://127.0.0.1:8060/api/';
 module.exports = {
+AuthLoginAuto:NewApiRootUrl + 'auth/loginAuto', //微信登录
+
+
   AuthLoginByWeixin: NewApiRootUrl + 'auth/login_by_weixin', //微信登录
   AuthLoginBySilence: NewApiRootUrl + 'auth/loginBySilence', //微信登录(无感知)
   FeedbackAdd: NewApiRootUrl + 'feedback/save', //意见反馈

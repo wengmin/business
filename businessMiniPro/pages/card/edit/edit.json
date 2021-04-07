@@ -5,6 +5,7 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "region": "/component/select-region/select-region",
-    "back-index": "/component/back-index/back-index"
+    "back-index": "/component/back-index/back-index",
+    "auth-login": "/component/auth-login/auth-login"
   }
 }

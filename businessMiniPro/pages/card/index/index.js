@@ -17,12 +17,7 @@ Page({
     showhidebtn: false,
     btnanimation1: null,
 
-    docList: [],
-    page: 1,
-    size: 10,
-    pages: 0,
-    nonedata: false,
-    moredata: false,
+    folderDocList: [],
 
     leftMenuWidth: 0,
     leftMenuHeight: 0,
@@ -84,7 +79,7 @@ Page({
         that.setData({
           cards: res.data
         });
-        that.getDocList(res.data.userId);
+        that.getFolderDocList(res.data.userId);
       } else {
         console.log("that.data.loginOpenid:" + that.data.loginOpenid + "=>errno:" + res.errno + "=>errmsg:" + res.errmsg)
         wx.navigateTo({
@@ -108,7 +103,7 @@ Page({
           that.setData({
             cards: res.data
           });
-          that.getDocList(res.data.userId);
+          that.getFolderDocList(res.data.userId);
           wx.hideLoading();
         } else {
           that.getOwnCardInfo();
@@ -429,12 +424,12 @@ Page({
    * @param {*} e 
    */
   indexChange: function (e) {
-    if(e.detail.current==0){
+    if (e.detail.current == 0) {
       this.setData({
         leftshow: false,
         rightshow: true,
       });
-    }else{
+    } else {
       this.setData({
         leftshow: true,
         rightshow: false,
@@ -447,67 +442,41 @@ Page({
   /**
    * 获取文档列表
    */
-  getDocList: function (userId) {
+  getFolderDocList: function (userId) {
     let that = this;
-    util.request(api.documentsListByUser, {
-      page: that.data.page,
-      size: that.data.size,
+    util.request(api.documentsFolderDocList, {
       userId: userId
     }).then(function (res) {
       if (res.errno === 0) {
-        var resdate = that.data.docList.concat(res.data.list);
-        that.setData({
-          docList: resdate,
-          pages: res.data.totalPage
-        })
-        // if (that.data.docList.length > 0) {
-        //   wx.createSelectorQuery().select('.itembody').boundingClientRect(function (re) {
-        //     that.setData({
-        //       widHeight: (re.height + 13) * that.data.docList.length + "px"
-        //     })
-        //   }).exec();
-        // }
-        if (resdate.length == 0) {
-          that.setData({
-            nonedata: false,
-            moredata: false
-          })
-        } else {
-          if (res.data.currPage === res.data.totalPage) {
-            that.setData({
-              nonedata: true,
-              moredata: false
-            })
-          } else {
-            that.setData({
-              nonedata: false,
-              moredata: true
-            })
-          }
+        for (let i = 0; i < res.data.length; i++) {
+          if (i == 0)//if (res.data[i].docList.length > 0)
+            res.data[i].show = true
+          else
+            res.data[i].show = false
         }
+        that.setData({
+          folderDocList: res.data
+        })
       }
     });
   },
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  pullDownRefresh: function () {
-    this.data.docList = [];
-    this.setData({
-      page: 1
-    });
-    this.getDocList(this.data.cards.userId);
+  showhide: function (e) {
+    let that = this
+    let index = e.currentTarget.dataset.index
+    let dataList = that.data.folderDocList
+    dataList[index].show = !dataList[index].show
+    if (dataList[index].show) {
+      that.packUp(dataList, index);
+    }
+    that.setData({
+      folderDocList: dataList
+    })
   },
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  reachBottom: function () {
-    var that = this;
-    if (that.data.page < that.data.pages) {
-      that.setData({
-        page: that.data.page + 1
-      });
-      that.getDocList(this.data.cards.userId);
+  packUp(data, index) {
+    for (let i = 0, len = data.length; i < len; i++) {
+      if (index != i) {
+        data[i].show = false
+      }
     }
   },
 })

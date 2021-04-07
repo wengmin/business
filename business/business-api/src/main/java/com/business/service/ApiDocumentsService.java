@@ -54,6 +54,10 @@ public class ApiDocumentsService {
         return documentsDao.queryFolderList(map);
     }
 
+    public Integer hasFolderName(String name) {
+        return documentsDao.hasFolderName(name);
+    }
+
     public void saveFolder(DocumentsFolderVo vo) {
         vo.setCreateTime(new Date());
         documentsDao.saveFolder(vo);

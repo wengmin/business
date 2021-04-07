@@ -1,4 +1,44 @@
 var api = require('../config/api.js');
+const user = require('../services/user.js');
+
+function getQueryString(url, name) {
+  var reg = new RegExp('(^|&|/?)' + name + '=([^&|/?]*)(&|/?|$)', 'i')
+  var r = url.substr(1).match(reg)
+  if (r != null) {
+    return r[2]
+  }
+  return null;
+}
+
+function showErrorToast(msg) {
+  wx.showToast({
+    title: msg,
+    image: '/static/images/icon_error.png'
+  })
+}
+
+function showSuccessToast(msg) {
+  wx.showToast({
+    title: msg,
+  })
+}
+
+function accSub(arg1, arg2) {
+  var r1, r2, m, n;
+  try {
+    r1 = arg1.toString().split(".")[1].length;
+  } catch (e) {
+    r1 = 0;
+  }
+  try {
+    r2 = arg2.toString().split(".")[1].length;
+  } catch (e) {
+    r2 = 0;
+  }
+  m = Math.pow(10, Math.max(r1, r2)); //last modify by deeka //动态控制精度长度
+  n = (r1 >= r2) ? r1 : r2;
+  return ((arg1 * m - arg2 * m) / m).toFixed(n);
+}
 
 function formatTime(date) {
   var year = date.getFullYear()
@@ -63,6 +103,7 @@ function request(url, data = {}, method = "GET", contentType = "application/json
         title: '获取中...',
       });
     }
+    console.log("token:" + getApp().globalData.token)
     wx.request({
       url: url,
       data: data,
@@ -73,22 +114,14 @@ function request(url, data = {}, method = "GET", contentType = "application/json
       },
       success: function (res) {
         if (res.statusCode == 200) {
-
           if (res.data.errno == 401) {
-            //需要登录后才可以操作
-            wx.showModal({
-              title: '',
-              content: '请先登录',
-              success: function (res) {
-                if (res.confirm) {
-                  wx.removeStorageSync("userInfo");
-                  wx.removeStorageSync("token");
-                  wx.redirectTo({
-                    url: '/pages/ucenter/index/index'
-                  });
-                }
+            console.log("token：" + wx.getStorageSync('token'))
+            getApp().userLogin().then(res => {
+              console.log(res);
+              if (getCurrentPages().length != 0) {
+                getCurrentPages()[getCurrentPages().length - 1].onLoad()
               }
-            });
+            })
           } else {
             resolve(res.data);
           }
@@ -113,7 +146,6 @@ function upload(url, filePath, name, formData = {}) {
     wx.showLoading({
       title: '上传中...',
     });
-
     wx.uploadFile({
       url: url,
       filePath: filePath,
@@ -146,7 +178,7 @@ function upload(url, filePath, name, formData = {}) {
             resolve(data);
           }
         } else {
-          reject(res.errMsg);
+          reject(data.errMsg);
         }
         wx.hideLoading();
       },
@@ -156,15 +188,6 @@ function upload(url, filePath, name, formData = {}) {
       }
     })
   });
-}
-
-function getQueryString(url, name) {
-  var reg = new RegExp('(^|&|/?)' + name + '=([^&|/?]*)(&|/?|$)', 'i')
-  var r = url.substr(1).match(reg)
-  if (r != null) {
-    return r[2]
-  }
-  return null;
 }
 
 /**
@@ -204,56 +227,10 @@ function login() {
   });
 }
 
-function redirect(url) {
-
-  //判断页面是否需要登录
-  if (false) {
-    wx.redirectTo({
-      url: '/pages/auth/login/login'
-    });
-    return false;
-  } else {
-    wx.redirectTo({
-      url: url
-    });
-  }
-}
-
-function showErrorToast(msg) {
-  wx.showToast({
-    title: msg,
-    image: '/static/images/icon_error.png'
-  })
-}
-
-function showSuccessToast(msg) {
-  wx.showToast({
-    title: msg,
-  })
-}
-
-function accSub(arg1, arg2) {
-  var r1, r2, m, n;
-  try {
-    r1 = arg1.toString().split(".")[1].length;
-  } catch (e) {
-    r1 = 0;
-  }
-  try {
-    r2 = arg2.toString().split(".")[1].length;
-  } catch (e) {
-    r2 = 0;
-  }
-  m = Math.pow(10, Math.max(r1, r2)); //last modify by deeka //动态控制精度长度
-  n = (r1 >= r2) ? r1 : r2;
-  return ((arg1 * m - arg2 * m) / m).toFixed(n);
-}
-
 module.exports = {
   formatTime,
   nformatTime,
   request,
-  redirect,
   showErrorToast,
   showSuccessToast,
   checkSession,

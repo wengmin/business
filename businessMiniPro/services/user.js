@@ -5,13 +5,12 @@
 const util = require('../utils/util.js');
 const api = require('../config/api.js');
 
-
 /**
  * 调用微信登录
  */
 function loginByWeixin(userInfo) {
   console.log("-----1----")
-  console.log(userInfo.userInfo)
+  console.log(userInfo)
   let code = null;
   return new Promise(function (resolve, reject) {
     return util.login().then((res) => {
@@ -23,13 +22,13 @@ function loginByWeixin(userInfo) {
       params.code = code;
       params.encryptedData = userInfo.encryptedData;
       params.iv = userInfo.iv;
-      params.avatarUrl = userInfo.userInfo.avatarUrl;
-      params.city = userInfo.userInfo.city;
-      params.country = userInfo.userInfo.country;
-      params.gender = userInfo.userInfo.gender;
-      params.language = userInfo.userInfo.language;
-      params.nickName = userInfo.userInfo.nickName;
-      params.province = userInfo.userInfo.province;
+      params.avatarUrl = userInfo.avatarUrl;
+      params.city = userInfo.city;
+      params.country = userInfo.country;
+      params.gender = userInfo.gender;
+      params.language = userInfo.language;
+      params.nickName = userInfo.nickName;
+      params.province = userInfo.province;
       params.promoterId = wx.getStorageSync('userId') || 0;
       console.log('-----********---------', JSON.stringify(params))
       util.request(api.AuthLoginByWeixin, params, 'POST').then(res => {
@@ -44,37 +43,6 @@ function loginByWeixin(userInfo) {
         } else {
           util.showErrorToast(res.errmsg)
           reject(res);
-        }
-      }).catch((err) => {
-        reject(err);
-      });
-    }).catch((err) => {
-      reject(err);
-    })
-  });
-}
-
-/**
- * 调用微信登录
- */
-function loginForever() {
-  return new Promise(function (resolve, reject) {
-    return util.login().then((res) => {
-      let params = {};
-      params.code = res.code;
-      util.request(api.AuthLoginBySilence, params).then(resdata => {
-        console.log('-----loginForever-----', JSON.stringify(resdata))
-        if (resdata.errno === 0) {
-          //存储用户信息
-          wx.setStorageSync('token', resdata.data.openid);
-          wx.setStorageSync('unionId', resdata.data.unionid);
-          wx.setStorageSync('sessionKey', resdata.data.sessionKey);
-          wx.setStorageSync('userId', resdata.data.userVo.userId);
-          wx.setStorageSync('userInfo', resdata.data.userVo);
-          resolve(resdata);
-        } else {
-          util.showErrorToast(resdata.errmsg)
-          reject(resdata);
         }
       }).catch((err) => {
         reject(err);
@@ -107,6 +75,5 @@ function checkLogin() {
 
 module.exports = {
   loginByWeixin,
-  loginForever,
   checkLogin,
 };

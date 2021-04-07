@@ -1,12 +1,13 @@
-<view class="container"> 
-  <view class='cont'>
-    <view class='tit'>您还未登录</view>
-    <view class="bottom-btn">
-        <button class="r" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">登录</button>
-    </view>
-    <view class="bottom-new">
-        <button class="r" bindtap='goUrl'>取消</button>
+<view class="login_main">
+  <view class="login_title">请确认以下授权信息</view>
+  <view class="login_prompt">获取你的信息（头像，昵称等）</view>
+  <view class="login_select_wrap">
+    <navigator class="login_cancle" url="/pages/index/index">
+      <button>再想想</button>
+    </navigator>
+    <view class="login_confirm">
+      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 同意 </button>
+      <button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 同意 </button>
     </view>
   </view>
 </view>
-<view class="bottomtext">销擎，让营销更简单</view>

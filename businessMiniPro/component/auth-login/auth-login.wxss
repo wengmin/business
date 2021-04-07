@@ -1,0 +1,7 @@
+.btn{
+  background: #52a936;
+  color: #fff;
+  height: 90rpx;
+  line-height: 90rpx;
+  width: 100%;
+}

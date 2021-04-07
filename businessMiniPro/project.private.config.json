@@ -15,7 +15,7 @@
         {
           "name": "pages/card/index/index",
           "pathName": "pages/card/index/index",
-          "query": "",
+          "query": "param=1~Rtm2Y",
           "scene": null
         },
         {
@@ -46,6 +46,12 @@
           "name": "pages/ucenter/index/index",
           "pathName": "pages/ucenter/index/index",
           "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/auth/login/login",
+          "pathName": "pages/auth/login/login",
+          "query": "param=1~Rtm2Y",
           "scene": null
         }
       ]

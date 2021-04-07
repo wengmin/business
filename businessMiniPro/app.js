@@ -37,23 +37,8 @@ App({
         content: "当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。"
       });
     }
-
-    //获取用户的登录信息
-    user.checkLogin().then(res => {
-      console.log('app login')
-      this.globalData.userInfo = wx.getStorageSync('userInfo');
-      this.globalData.token = wx.getStorageSync('token');
-    }).catch(() => {
-      // //用户按了允许授权按钮
-      // user.loginForever().then(res => {
-      //   this.globalData.token = res.data.openid;
-      // }).catch((err) => {
-      //   wx.removeStorageSync('userInfo');
-      //   wx.removeStorageSync('token');
-      // });
-    });
   },
-  
+
   globalData: {
     userInfo: {
       nickName: 'Hi,游客',
@@ -61,5 +46,63 @@ App({
       headimgurl: 'https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/150547696d798c.png'
     },
     token: ''
+  },
+
+
+  /**
+   * 用户登录请求封装(解决onlaunch和onload执行顺序问题)
+   */
+  userLogin: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
+    var that = this;
+    //定义promise方法
+    return new Promise(function (resolve, reject) {
+      // 调用登录接口
+      wx.login({
+        success: function (res) {
+          if (res.code) {
+            console.log("用户登录授权code为：" + res.code);
+            //调用wx.request请求传递code凭证换取用户openid，并获取后台用户信息
+            wx.request({
+              url: api.AuthLoginAuto, // 后台请求用户信息方法【注意，此处必须为https数字加密证书】
+              data: {
+                code: res.code //code凭证
+              },
+              header: {
+                'content-type': 'application/json' // 默认值
+              },
+              success(res) {
+                console.log(res.data)
+                if (res.data.errno == 0) {
+                  //获取用户信息成功
+                  that.globalData.token = res.data.data.openid;
+                  that.globalData.userInfo = res.data.data.userVo;
+                  //存入session缓存中
+                  wx.setStorageSync("userInfo", that.globalData.userInfo)
+                  wx.setStorageSync("token", that.globalData.token)
+                  resolve(res.data);
+                } else {
+                  reject('error');
+                }
+              },
+              fail: function (res) {
+                reject(res);
+                wx.showToast({
+                  title: '系统错误'
+                })
+              },
+              complete: () => {
+
+              } //complete接口执行后的回调函数，无论成功失败都会调用
+            })
+
+          } else {
+            reject("error");
+          }
+        }
+      })
+    })
   }
 })

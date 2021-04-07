@@ -115,6 +115,9 @@
     </delete>
 
 
+    <select id="hasFolderName" resultType="int">
+        select count(*) from documents_folder WHERE name=#{name}
+    </select>
     <select id="queryFolderList" resultType="com.business.entity.DocumentsFolderVo">
         select
 	    `folder_id`,
@@ -204,38 +207,77 @@
     </delete>
 
     <resultMap id="BaseResultMap" type="com.business.entity.DocumentsFolderVo">
+        <id column="folder_id" property="folderId"/>
+        <result column="fname" property="name"/>
         <collection property="docList" ofType="com.business.entity.DocumentsVo">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
+            <result column="profiles" property="profiles"/>
             <!--<collection property="pageList" ofType="com.business.entity.DocumentsPageVo">-->
             <!--<id column="page_id" property="pageId" />-->
             <!--<result column="url" property="url" />-->
             <!--</collection>-->
         </collection>
     </resultMap>
-
     <select id="queryFolderDocList" resultMap="BaseResultMap">
         select
-        `d.id`,
-        `d.folder_id`,
-        `d.cover`,
-        `d.name`,
-        `d.profiles`,
-        `d.is_open`,
-        `d.password`,
-        `d.user_id`,
-        `d.create_time`,
-        `d.update_time`,
-        `f.folder_id`,
-        `f.name`,
-        `f.is_open`,
-        `f.password`,
-        `f.user_id`,
-        `f.create_time`,
-        `f.update_time`,
-        `f.sort_value`
+        d.id,
+        d.folder_id,
+        d.cover,
+        d.name,
+        d.profiles,
+        d.is_open,
+        d.password,
+        d.user_id,
+        d.create_time,
+        d.update_time,
+        f.folder_id,
+        f.name as fname,
+        f.is_open,
+        f.password,
+        f.user_id,
+        f.create_time,
+        f.update_time,
+        f.sort_value
         from documents d
         left join documents_folder f ON f.folder_id = d.folder_id
         WHERE d.user_id=#{userId} and f.user_id=#{userId} order by f.sort_value asc
     </select>
+
+
+    <!--查询包含文档为空的文件夹<resultMap type="com.business.entity.DocumentsFolderVo" id="FolderMap">-->
+    <!--<id column="folder_id" property="folderId"/>-->
+    <!--<result column="name" property="name"/>-->
+    <!--<collection property="docList" javaType="java.util.ArrayList" ofType="com.business.entity.DocumentsVo"-->
+    <!--select="com.business.dao.ApiDocumentsMapper.queryDocList"-->
+    <!--column="{user_id=user_id,folder_id=folder_id}"/>-->
+    <!--</resultMap>-->
+    <!--<select id="queryDocList" resultType="com.business.entity.DocumentsVo">-->
+    <!--select-->
+    <!--`id`,-->
+    <!--`folder_id`,-->
+    <!--`cover`,-->
+    <!--`name`,-->
+    <!--`profiles`,-->
+    <!--`is_open`,-->
+    <!--`password`,-->
+    <!--`user_id`,-->
+    <!--`create_time`,-->
+    <!--`update_time`-->
+    <!--from documents-->
+    <!--WHERE user_id=#{user_id} and folder_id=#{folder_id} order by id desc-->
+    <!--</select>-->
+    <!--<select id="queryFolderDocList" resultMap="FolderMap">-->
+    <!--select-->
+    <!--`folder_id`,-->
+    <!--`name`,-->
+    <!--`is_open`,-->
+    <!--`password`,-->
+    <!--`user_id`,-->
+    <!--`sort_value`,-->
+    <!--`create_time`,-->
+    <!--`update_time`-->
+    <!--from documents_folder-->
+    <!--WHERE user_id=#{userId} order by sort_value asc-->
+    <!--</select>-->
 </mapper>
