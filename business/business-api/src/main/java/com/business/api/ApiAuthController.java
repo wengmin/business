@@ -167,44 +167,6 @@ public class ApiAuthController extends ApiBaseAction {
     }
 
     /**
-     * 无感知登录
-     */
-    @ApiOperation(value = "无感知登录")
-    @IgnoreAuth
-    @GetMapping("loginBySilence")
-    public Object loginBySilence(@RequestParam("code") String code) {
-        //获取openid
-        String requestUrl = ApiUserUtils.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
-        String res = restTemplate.getForObject(requestUrl, String.class);
-        JSONObject sessionData = JSON.parseObject(res);
-        String openid = sessionData.getString("openid");
-        String unionid = sessionData.getString("unionid");
-        String session_key = sessionData.getString("session_key");
-
-        if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
-            logger.info("loginBySilence.登录失败=》" + sessionData);
-            return toResponsFail("登录失败");
-        }
-
-        UserVo userVo = userService.queryByOpenIdXcx(openid);
-        if (StringUtils.isNullOrEmpty(unionid) && userVo != null) {
-            unionid = userVo.getUnionid();
-        }
-        Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
-        String token = MapUtils.getString(tokenMap, "token");
-
-        if (StringUtils.isNullOrEmpty(token)) {
-            return toResponsFail("登录失败");
-        }
-        Map<String, Object> resultObj = new HashMap<String, Object>();
-        resultObj.put("unionid", unionid);
-        resultObj.put("openid", openid);
-        resultObj.put("userVo", userVo);
-        resultObj.put("sessionKey", session_key);
-        return toResponsSuccess(resultObj);
-    }
-
-    /**
      * 解析电话号码
      */
     @ApiOperation(value = "解析电话号码")

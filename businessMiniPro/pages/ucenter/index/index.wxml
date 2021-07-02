@@ -1,7 +1,7 @@
 <view class="container">
   <back-index back="{{true}}" home="{{true}}" title="名片夹"></back-index>
   <view class="userinfo">
-      <open-data type="userAvatarUrl" class="userinfo-avatar"></open-data>
+      <open-data type="userAvatarUrl" class="userinfo-avatar" style="overflow: hidden; border-radius: 50%;"></open-data>
     <view class='marleft'>
       <view class="userinfo-nickname">
         <open-data type="userNickName" style='font-size:20px;font-weight:bold;'></open-data>

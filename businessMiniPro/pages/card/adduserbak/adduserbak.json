@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "编辑名片",
-  "component": true,
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "region": "/component/select-region/select-region"
-  }
-}

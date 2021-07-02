@@ -82,7 +82,7 @@ public class ApiUploadController extends ApiBaseAction {
             //    fileSize = (double) len / 1073741824;
             //}
             //如果上传文件大于限定的容量
-            if (fileSize > 20) {
+            if (fileSize > 5) {
                 logger.info("file=>docName:" + docName + ";fileSize:" + fileSize);
                 return toResponsFail("文件不能超过5M");
             }
